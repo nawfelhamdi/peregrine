@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlDatabase",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=peregrine-development.database.windows.net;initial catalog=peregrine;user id=dbdeveloper",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiZGEyOGJlNS0wMGZiLTRhM2YtOWM5Yi1mYjgxYTY0Mjk0ZTgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "vm-shir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

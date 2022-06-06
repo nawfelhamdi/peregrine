@@ -1,0 +1,40 @@
+{
+	"name": "output_http",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "http_download_csv",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"download_base_url": {
+					"value": "@dataset().base_url",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"relative_url": {
+				"type": "string"
+			},
+			"base_url": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": {
+					"value": "@dataset().relative_url",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

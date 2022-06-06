@@ -1,0 +1,131 @@
+{
+	"name": "Full_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data_Preparation_pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Data_Preparation_pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "API_Call_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Data_Preparation_pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "API_Call_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"project_name": {
+							"value": "@pipeline().parameters.project_name",
+							"type": "Expression"
+						},
+						"start_date": {
+							"value": "@pipeline().parameters.start_date",
+							"type": "Expression"
+						},
+						"end_date": {
+							"value": "@pipeline().parameters.end_date",
+							"type": "Expression"
+						},
+						"description": {
+							"value": "@pipeline().parameters.description",
+							"type": "Expression"
+						},
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Failed - API_Call_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "API_Call_Pipeline",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Audit Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@activity('API_Call_Pipeline').output.pipelineRunId",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@activity('API_Call_Pipeline').output.pipelineName",
+							"type": "Expression"
+						},
+						"Status": "Failed",
+						"DataSource": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"project_name": {
+				"type": "string",
+				"defaultValue": "default project"
+			},
+			"start_date": {
+				"type": "string",
+				"defaultValue": "2019-12-31"
+			},
+			"end_date": {
+				"type": "string",
+				"defaultValue": "2020-03-31"
+			},
+			"description": {
+				"type": "string",
+				"defaultValue": "This is a demo project"
+			},
+			"measurement_model": {
+				"type": "string",
+				"defaultValue": "PAA"
+			}
+		},
+		"folder": {
+			"name": "1. Main"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-25T19:37:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

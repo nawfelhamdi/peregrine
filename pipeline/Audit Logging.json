@@ -1,0 +1,77 @@
+{
+	"name": "Audit Logging",
+	"properties": {
+		"activities": [
+			{
+				"name": "Insert audit logging record",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[ctl].[sp_pipelinelogs_update]",
+					"storedProcedureParameters": {
+						"dataSource": {
+							"value": {
+								"value": "@pipeline().parameters.DataSource",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"id": {
+							"value": {
+								"value": "@pipeline().parameters.ID",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"name": {
+							"value": {
+								"value": "@pipeline().parameters.Name",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"status": {
+							"value": {
+								"value": "@pipeline().parameters.Status",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"ID": {
+				"type": "string"
+			},
+			"Name": {
+				"type": "string"
+			},
+			"Status": {
+				"type": "string"
+			},
+			"DataSource": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "1. Main/4. Pipeline Status"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-25T19:06:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,116 @@
+{
+	"name": "Data_Preparation_pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "FromBlobToRaw",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "FromSourceToBlob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "FromBlobToRaw",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FromRawToDds",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "FromBlobToRaw",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "FromRawToDds",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FromSourceToBlob",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "FromSourceToBlob",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "FromDdsToBlob",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "FromRawToDds",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "FromDdsToBlob",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"measurement_model": {
+							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"measurement_model": {
+				"type": "string",
+				"defaultValue": "PAA"
+			}
+		},
+		"folder": {
+			"name": "1. Main/1. Data Preparation"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-25T19:09:16Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
