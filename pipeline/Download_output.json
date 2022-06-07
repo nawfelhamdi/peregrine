@@ -637,7 +637,7 @@
 										"type": "Expression"
 									}
 								},
-								"body": "{\"\"}"
+								"body": "{}"
 							}
 						}
 					]
