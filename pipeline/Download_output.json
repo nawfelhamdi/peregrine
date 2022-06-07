@@ -636,7 +636,8 @@
 										"value": "@activity('Get Serect - header_content_type').output.value",
 										"type": "Expression"
 									}
-								}
+								},
+								"body": "{\"\"}"
 							}
 						}
 					]

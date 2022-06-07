@@ -179,7 +179,8 @@
 										"value": "@variables('header_content_type')",
 										"type": "Expression"
 									}
-								}
+								},
+								"body": "{\"\"}"
 							}
 						}
 					]
