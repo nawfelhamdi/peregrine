@@ -19,16 +19,16 @@
 						"referenceName": "csv",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": "1",
-							"Directory": "1",
-							"File": "1"
+							"Container": "web",
+							"Directory": "trigger",
+							"File": "*.csv"
 						}
 					},
 					"enableLogging": false,
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"wildcardFileName": "trigger/*.csv",
+						"recursive": false,
+						"wildcardFileName": "*.csv",
 						"enablePartitionDiscovery": false
 					}
 				}
