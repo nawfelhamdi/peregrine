@@ -190,6 +190,30 @@
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "created_by",
+											"value": "Data Factory"
+										},
+										{
+											"name": "created_date",
+											"value": {
+												"value": "@addhours(utcnow(),-4)",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "last_updated_by",
+											"value": "Data Factory"
+										},
+										{
+											"name": "last_updated_date",
+											"value": {
+												"value": "@addhours(utcnow(),-4)",
+												"type": "Expression"
+											}
+										}
+									],
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
