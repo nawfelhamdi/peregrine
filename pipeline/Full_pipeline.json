@@ -103,9 +103,9 @@
 				"type": "Fail",
 				"dependsOn": [
 					{
-						"activity": "Audit Logging Failed - API_Call_Pipeline",
+						"activity": "API_Call_Pipeline",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
