@@ -13,7 +13,7 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/web/blobs/web/trigger/",
+			"blobPathBeginsWith": "/web/blobs/trigger/",
 			"blobPathEndsWith": ".csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/resourceGroups/peregrine-dev/providers/Microsoft.Storage/storageAccounts/peregrineblob",
