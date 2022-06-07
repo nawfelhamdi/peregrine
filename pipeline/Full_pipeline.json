@@ -97,6 +97,23 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Fail - API_Call_Pipeline",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Failed - API_Call_Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "API_Call_Pipeline Failed",
+					"errorCode": "0"
+				}
 			}
 		],
 		"parameters": {
