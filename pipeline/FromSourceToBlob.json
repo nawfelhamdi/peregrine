@@ -61,7 +61,7 @@
 					},
 					"activities": [
 						{
-							"name": "from souce to blob",
+							"name": "from source to blob",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -137,7 +137,7 @@
 							"type": "IfCondition",
 							"dependsOn": [
 								{
-									"activity": "from souce to blob",
+									"activity": "from source to blob",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -146,7 +146,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@equals(activity('from souce to blob').output.rowsRead,activity('from souce to blob').output.rowsCopied)",
+									"value": "@equals(activity('from source to blob').output.rowsRead,activity('from source to blob').output.rowsCopied)",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
