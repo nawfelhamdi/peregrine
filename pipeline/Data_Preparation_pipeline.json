@@ -103,7 +103,7 @@
 		"parameters": {
 			"measurement_model": {
 				"type": "string",
-				"defaultValue": "PAA"
+				"defaultValue": "GMM"
 			}
 		},
 		"folder": {
