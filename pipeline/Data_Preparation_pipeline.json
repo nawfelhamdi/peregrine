@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "FromBlobToRaw",
+				"name": "Source Data to IFRS 17 Database",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "FromSourceToBlob",
+						"activity": "Ingest Source Data into Peregrine",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -29,11 +29,11 @@
 				}
 			},
 			{
-				"name": "FromRawToDds",
+				"name": "Data Transformation",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "FromBlobToRaw",
+						"activity": "Source Data to IFRS 17 Database",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -55,7 +55,7 @@
 				}
 			},
 			{
-				"name": "FromSourceToBlob",
+				"name": "Ingest Source Data into Peregrine",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
@@ -74,11 +74,11 @@
 				}
 			},
 			{
-				"name": "FromDdsToBlob",
+				"name": "Data Export",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "FromRawToDds",
+						"activity": "Data Transformation",
 						"dependencyConditions": [
 							"Succeeded"
 						]
