@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[ctl].[sp_pipeline_log_update]",
+					"storedProcedureName": "[ctl].[sp_pipeline_step_log_update]",
 					"storedProcedureParameters": {
 						"dataSource": {
 							"value": {
