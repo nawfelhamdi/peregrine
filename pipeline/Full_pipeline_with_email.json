@@ -102,23 +102,23 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"project_name": {
-										"value": "@activity('Lookup project table').output.project_name",
+										"value": "@activity('Lookup project table').output.firstRow.project_name",
 										"type": "Expression"
 									},
 									"start_date": {
-										"value": "@activity('Lookup project table').output.start_date",
+										"value": "@activity('Lookup project table').output.firstRow.start_date",
 										"type": "Expression"
 									},
 									"end_date": {
-										"value": "@activity('Lookup project table').output.end_date",
+										"value": "@activity('Lookup project table').output.firstRow.end_date",
 										"type": "Expression"
 									},
 									"measurement_model": {
-										"value": "@activity('Lookup project table').output.measurement_model",
+										"value": "@activity('Lookup project table').output.firstRow.measurement_model",
 										"type": "Expression"
 									},
 									"id": {
-										"value": "@activity('Lookup project table').output.id",
+										"value": "@activity('Lookup project table').output.firstRow.id",
 										"type": "Expression"
 									}
 								}
@@ -154,7 +154,7 @@
 										"table": "project"
 									}
 								},
-								"firstRowOnly": false
+								"firstRowOnly": true
 							}
 						},
 						{
