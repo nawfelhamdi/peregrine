@@ -1,5 +1,5 @@
 {
-	"name": "Audit Logging",
+	"name": "Pipeline Logging",
 	"properties": {
 		"activities": [
 			{
@@ -15,7 +15,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[ctl].[sp_pipeline_step_log_update]",
+					"storedProcedureName": "[ctl].[sp_pipeline_log_update]",
 					"storedProcedureParameters": {
 						"data_source": {
 							"value": {
@@ -44,6 +44,13 @@
 								"type": "Expression"
 							},
 							"type": "String"
+						},
+						"project_id": {
+							"value": {
+								"value": "@pipeline().parameters.Project_id",
+								"type": "Expression"
+							},
+							"type": "Int32"
 						}
 					}
 				},
@@ -64,6 +71,9 @@
 				"type": "string"
 			},
 			"Data_source": {
+				"type": "string"
+			},
+			"Project_id": {
 				"type": "string"
 			}
 		},
