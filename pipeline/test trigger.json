@@ -23,7 +23,9 @@
 							"Directory": "trigger"
 						}
 					},
-					"fieldList": [],
+					"fieldList": [
+						"childItems"
+					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false
@@ -47,7 +49,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Trigger File Name').output",
+						"value": "@activity('Get Trigger File Name').output.childItems",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -72,7 +74,7 @@
 										"Container": "web",
 										"Directory": "trigger",
 										"File": {
-											"value": "@item().filename",
+											"value": "@item().name",
 											"type": "Expression"
 										}
 									}
@@ -81,7 +83,6 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": false,
-									"wildcardFileName": "*.csv",
 									"enablePartitionDiscovery": false
 								}
 							}

@@ -5,7 +5,14 @@
 			{
 				"name": "Data_Preparation_pipeline",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Pipeline Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
@@ -59,6 +66,10 @@
 						"measurement_model": {
 							"value": "@pipeline().parameters.measurement_model",
 							"type": "Expression"
+						},
+						"id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -90,11 +101,7 @@
 							"value": "@activity('API_Call_Pipeline').output.pipelineName",
 							"type": "Expression"
 						},
-						"Status": "Failed",
-						"DataSource": {
-							"value": "@pipeline().DataFactory",
-							"type": "Expression"
-						}
+						"Status": "Failed"
 					}
 				}
 			},
@@ -113,6 +120,116 @@
 				"typeProperties": {
 					"message": "API_Call_Pipeline Failed",
 					"errorCode": "0"
+				}
+			},
+			{
+				"name": "Pipeline Logging Start",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Running",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Pipeline Logging Success",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "API_Call_Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Success",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Pipeline Logging Failed",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "API_Call_Pipeline",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
@@ -136,6 +253,9 @@
 			"measurement_model": {
 				"type": "string",
 				"defaultValue": "PAA"
+			},
+			"id": {
+				"type": "string"
 			}
 		},
 		"folder": {

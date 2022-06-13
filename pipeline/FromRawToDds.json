@@ -107,7 +107,7 @@
 							"type": "Expression"
 						},
 						"Status": "Running",
-						"DataSource": {
+						"Data_source": {
 							"value": "@pipeline().DataFactory",
 							"type": "Expression"
 						}
@@ -142,7 +142,7 @@
 							"type": "Expression"
 						},
 						"Status": "Success",
-						"DataSource": {
+						"Data_source": {
 							"value": "@pipeline().DataFactory",
 							"type": "Expression"
 						}
@@ -177,7 +177,7 @@
 							"type": "Expression"
 						},
 						"Status": "Failed",
-						"DataSource": {
+						"Data_source": {
 							"value": "@pipeline().DataFactory",
 							"type": "Expression"
 						}

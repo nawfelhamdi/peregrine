@@ -3,66 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "email_notifaction_start",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Email_notifaction",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"Message": "Pipeline Start",
-						"Pipeline_name": {
-							"value": "@pipeline().Pipeline",
-							"type": "Expression"
-						},
-						"Pipeline_id": {
-							"value": "@pipeline().RunId",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			{
-				"name": "email_notifaction_end",
-				"type": "ExecutePipeline",
+				"name": "ForEach - Trigger",
+				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Full_pipeline",
-						"dependencyConditions": [
-							"Completed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Email_notifaction",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"Message": "Pipeline Completed",
-						"Pipeline_name": {
-							"value": "@pipeline().Pipeline",
-							"type": "Expression"
-						},
-						"Pipeline_id": {
-							"value": "@activity('Full_pipeline').output.pipelineRunId",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			{
-				"name": "Full_pipeline",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "email_notifaction_start",
+						"activity": "Get Trigger File Name",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -70,56 +15,246 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Full_pipeline",
-						"type": "PipelineReference"
+					"items": {
+						"value": "@activity('Get Trigger File Name').output.childItems",
+						"type": "Expression"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"project_name": {
-							"value": "@pipeline().parameters.project_name",
-							"type": "Expression"
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "email_notifaction_start",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Email_notifaction",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Message": "Pipeline Start",
+									"Pipeline_name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									}
+								}
+							}
 						},
-						"start_date": {
-							"value": "@pipeline().parameters.start_date",
-							"type": "Expression"
+						{
+							"name": "email_notifaction_end",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Full_pipeline",
+									"dependencyConditions": [
+										"Completed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Email_notifaction",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Message": "Pipeline Completed",
+									"Pipeline_name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@activity('Full_pipeline').output.pipelineRunId",
+										"type": "Expression"
+									}
+								}
+							}
 						},
-						"end_date": {
-							"value": "@pipeline().parameters.end_date",
-							"type": "Expression"
+						{
+							"name": "Full_pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "email_notifaction_start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Lookup project table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Full_pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"project_name": {
+										"value": "@activity('Lookup project table').output.firstRow.project_name",
+										"type": "Expression"
+									},
+									"start_date": {
+										"value": "@activity('Lookup project table').output.firstRow.start_date",
+										"type": "Expression"
+									},
+									"end_date": {
+										"value": "@activity('Lookup project table').output.firstRow.end_date",
+										"type": "Expression"
+									},
+									"measurement_model": {
+										"value": "@activity('Lookup project table').output.firstRow.measurement_model",
+										"type": "Expression"
+									},
+									"id": {
+										"value": "@activity('Lookup project table').output.firstRow.id",
+										"type": "Expression"
+									}
+								}
+							}
 						},
-						"description": {
-							"value": "@pipeline().parameters.description",
-							"type": "Expression"
+						{
+							"name": "Lookup project table",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ctl.project where id= left(''',item().name,''', (CHARINDEX(''.'',(''',item().name,'''),0))-1)')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ctl",
+										"table": "project"
+									}
+								},
+								"firstRowOnly": true
+							}
 						},
-						"measurement_model": {
-							"value": "@pipeline().parameters.measurement_model",
-							"type": "Expression"
+						{
+							"name": "Delete trigger file",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Full_pipeline",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@variables('trigger_container')",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@variables('trigger_directory')",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							}
 						}
+					]
+				}
+			},
+			{
+				"name": "Get Trigger File Name",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "csv_folder",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@variables('trigger_container')",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@variables('trigger_directory')",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
 					}
 				}
 			}
 		],
-		"parameters": {
-			"project_name": {
-				"type": "string",
-				"defaultValue": "default project"
+		"variables": {
+			"trigger_container": {
+				"type": "String",
+				"defaultValue": "web"
 			},
-			"start_date": {
-				"type": "string",
-				"defaultValue": "2019-12-31"
-			},
-			"end_date": {
-				"type": "string",
-				"defaultValue": "2020-03-31"
-			},
-			"description": {
-				"type": "string",
-				"defaultValue": "This is a demo project"
-			},
-			"measurement_model": {
-				"type": "string",
-				"defaultValue": "PAA"
+			"trigger_directory": {
+				"type": "String",
+				"defaultValue": "trigger"
 			}
 		},
 		"folder": {
