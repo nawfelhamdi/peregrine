@@ -1,5 +1,5 @@
 {
-	"name": "csv",
+	"name": "csv_file",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage",
@@ -7,9 +7,6 @@
 		},
 		"parameters": {
 			"Container": {
-				"type": "string"
-			},
-			"Directory": {
 				"type": "string"
 			},
 			"File": {
@@ -23,10 +20,6 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().File",
-					"type": "Expression"
-				},
-				"folderPath": {
-					"value": "@dataset().Directory",
 					"type": "Expression"
 				},
 				"container": {

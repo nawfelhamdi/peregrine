@@ -1,5 +1,5 @@
 {
-	"name": "output_blob",
+	"name": "excel",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage",
@@ -9,24 +9,24 @@
 			"Container": {
 				"type": "string"
 			},
-			"Directory": {
+			"File": {
 				"type": "string"
 			},
-			"File": {
+			"Sheet": {
 				"type": "string"
 			}
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Excel",
 		"typeProperties": {
+			"sheetName": {
+				"value": "@dataset().Sheet",
+				"type": "Expression"
+			},
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().File",
-					"type": "Expression"
-				},
-				"folderPath": {
-					"value": "@dataset().Directory",
 					"type": "Expression"
 				},
 				"container": {
@@ -34,9 +34,8 @@
 					"type": "Expression"
 				}
 			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"quoteChar": "\""
+			"range": "A5:J27",
+			"firstRowAsHeader": true
 		},
 		"schema": []
 	},

@@ -121,7 +121,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "csv_raw",
+									"referenceName": "csv_file",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {

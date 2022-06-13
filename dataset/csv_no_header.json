@@ -1,5 +1,5 @@
 {
-	"name": "excel_raw",
+	"name": "csv_no_header",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage",
@@ -9,24 +9,24 @@
 			"Container": {
 				"type": "string"
 			},
-			"File": {
+			"Directory": {
 				"type": "string"
 			},
-			"Sheet": {
+			"File": {
 				"type": "string"
 			}
 		},
 		"annotations": [],
-		"type": "Excel",
+		"type": "DelimitedText",
 		"typeProperties": {
-			"sheetName": {
-				"value": "@dataset().Sheet",
-				"type": "Expression"
-			},
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
 					"value": "@dataset().File",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().Directory",
 					"type": "Expression"
 				},
 				"container": {
@@ -34,8 +34,9 @@
 					"type": "Expression"
 				}
 			},
-			"range": "A5:J27",
-			"firstRowAsHeader": true
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
 		},
 		"schema": []
 	},

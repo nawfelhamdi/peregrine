@@ -347,7 +347,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "output_http",
+									"referenceName": "http",
 									"type": "DatasetReference",
 									"parameters": {
 										"relative_url": {
@@ -363,7 +363,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "output_blob",
+									"referenceName": "csv_no_header",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
@@ -566,7 +566,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "output_http",
+									"referenceName": "http",
 									"type": "DatasetReference",
 									"parameters": {
 										"relative_url": {
@@ -582,7 +582,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "output_blob",
+									"referenceName": "csv_no_header",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
