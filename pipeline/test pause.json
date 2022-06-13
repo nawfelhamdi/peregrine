@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "csv",
+						"referenceName": "csv_header",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "moody",
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "csv",
+						"referenceName": "csv_header",
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "moody",

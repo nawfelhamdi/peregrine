@@ -107,7 +107,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "csv",
+									"referenceName": "csv_header",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": "moody",
@@ -170,7 +170,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "csv",
+									"referenceName": "csv_header",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": "moody",
@@ -284,7 +284,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "csv",
+									"referenceName": "csv_header",
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": "moody",

@@ -1,5 +1,5 @@
 {
-	"name": "output_http",
+	"name": "http",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "http_download_csv",

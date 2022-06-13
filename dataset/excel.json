@@ -1,5 +1,5 @@
 {
-	"name": "excel_raw",
+	"name": "excel",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureBlobStorage",
