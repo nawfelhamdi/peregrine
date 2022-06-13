@@ -140,7 +140,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select * from ctl.project where id=',item().name)",
+										"value": "@concat('select * from ctl.project where id= left(\"',item().name,'\", (CHARINDEX(\".\",(\"',item().name,'\"),0))-1)',item().name)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -153,6 +153,52 @@
 										"schema": "ctl",
 										"table": "project"
 									}
+								}
+							}
+						},
+						{
+							"name": "Delete trigger file",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Full_pipeline",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@variables('trigger_container')",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@variables('trigger_directory')",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": true,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
 								}
 							}
 						}
@@ -176,8 +222,14 @@
 						"referenceName": "csv_folder",
 						"type": "DatasetReference",
 						"parameters": {
-							"Container": "web",
-							"Directory": "trigger"
+							"Container": {
+								"value": "@variables('trigger_container')",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@variables('trigger_directory')",
+								"type": "Expression"
+							}
 						}
 					},
 					"fieldList": [
@@ -195,20 +247,13 @@
 			}
 		],
 		"variables": {
-			"project_name": {
-				"type": "String"
+			"trigger_container": {
+				"type": "String",
+				"defaultValue": "web"
 			},
-			"start_date": {
-				"type": "String"
-			},
-			"end_date": {
-				"type": "String"
-			},
-			"description": {
-				"type": "String"
-			},
-			"measurement_model": {
-				"type": "String"
+			"trigger_directory": {
+				"type": "String",
+				"defaultValue": "trigger"
 			}
 		},
 		"folder": {
