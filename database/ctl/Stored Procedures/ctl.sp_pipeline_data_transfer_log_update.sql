@@ -1,3 +1,20 @@
+/****** Object:  StoredProcedure [ctl].[sp_pipeline_data_transfer_log_update]    Script Date: 2022-06-13 5:41:26 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+--select * from [ctl].[peregrine_backend]
+
+--select * from [ctl].[pipeline_log]
+--order by last_updated_date desc
+
+--select * from ctl.control_table_parameter
+
+--select * from [ctl].[pipeline_data_transfer_log]
+
+
 create proc [ctl].[sp_pipeline_data_transfer_log_update] 
 @pipeline_id varchar(2000),
 @pipeline_name varchar(100),
