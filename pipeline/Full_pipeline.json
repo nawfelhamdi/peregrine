@@ -225,6 +225,9 @@
 			"measurement_model": {
 				"type": "string",
 				"defaultValue": "PAA"
+			},
+			"id": {
+				"type": "string"
 			}
 		},
 		"folder": {
