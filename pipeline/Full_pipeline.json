@@ -66,6 +66,10 @@
 						"measurement_model": {
 							"value": "@pipeline().parameters.measurement_model",
 							"type": "Expression"
+						},
+						"id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -138,7 +142,15 @@
 							"value": "@pipeline().Pipeline",
 							"type": "Expression"
 						},
-						"Status": "Running"
+						"Status": "Running",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -169,7 +181,15 @@
 							"value": "@pipeline().Pipeline",
 							"type": "Expression"
 						},
-						"Status": "Success"
+						"Status": "Success",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
 					}
 				}
 			},
@@ -200,7 +220,15 @@
 							"value": "@pipeline().Pipeline",
 							"type": "Expression"
 						},
-						"Status": "Failed"
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
 					}
 				}
 			}
