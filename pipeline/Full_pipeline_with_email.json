@@ -140,7 +140,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select * from ctl.project where id= left(\"',item().name,'\", (CHARINDEX(\".\",(\"',item().name,'\"),0))-1)',item().name)",
+										"value": "@concat('select * from ctl.project where id= left(''',item().name,''', (CHARINDEX(''.'',(''',item().name,'''),0))-1)')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
