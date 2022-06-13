@@ -1,14 +1,14 @@
-CREATE TABLE [ctl].[peregrine_backend](
+CREATE TABLE [ctl].[peregrine_project](
 	[id] [int] NOT NULL,
+	[project_name] [varchar](500) NULL,
+	[project_id] [varchar](100) NULL,
 	[measurement_model] [varchar](500) NULL,
 	[start_date] [date] NULL,
 	[end_date] [date] NULL,
 	[created_by] [varchar](500) NULL,
 	[created_date] [datetime] NULL,
 	[last_updated_by] [varchar](500) NULL,
-	[last_updated_date] [datetime] NULL,
-	[project_name] [varchar](500) NULL,
-	[project_id] [varchar](100) NULL,
+	[last_updated_date] [datetime] NULL
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
