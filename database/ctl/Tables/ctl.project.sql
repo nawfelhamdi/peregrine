@@ -1,23 +1,25 @@
-/****** Object:  Table [ctl].[pipeline_log]    Script Date: 2022-06-13 5:37:02 PM ******/
+
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [ctl].[pipeline_log](
-	[pipeline_id] [varchar](1000) NULL,
-	[data_source] [varchar](1000) NULL,
-	[project_id] [int] NULL,
-	[pipeline_name] [varchar](1000) NULL,
-	[starting_time] [datetime] NOT NULL,
-	[ending_time] [datetime] NULL,
-	[status] [varchar](100) NOT NULL,
-	[is_active] [bit] NULL,
-	[created_by] [varchar](500) NULL,
-	[created_date] [datetime] NULL,
-	[last_updated_by] [varchar](500) NULL,
-	[last_updated_date] [datetime] NULL
-) ON [PRIMARY]
+CREATE TABLE [ctl].[project](
+    [id] [int] NOT NULL IDENTITY(1,1),
+    [project_name] [varchar](500) NOT NULL,
+    [moody_project_id] [varchar](100) NULL,
+    [measurement_model] [varchar](20) NULL,
+    [start_date] [date] NULL,
+    [end_date] [date] NULL,
+    [created_by] [varchar](50) NULL,
+    [created_date] [datetime] NULL,
+    [last_updated_by] [varchar](50) NULL,
+    [last_updated_date] [datetime] NULL,
+    PRIMARY KEY CLUSTERED
+(
+[id] ASC
+)WITH (STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF) ON [PRIMARY]
+    ) ON [PRIMARY]
 GO
 
