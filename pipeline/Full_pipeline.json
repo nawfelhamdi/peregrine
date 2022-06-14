@@ -263,7 +263,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select id from ctl.pipeline_log where project_id=',pipeline().parameters.id)",
+							"value": "@concat('select id from ctl.pipeline_log where project_id=',pipeline().parameters.id,'and status=''Running''')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
