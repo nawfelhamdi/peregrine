@@ -226,7 +226,7 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"preCopyScript": {
-										"value": "@{concat('if exists (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE path=''',item().target_path,''' and name = ''',item().target_name,''') truncate table ',item().target_path,'.',item().target_name)}",
+										"value": "@{item().system_parameter}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
