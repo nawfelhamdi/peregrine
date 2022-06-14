@@ -111,11 +111,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().source_table_schema",
+											"value": "@item().source_path",
 											"type": "Expression"
 										},
 										"File": {
-											"value": "@item().source_table_name",
+											"value": "@item().source_name",
 											"type": "Expression"
 										}
 									}
@@ -127,11 +127,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().target_table_schema,'/',pipeline().parameters.project_id)",
+											"value": "@concat(item().target_path,'/',pipeline().parameters.project_id)",
 											"type": "Expression"
 										},
 										"File": {
-											"value": "@item().target_table_name",
+											"value": "@item().target_name",
 											"type": "Expression"
 										}
 									}
@@ -163,11 +163,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().source_table_schema",
+											"value": "@item().source_path",
 											"type": "Expression"
 										},
 										"File": {
-											"value": "@item().source_table_name",
+											"value": "@item().source_name",
 											"type": "Expression"
 										}
 									}

@@ -109,11 +109,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema": {
-											"value": "@item().source_table_schema",
+											"value": "@item().source_path",
 											"type": "Expression"
 										},
 										"table": {
-											"value": "@item().source_table_name",
+											"value": "@item().source_name",
 											"type": "Expression"
 										}
 									}
@@ -125,11 +125,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().target_table_schema",
+											"value": "@item().target_path",
 											"type": "Expression"
 										},
 										"File": {
-											"value": "@item().target_table_name",
+											"value": "@item().target_name",
 											"type": "Expression"
 										}
 									}
@@ -161,7 +161,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"message": {
-												"value": "@concat('Row counts of copy from ',item().source_table_schema,'.',item().source_table_name,' to ',item().target_table_schema,'/',item().target_table_name, ' do not match.')",
+												"value": "@concat('Row counts of copy from ',item().source_path,'.',item().source_name,' to ',item().target_path,'/',item().target_name, ' do not match.')",
 												"type": "Expression"
 											},
 											"errorCode": "000"

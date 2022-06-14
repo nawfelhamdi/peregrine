@@ -224,7 +224,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat(activity('Get Serect - api_base_url').output.value,item().target_table_name,'?',encodeUriComponent(item().system_parameter),'=',encodeUriComponent(pipeline().parameters.project_id))",
+									"value": "@concat(activity('Get Serect - api_base_url').output.value,item().target_name,'?',encodeUriComponent(item().system_parameter),'=',encodeUriComponent(pipeline().parameters.project_id))",
 									"type": "Expression"
 								},
 								"connectVia": {
