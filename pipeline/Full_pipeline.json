@@ -202,7 +202,7 @@
 				}
 			},
 			{
-				"name": "Pipeline Logging Failed",
+				"name": "Pipeline Logging Failed 2",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -278,6 +278,45 @@
 						}
 					},
 					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Pipeline Logging Failed 1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Data_Preparation_pipeline",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().RunId",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"Project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
