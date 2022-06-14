@@ -99,7 +99,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -134,7 +134,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -169,7 +169,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -189,6 +189,9 @@
 			"measurement_model": {
 				"type": "string",
 				"defaultValue": "PAA"
+			},
+			"pipeline_log_id": {
+				"type": "string"
 			}
 		},
 		"folder": {

@@ -7,7 +7,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Pipeline Logging Start",
+						"activity": "Lookup pipeline log id",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -23,6 +23,10 @@
 					"parameters": {
 						"measurement_model": {
 							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						},
+						"pipeline_log_id": {
+							"value": "@activity('Lookup pipeline log id').output.firstRow.id",
 							"type": "Expression"
 						}
 					}
@@ -69,6 +73,10 @@
 						},
 						"id": {
 							"value": "@pipeline().parameters.id",
+							"type": "Expression"
+						},
+						"pipeline_log_id": {
+							"value": "@activity('Lookup pipeline log id').output.firstRow.id",
 							"type": "Expression"
 						}
 					}
@@ -230,6 +238,46 @@
 							"type": "Expression"
 						}
 					}
+				}
+			},
+			{
+				"name": "Lookup pipeline log id",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Pipeline Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select id from ctl.pipeline_log where project_id=',pipeline().parameters.id)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "pipeline_log"
+						}
+					},
+					"firstRowOnly": true
 				}
 			}
 		],

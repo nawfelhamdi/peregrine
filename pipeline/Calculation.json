@@ -1319,7 +1319,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -1354,7 +1354,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -1374,7 +1374,10 @@
 			"project_id": {
 				"type": "string"
 			},
-			"Key_vault_url": {
+			"key_vault_url": {
+				"type": "string"
+			},
+			"pipeline_log_id": {
 				"type": "string"
 			}
 		},

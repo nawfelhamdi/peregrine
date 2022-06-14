@@ -288,7 +288,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/api-base-url?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/api-base-url?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -320,7 +320,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/header-accept?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-accept?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -352,7 +352,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/header-authorization-method?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-authorization-method?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -384,7 +384,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/storage-account-sas-key?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/storage-account-sas-key?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -416,7 +416,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/header-content-type?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-content-type?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -448,7 +448,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/storage-account-base-url?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/storage-account-base-url?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -480,7 +480,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"url": {
-						"value": "@concat(variables('Key_vault_url'),'/secrets/header-authorization-key?api-version=7.0')",
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-authorization-key?api-version=7.0')",
 						"type": "Expression"
 					},
 					"method": "GET",
@@ -514,8 +514,8 @@
 							"value": "@variables('project_id')",
 							"type": "Expression"
 						},
-						"Key_vault_url": {
-							"value": "@variables('Key_vault_url')",
+						"key_vault_url": {
+							"value": "@variables('key_vault_url')",
 							"type": "Expression"
 						}
 					}
@@ -542,10 +542,6 @@
 					"parameters": {
 						"project_id": {
 							"value": "@variables('project_id')",
-							"type": "Expression"
-						},
-						"Key_vault_url": {
-							"value": "@variables('Key_vault_url')",
 							"type": "Expression"
 						},
 						"storage_account_output_folder": {
@@ -794,7 +790,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -822,7 +818,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@pipeline().RunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -903,14 +899,17 @@
 				"defaultValue": "GMM"
 			},
 			"id": {
-				"type": "string"
+				"type": "int"
+			},
+			"pipeline_log_id": {
+				"type": "int"
 			}
 		},
 		"variables": {
 			"project_id": {
 				"type": "String"
 			},
-			"Key_vault_url": {
+			"key_vault_url": {
 				"type": "String",
 				"defaultValue": "https://peregrine-key-vault.vault.azure.net"
 			},
