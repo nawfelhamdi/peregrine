@@ -517,6 +517,10 @@
 						"key_vault_url": {
 							"value": "@variables('key_vault_url')",
 							"type": "Expression"
+						},
+						"pipeline_log_id": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -544,12 +548,20 @@
 							"value": "@variables('project_id')",
 							"type": "Expression"
 						},
+						"key_vault_url": {
+							"value": "@variables('key_vault_url')",
+							"type": "Expression"
+						},
 						"storage_account_output_folder": {
 							"value": "@variables('storage_account_output_folder')",
 							"type": "Expression"
 						},
 						"storage_account_container": {
 							"value": "@variables('storage_account_container')",
+							"type": "Expression"
+						},
+						"pipeline_log_id": {
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						}
 					}
@@ -640,6 +652,10 @@
 						},
 						"measurement_model": {
 							"value": "@pipeline().parameters.measurement_model",
+							"type": "Expression"
+						},
+						"pipeline_log_id": {
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						}
 					}
