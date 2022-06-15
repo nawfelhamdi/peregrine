@@ -286,7 +286,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Audit Logging",
+						"referenceName": "Pipeline Step Logging",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -321,7 +321,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Audit Logging",
+						"referenceName": "Pipeline Step Logging",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -356,7 +356,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Audit Logging",
+						"referenceName": "Pipeline Step Logging",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

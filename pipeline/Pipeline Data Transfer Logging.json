@@ -1,9 +1,9 @@
 {
-	"name": "Pipeline Step Logging",
+	"name": "Pipeline Data Transfer Logging",
 	"properties": {
 		"activities": [
 			{
-				"name": "Insert step logging record",
+				"name": "Insert data transfer logging record",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
