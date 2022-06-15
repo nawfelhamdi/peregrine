@@ -162,23 +162,19 @@
 										"type": "Expression"
 									},
 									"Status": "Running",
-									"Data_source": {
-										"value": "@pipeline().DataFactory",
-										"type": "Expression"
-									},
-									"source_path": {
+									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"
 									},
-									"source_name": {
+									"Source_name": {
 										"value": "@item().source_name",
 										"type": "Expression"
 									},
-									"target_path": {
+									"Target_path": {
 										"value": "@item().target_path",
 										"type": "Expression"
 									},
-									"target_name": {
+									"Target_name": {
 										"value": "@item().target_name",
 										"type": "Expression"
 									}
@@ -209,10 +205,6 @@
 										"type": "Expression"
 									},
 									"Status": "Success",
-									"Data_source": {
-										"value": "@pipeline().DataFactory",
-										"type": "Expression"
-									},
 									"Rows_copied": {
 										"value": "@activity('from source to blob').output.rowsCopied",
 										"type": "Expression"
@@ -221,19 +213,19 @@
 										"value": "@activity('from source to blob').output.rowsRead",
 										"type": "Expression"
 									},
-									"source_path": {
+									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"
 									},
-									"source_name": {
+									"Source_name": {
 										"value": "@item().source_name",
 										"type": "Expression"
 									},
-									"target_path": {
+									"Target_path": {
 										"value": "@item().target_path",
 										"type": "Expression"
 									},
-									"target_name": {
+									"Target_name": {
 										"value": "@item().target_name",
 										"type": "Expression"
 									}
@@ -264,25 +256,21 @@
 										"type": "Expression"
 									},
 									"Status": "Failed",
-									"Data_source": {
-										"value": "@pipeline().DataFactory",
-										"type": "Expression"
-									},
 									"Rows_copied": "0",
 									"Rows_read": "0",
-									"source_path": {
+									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"
 									},
-									"source_name": {
+									"Source_name": {
 										"value": "@item().source_name",
 										"type": "Expression"
 									},
-									"target_path": {
+									"Target_path": {
 										"value": "@item().target_path",
 										"type": "Expression"
 									},
-									"target_name": {
+									"Target_name": {
 										"value": "@item().target_name",
 										"type": "Expression"
 									}

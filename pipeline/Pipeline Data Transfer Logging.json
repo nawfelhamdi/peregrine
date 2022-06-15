@@ -88,25 +88,22 @@
 			"Status": {
 				"type": "string"
 			},
-			"Data_source": {
-				"type": "string"
-			},
 			"Rows_copied": {
 				"type": "string"
 			},
 			"Rows_read": {
 				"type": "string"
 			},
-			"source_path": {
+			"Source_path": {
 				"type": "string"
 			},
-			"source_name": {
+			"Source_name": {
 				"type": "string"
 			},
-			"target_path": {
+			"Target_path": {
 				"type": "string"
 			},
-			"target_name": {
+			"Target_name": {
 				"type": "string"
 			}
 		},
