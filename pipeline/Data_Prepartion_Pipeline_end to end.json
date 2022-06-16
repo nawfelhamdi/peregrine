@@ -78,7 +78,7 @@
 										"type": "Expression"
 									},
 									"Pipeline_id": {
-										"value": "@activity('Full_pipeline').output.pipelineRunId",
+										"value": "@pipeline().RunId",
 										"type": "Expression"
 									}
 								}
