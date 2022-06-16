@@ -9,6 +9,12 @@
 					"referenceName": "Full_pipeline_with_email",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Data_Prepartion_Pipeline_end to end",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "BlobEventsTrigger",
