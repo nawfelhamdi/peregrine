@@ -1,5 +1,5 @@
 {
-	"name": "Full_Data_Prepartion",
+	"name": "Full_API_Call",
 	"properties": {
 		"activities": [
 			{
@@ -125,75 +125,6 @@
 							}
 						},
 						{
-							"name": "Delete trigger file",
-							"type": "Delete",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "csv_header",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": {
-											"value": "@variables('trigger_container')",
-											"type": "Expression"
-										},
-										"Directory": {
-											"value": "@variables('trigger_directory')",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
-								},
-								"enableLogging": false,
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": false,
-									"enablePartitionDiscovery": false
-								}
-							}
-						},
-						{
-							"name": "Data_Preparation_pipeline",
-							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "Lookup pipeline log id",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "Data_Preparation_pipeline",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"measurement_model": {
-										"value": "@activity('Lookup project table').output.firstRow.measurement_model",
-										"type": "Expression"
-									},
-									"pipeline_log_id": {
-										"value": "@activity('Lookup pipeline log id').output.firstRow.id",
-										"type": "Expression"
-									}
-								}
-							}
-						},
-						{
 							"name": "Pipeline Logging Start",
 							"type": "ExecutePipeline",
 							"dependsOn": [
@@ -237,7 +168,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "Data_Preparation_pipeline",
+									"activity": "API_Call_Pipeline",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -322,7 +253,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "Data_Preparation_pipeline",
+									"activity": "API_Call_Pipeline",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -353,6 +284,91 @@
 										"value": "@activity('Lookup project table').output.firstRow.id",
 										"type": "Expression"
 									}
+								}
+							}
+						},
+						{
+							"name": "API_Call_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Lookup pipeline log id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "API_Call_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"project_name": {
+										"value": "@activity('Lookup project table').output.firstRow.project_name",
+										"type": "Expression"
+									},
+									"start_date": {
+										"value": "@activity('Lookup project table').output.firstRow.start_date",
+										"type": "Expression"
+									},
+									"end_date": {
+										"value": "@activity('Lookup project table').output.firstRow.end_date",
+										"type": "Expression"
+									},
+									"measurement_model": {
+										"value": "@activity('Lookup project table').output.firstRow.measurement_model",
+										"type": "Expression"
+									},
+									"id": {
+										"value": "@activity('Lookup project table').output.firstRow.id",
+										"type": "Expression"
+									},
+									"pipeline_log_id": {
+										"value": "@activity('Lookup pipeline log id').output.firstRow.id",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Delete trigger file",
+							"type": "Delete",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@variables('trigger_container')",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@variables('trigger_directory')",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
 								}
 							}
 						}
