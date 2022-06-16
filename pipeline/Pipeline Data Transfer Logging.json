@@ -26,14 +26,14 @@
 						},
 						"data_copied": {
 							"value": {
-								"value": "@pipeline().parameters.Rows_copied",
+								"value": "@pipeline().parameters.Data_copied",
 								"type": "Expression"
 							},
 							"type": "Int32"
 						},
 						"data_read": {
 							"value": {
-								"value": "@pipeline().parameters.Rows_read",
+								"value": "@pipeline().parameters.Data_read",
 								"type": "Expression"
 							},
 							"type": "Int32"
