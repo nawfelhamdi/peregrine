@@ -51,6 +51,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Lookup pipeline step log id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"userProperties": [],
@@ -63,7 +69,14 @@
 						{
 							"name": "Raw to Dds",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Pipeline Data Transfer Logging Start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -81,6 +94,128 @@
 							"linkedServiceName": {
 								"referenceName": "AzureSqlDatabase",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Start",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Running",
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Success",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Raw to Dds",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Success",
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Failed",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Raw to Dds",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Failed",
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
@@ -182,6 +317,46 @@
 							"type": "Expression"
 						}
 					}
+				}
+			},
+			{
+				"name": "Lookup pipeline step log id",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select id from ctl.pipeline_step_log where pipeline_log_id=',pipeline().parameters.pipeline_log_id,' and pipeline_name=''',pipeline().Pipeline,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "pipeline_step_log"
+						}
+					},
+					"firstRowOnly": true
 				}
 			}
 		],
