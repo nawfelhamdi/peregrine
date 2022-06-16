@@ -496,7 +496,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Import file to project - Checking",
+						"activity": "Audit Logging Success",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -787,41 +787,6 @@
 				}
 			},
 			{
-				"name": "Audit Logging Success",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "FromBlobToArchive",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Pipeline Step Logging",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"ID": {
-							"value": "@pipeline().parameters.pipeline_log_id",
-							"type": "Expression"
-						},
-						"Name": {
-							"value": "@pipeline().Pipeline",
-							"type": "Expression"
-						},
-						"Status": "Success",
-						"Data_source": {
-							"value": "@pipeline().DataFactory",
-							"type": "Expression"
-						}
-					}
-				}
-			},
-			{
 				"name": "Audit Logging Start",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
@@ -837,10 +802,7 @@
 							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
-						"Name": {
-							"value": "@pipeline().Pipeline",
-							"type": "Expression"
-						},
+						"Name": "Project creation",
 						"Status": "Running",
 						"Data_source": {
 							"value": "@pipeline().DataFactory",
@@ -890,6 +852,70 @@
 				"linkedServiceName": {
 					"referenceName": "AzureSqlDatabase",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Audit Logging Failed - API_Call_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Import file to project - Checking",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": "Project creation",
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Success",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Import file to project - Checking",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": "Project creation",
+						"Status": "Success",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],

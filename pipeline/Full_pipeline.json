@@ -83,54 +83,6 @@
 				}
 			},
 			{
-				"name": "Audit Logging Failed - API_Call_Pipeline",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "API_Call_Pipeline",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Pipeline Step Logging",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"ID": {
-							"value": "@activity('API_Call_Pipeline').output.pipelineRunId",
-							"type": "Expression"
-						},
-						"Name": {
-							"value": "@activity('API_Call_Pipeline').output.pipelineName",
-							"type": "Expression"
-						},
-						"Status": "Failed"
-					}
-				}
-			},
-			{
-				"name": "Fail - API_Call_Pipeline",
-				"type": "Fail",
-				"dependsOn": [
-					{
-						"activity": "API_Call_Pipeline",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"message": "API_Call_Pipeline Failed",
-					"errorCode": "0"
-				}
-			},
-			{
 				"name": "Pipeline Logging Start",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
