@@ -253,12 +253,12 @@
 										"type": "Expression"
 									},
 									"Status": "Success",
-									"Rows_copied": {
-										"value": "@activity('copy to archive folder').output.rowsCopied",
+									"Data_copied": {
+										"value": "@activity('copy to archive folder').output.dataWritten",
 										"type": "Expression"
 									},
-									"Rows_read": {
-										"value": "@activity('copy to archive folder').output.rowsRead",
+									"Data_read": {
+										"value": "@activity('copy to archive folder').output.dataRead",
 										"type": "Expression"
 									},
 									"Source_path": {
@@ -304,8 +304,8 @@
 										"type": "Expression"
 									},
 									"Status": "Failed",
-									"Rows_copied": "0",
-									"Rows_read": "0",
+									"Data_copied": "-1",
+									"Data_read": "-1",
 									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"

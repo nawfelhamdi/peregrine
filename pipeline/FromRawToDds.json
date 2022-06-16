@@ -199,6 +199,8 @@
 										"type": "Expression"
 									},
 									"Status": "Failed",
+									"Data_copied": "-1",
+									"Data_read": "-1",
 									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"

@@ -205,11 +205,11 @@
 										"type": "Expression"
 									},
 									"Status": "Success",
-									"Rows_copied": {
+									"Data_copied": {
 										"value": "@activity('from source to blob').output.rowsCopied",
 										"type": "Expression"
 									},
-									"Rows_read": {
+									"Data_read": {
 										"value": "@activity('from source to blob').output.rowsRead",
 										"type": "Expression"
 									},

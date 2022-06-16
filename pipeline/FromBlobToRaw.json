@@ -314,11 +314,11 @@
 										"type": "Expression"
 									},
 									"Status": "Success",
-									"Rows_copied": {
+									"Data_copied": {
 										"value": "@activity('from blob to raw').output.rowsCopied",
 										"type": "Expression"
 									},
-									"Rows_read": {
+									"Data_read": {
 										"value": "@activity('from blob to raw').output.rowsRead",
 										"type": "Expression"
 									},
@@ -365,8 +365,8 @@
 										"type": "Expression"
 									},
 									"Status": "Failed",
-									"Rows_copied": "0",
-									"Rows_read": "0",
+									"Data_copied": "-1",
+									"Data_read": "-1",
 									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"

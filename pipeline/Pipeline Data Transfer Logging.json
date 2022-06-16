@@ -88,10 +88,10 @@
 			"Status": {
 				"type": "string"
 			},
-			"Rows_copied": {
+			"Data_copied": {
 				"type": "string"
 			},
-			"Rows_read": {
+			"Data_read": {
 				"type": "string"
 			},
 			"Source_path": {
