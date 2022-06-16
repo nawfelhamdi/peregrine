@@ -1,0 +1,420 @@
+{
+	"name": "Data_Prepartion_Pipeline_end to end",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach - Trigger",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Trigger File Name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Trigger File Name').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "email_notifaction_start",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Email_notifaction",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Message": "Pipeline Start",
+									"Pipeline_name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "email_notifaction_end",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Pipeline Logging Success",
+									"dependencyConditions": [
+										"Completed",
+										"Skipped"
+									]
+								},
+								{
+									"activity": "Pipeline Logging Failed",
+									"dependencyConditions": [
+										"Skipped",
+										"Completed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Email_notifaction",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Message": "Pipeline Completed",
+									"Pipeline_name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@activity('Full_pipeline').output.pipelineRunId",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Lookup project table",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "email_notifaction_start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ctl.project where id= left(''',item().name,''', (CHARINDEX(''.'',(''',item().name,'''),0))-1)')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ctl",
+										"table": "project"
+									}
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Delete trigger file",
+							"type": "Delete",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@variables('trigger_container')",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@variables('trigger_directory')",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								}
+							}
+						},
+						{
+							"name": "Data_Preparation_pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Lookup pipeline log id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Data_Preparation_pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"measurement_model": {
+										"value": "@activity('Lookup project table').output.firstRow.measurement_model",
+										"type": "Expression"
+									},
+									"pipeline_log_id": {
+										"value": "@activity('Lookup project table').output.firstRow.id",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Logging Start",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Lookup project table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"Name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Status": "Running",
+									"Data_source": {
+										"value": "@pipeline().DataFactory",
+										"type": "Expression"
+									},
+									"Project_id": {
+										"value": "@pipeline().parameters.id",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Logging Success",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Data_Preparation_pipeline",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"Name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Status": "Success",
+									"Data_source": {
+										"value": "@pipeline().DataFactory",
+										"type": "Expression"
+									},
+									"Project_id": {
+										"value": "@pipeline().parameters.id",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Lookup pipeline log id",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Pipeline Logging Start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Delete trigger file",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select id from ctl.pipeline_log where project_id=',pipeline().parameters.id,'and status=''Running''')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "ctl",
+										"table": "pipeline_log"
+									}
+								},
+								"firstRowOnly": true
+							}
+						},
+						{
+							"name": "Pipeline Logging Failed",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Data_Preparation_pipeline",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"Name": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"Status": "Failed",
+									"Data_source": {
+										"value": "@pipeline().DataFactory",
+										"type": "Expression"
+									},
+									"Project_id": {
+										"value": "@pipeline().parameters.id",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Get Trigger File Name",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "csv_folder",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@variables('trigger_container')",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@variables('trigger_directory')",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			}
+		],
+		"variables": {
+			"trigger_container": {
+				"type": "String",
+				"defaultValue": "web"
+			},
+			"trigger_directory": {
+				"type": "String",
+				"defaultValue": "trigger"
+			}
+		},
+		"folder": {
+			"name": "1. Main"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-19T17:42:17Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
