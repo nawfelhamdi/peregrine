@@ -78,7 +78,7 @@
 										"type": "Expression"
 									},
 									"Pipeline_id": {
-										"value": "@pipeline().RunId",
+										"value": "@activity('Data_Preparation_Pipeline').output.pipelineRunId",
 										"type": "Expression"
 									}
 								}
@@ -188,6 +188,10 @@
 									},
 									"pipeline_log_id": {
 										"value": "@activity('Lookup pipeline log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"project_id": {
+										"value": "@activity('Lookup project table').output.firstRow.id",
 										"type": "Expression"
 									}
 								}

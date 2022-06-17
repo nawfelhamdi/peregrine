@@ -28,6 +28,10 @@
 						"pipeline_log_id": {
 							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
+						},
+						"project_id": {
+							"value": "@pipeline().parameters.project_id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -58,6 +62,10 @@
 						"pipeline_log_id": {
 							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
+						},
+						"project_id": {
+							"value": "@pipeline().parameters.project_id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -80,6 +88,10 @@
 						},
 						"pipeline_log_id": {
 							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"project_id": {
+							"value": "@pipeline().parameters.project_id",
 							"type": "Expression"
 						}
 					}
@@ -111,6 +123,10 @@
 						"pipeline_log_id": {
 							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
+						},
+						"project_id": {
+							"value": "@pipeline().parameters.project_id",
+							"type": "Expression"
 						}
 					}
 				}
@@ -122,6 +138,9 @@
 				"defaultValue": "GMM"
 			},
 			"pipeline_log_id": {
+				"type": "string"
+			},
+			"project_id": {
 				"type": "string"
 			}
 		},

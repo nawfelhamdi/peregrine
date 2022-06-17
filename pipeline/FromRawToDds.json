@@ -369,6 +369,9 @@
 			},
 			"pipeline_log_id": {
 				"type": "string"
+			},
+			"project_id": {
+				"type": "string"
 			}
 		},
 		"folder": {

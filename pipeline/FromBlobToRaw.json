@@ -84,7 +84,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.pipeline_log_id)",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.project_id)",
 											"type": "Expression"
 										},
 										"File": {
@@ -227,7 +227,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.pipeline_log_id)",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.project_id)",
 											"type": "Expression"
 										},
 										"File": {
@@ -534,6 +534,9 @@
 				"defaultValue": "PAA"
 			},
 			"pipeline_log_id": {
+				"type": "string"
+			},
+			"project_id": {
 				"type": "string"
 			}
 		},
