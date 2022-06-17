@@ -176,7 +176,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().source_path",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
 											"type": "Expression"
 										},
 										"File": {
