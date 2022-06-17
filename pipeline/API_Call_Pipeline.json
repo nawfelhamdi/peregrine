@@ -701,7 +701,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@activity('Calculation').output.pipelineRunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -736,7 +736,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@activity('Download_output').output.pipelineRunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
@@ -771,7 +771,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"ID": {
-							"value": "@activity('FromBlobToArchive').output.pipelineRunId",
+							"value": "@pipeline().parameters.pipeline_log_id",
 							"type": "Expression"
 						},
 						"Name": {
