@@ -967,7 +967,7 @@
 				"typeProperties": {
 					"variableName": "storage_account_input_folder",
 					"value": {
-						"value": "@concat(variables('storage_account_input_folder'),'/',pipeline().parameters.id)",
+						"value": "@concat('processed','/',pipeline().parameters.id)",
 						"type": "Expression"
 					}
 				}
@@ -1013,8 +1013,7 @@
 				"type": "String"
 			},
 			"storage_account_input_folder": {
-				"type": "String",
-				"defaultValue": "processed"
+				"type": "String"
 			},
 			"storage_account_output_folder": {
 				"type": "String",
