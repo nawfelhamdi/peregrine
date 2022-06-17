@@ -1,5 +1,5 @@
 {
-	"name": "Full_Data_Prepartion",
+	"name": "Full_Data_Preparation",
 	"properties": {
 		"activities": [
 			{
@@ -407,7 +407,7 @@
 			},
 			"trigger_directory": {
 				"type": "String",
-				"defaultValue": "trigger"
+				"defaultValue": "trigger/data_preparation"
 			}
 		},
 		"folder": {

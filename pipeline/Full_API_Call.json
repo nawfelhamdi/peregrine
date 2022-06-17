@@ -423,7 +423,7 @@
 			},
 			"trigger_directory": {
 				"type": "String",
-				"defaultValue": "trigger"
+				"defaultValue": "trigger/api_call"
 			}
 		},
 		"folder": {
