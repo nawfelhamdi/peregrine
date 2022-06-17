@@ -865,35 +865,11 @@
 				}
 			},
 			{
-				"name": "Audit Logging Failed - API_Call_Pipeline",
+				"name": "Audit Logging Failed - API_Call_Pipeline 1",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Import file to project - Checking",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "Import file to project",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "List blob files",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
 						"activity": "Create new project",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "Create new project - Checking",
 						"dependencyConditions": [
 							"Failed"
 						]
@@ -969,6 +945,70 @@
 					"value": {
 						"value": "@concat('processed','/',pipeline().parameters.id)",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Failed - API_Call_Pipeline 2",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "List blob files",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": "Project creation",
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Failed - API_Call_Pipeline 3",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Import file to project",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": "Project creation",
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
 					}
 				}
 			}
