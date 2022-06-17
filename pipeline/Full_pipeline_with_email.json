@@ -24,7 +24,14 @@
 						{
 							"name": "email_notifaction_start",
 							"type": "ExecutePipeline",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Lookup project table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
@@ -82,12 +89,6 @@
 							"dependsOn": [
 								{
 									"activity": "email_notifaction_start",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "Lookup project table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
