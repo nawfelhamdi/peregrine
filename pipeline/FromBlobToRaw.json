@@ -84,7 +84,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().source_path",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.pipeline_log_id)",
 											"type": "Expression"
 										},
 										"File": {
@@ -227,7 +227,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@item().source_path",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.pipeline_log_id)",
 											"type": "Expression"
 										},
 										"File": {

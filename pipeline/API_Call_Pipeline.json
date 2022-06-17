@@ -53,6 +53,12 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
+					},
+					{
+						"activity": "Init storage_account_input_folder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
 				],
 				"policy": {
@@ -917,6 +923,26 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Init storage_account_input_folder",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "storage_account_container",
+					"value": {
+						"value": "@concat(variables('storage_account_input_folder'),'/',pipeline().parameters.pipeline_log_id)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -944,7 +970,7 @@
 				"type": "int"
 			},
 			"pipeline_log_id": {
-				"type": "int"
+				"type": "string"
 			}
 		},
 		"variables": {
