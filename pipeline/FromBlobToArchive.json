@@ -124,7 +124,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.pipeline_log_id)",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
 											"type": "Expression"
 										},
 										"File": {
@@ -440,6 +440,9 @@
 				"type": "string"
 			},
 			"pipeline_log_id": {
+				"type": "string"
+			},
+			"ui_project_id": {
 				"type": "string"
 			}
 		},
