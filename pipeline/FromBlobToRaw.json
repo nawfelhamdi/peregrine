@@ -211,7 +211,7 @@
 								"sink": {
 									"type": "AzureSqlSink",
 									"preCopyScript": {
-										"value": "@{replace(item().system_parameter,'{project_id}',pipeline().parameters.project_id)}",
+										"value": "@{replace(item().system_parameter,'{project_id}',string(pipeline().parameters.project_id))}",
 										"type": "Expression"
 									},
 									"writeBehavior": "insert",
