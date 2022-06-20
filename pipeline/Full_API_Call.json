@@ -19,7 +19,7 @@
 						"value": "@activity('Get Trigger File Name').output.childItems",
 						"type": "Expression"
 					},
-					"isSequential": true,
+					"isSequential": false,
 					"activities": [
 						{
 							"name": "email_notifaction_start",
