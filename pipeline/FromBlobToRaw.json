@@ -190,6 +190,13 @@
 												"value": "@addhours(utcnow(),-4)",
 												"type": "Expression"
 											}
+										},
+										{
+											"name": "project_id",
+											"value": {
+												"value": "@pipeline().parameters.project_id",
+												"type": "Expression"
+											}
 										}
 									],
 									"storeSettings": {

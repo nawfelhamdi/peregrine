@@ -89,6 +89,14 @@
 								"storedProcedureName": {
 									"value": "@item().stored_procedure",
 									"type": "Expression"
+								},
+								"storedProcedureParameters": {
+									"project_id": {
+										"value": {
+											"value": "@pipeline().parameters.project_id",
+											"type": "Expression"
+										}
+									}
 								}
 							},
 							"linkedServiceName": {
