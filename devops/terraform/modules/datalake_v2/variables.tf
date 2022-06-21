@@ -19,12 +19,14 @@ variable "hierarchical" {
   default = "true"
 }
 
-variable "filesystem1_name" {
-  description = "Name for the first file system inside the storage account."
+variable "account_tier" {
+  description = "Tier for the storage account."
+  default = "Standard"
 }
 
-variable "filesystem2_name" {
-  description = "Name for the second file system inside the storage account."
+variable "account_replication_type" {
+  description = "Type of replication for the storage account."
+  default = "LRS"
 }
 
 ### TAGS ###
