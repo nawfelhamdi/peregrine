@@ -28,6 +28,10 @@
 						"pipeline_log_id": {
 							"value": "@activity('Lookup pipeline log id').output.firstRow.id",
 							"type": "Expression"
+						},
+						"project_id": {
+							"value": "@pipeline().parameters.id",
+							"type": "Expression"
 						}
 					}
 				}
