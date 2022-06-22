@@ -302,7 +302,7 @@
 					}
 				],
 				"policy": {
-					"timeout": "00.10:00:00",
+					"timeout": "00.00:30:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -472,7 +472,7 @@
 					}
 				],
 				"policy": {
-					"timeout": "00.10:00:00",
+					"timeout": "00.00:30:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -903,7 +903,7 @@
 							}
 						}
 					],
-					"timeout": "00.10:00:00"
+					"timeout": "00.00:30:00"
 				}
 			},
 			{
@@ -963,7 +963,7 @@
 							}
 						}
 					],
-					"timeout": "00.10:00:00"
+					"timeout": "00.00:30:00"
 				}
 			},
 			{
@@ -1083,7 +1083,7 @@
 							}
 						}
 					],
-					"timeout": "00.10:00:00"
+					"timeout": "00.00:30:00"
 				}
 			},
 			{
@@ -1143,7 +1143,7 @@
 							}
 						}
 					],
-					"timeout": "00.10:00:00"
+					"timeout": "00.00:30:00"
 				}
 			},
 			{
