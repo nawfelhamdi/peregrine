@@ -1,0 +1,9 @@
+{
+	"name": "peregrine-development",
+	"location": "canadacentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "486d1872-cc7e-4614-8e67-51c4bcc8bf33",
+		"tenantId": "adb53b4f-b05f-4dcb-a2e1-9111380568c3"
+	}
+}

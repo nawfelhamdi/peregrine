@@ -1,0 +1,311 @@
+{
+	"name": "Raw data processing",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup control table",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from ctl.control_table_parameter where client='testing_client' and active_flag='Y'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "control_table_parameter"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup control table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup control table').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data from client to data lake",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().table_schema",
+											"type": "Expression"
+										},
+										"table": {
+											"value": "@item().table_name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": "moody",
+										"Directory": "raw",
+										"File": {
+											"value": "@concat(item().client,'/',replace(item().table_full_name,'.','_'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Copy data from data lake to dwh",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Copy data from client to data lake",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": "moody",
+										"Directory": "raw",
+										"File": {
+											"value": "@concat(item().client,'/',replace(item().table_full_name,'.','_'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "raw",
+										"table": {
+											"value": "@concat(item().client,'_',item().table_name)",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Transformation",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data from data lake to dwh",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[test].[dummy_sp]"
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Copy data from dwh to processed",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Transformation",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "raw",
+										"table": {
+											"value": "@concat(item().client,'_',item().table_name)",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "csv_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": "moody",
+										"Directory": "processed",
+										"File": {
+											"value": "@concat(item().client,'/',replace(item().table_full_name,'.','_'),'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "1. Main/1. Data Preparation/Testing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-13T13:36:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

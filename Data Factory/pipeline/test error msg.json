@@ -1,0 +1,113 @@
+{
+	"name": "test error msg",
+	"properties": {
+		"activities": [
+			{
+				"name": "test fail",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "test fail",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "test fail",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "https://management.azure.com/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/resourceGroups/peregrine-dev/providers/Microsoft.DataFactory/factories/peregrine-development/queryPipelineRuns?api-version=2018-06-01",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "vm-shir",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "POST",
+					"body": {
+						"value": "@concat('{\"lastUpdatedAfter\":\"',getPastTime(1, 'Day'),'\",\"lastUpdatedBefore\":\"',getFutureTime(1, 'Day'),'\",\"filters\": [{\"operand\": \"RunGroupId\",\"operator\": \"Equals\",\"values\": [\"',activity('test fail').output.pipelineRunId,'\"]}],\"orderBy\":[{\"orderBy\":\"RunEnd\",\"order\":\"DESC\"}]}')",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com/"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "msg",
+					"value": {
+						"value": "@activity('Web1').output.value[0].message",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Web1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "status",
+					"value": {
+						"value": "@activity('Web1').output.value[0].status",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"msg": {
+				"type": "String"
+			},
+			"status": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Testing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-18T17:07:56Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

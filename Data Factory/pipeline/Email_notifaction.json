@@ -1,0 +1,172 @@
+{
+	"name": "Email_notifaction",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Status and Message",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "https://management.azure.com/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/resourceGroups/peregrine-dev/providers/Microsoft.DataFactory/factories/peregrine-development/queryPipelineRuns?api-version=2018-06-01",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "vm-shir",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "POST",
+					"body": {
+						"value": "@concat('{\"lastUpdatedAfter\":\"',getPastTime(1, 'Day'),'\",\"lastUpdatedBefore\":\"',getFutureTime(1, 'Day'),'\",\"filters\": [{\"operand\": \"RunGroupId\",\"operator\": \"Equals\",\"values\": [\"',pipeline().parameters.Pipeline_id,'\"]}],\"orderBy\":[{\"orderBy\":\"RunEnd\",\"order\":\"DESC\"}]}')",
+						"type": "Expression"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://management.azure.com/"
+					}
+				}
+			},
+			{
+				"name": "Check Status",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Get Status and Message",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Get Status and Message').output.value[0].status,'Failed')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Send Email",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Send Email",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"EmailTo": {
+										"value": "@pipeline().parameters.EmailTo",
+										"type": "Expression"
+									},
+									"Subject": {
+										"value": "@pipeline().parameters.Subject",
+										"type": "Expression"
+									},
+									"Message": {
+										"value": "@pipeline().parameters.Message",
+										"type": "Expression"
+									},
+									"Pipeline_name": {
+										"value": "@pipeline().parameters.Pipeline_name",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@pipeline().parameters.Pipeline_id",
+										"type": "Expression"
+									},
+									"Status": {
+										"value": "@activity('Get Status and Message').output.value[0].status",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Inner Activity Loop",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Inner Activity Loop",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"pipelineRunId": {
+										"value": "@pipeline().parameters.Pipeline_id",
+										"type": "Expression"
+									},
+									"EmailTo": {
+										"value": "@pipeline().parameters.EmailTo",
+										"type": "Expression"
+									},
+									"Subject": {
+										"value": "@pipeline().parameters.Subject",
+										"type": "Expression"
+									},
+									"Pipeline_name": {
+										"value": "@pipeline().parameters.Pipeline_name",
+										"type": "Expression"
+									},
+									"Pipeline_id": {
+										"value": "@pipeline().parameters.Pipeline_id",
+										"type": "Expression"
+									},
+									"Status": {
+										"value": "@activity('Get Status and Message').output.value[0].status",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"EmailTo": {
+				"type": "string",
+				"defaultValue": "anson.tung1@ca.ey.com"
+			},
+			"Subject": {
+				"type": "string",
+				"defaultValue": "System Generated Message"
+			},
+			"Message": {
+				"type": "string",
+				"defaultValue": "Testing"
+			},
+			"Pipeline_name": {
+				"type": "string",
+				"defaultValue": "pipeline_name"
+			},
+			"Pipeline_id": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Message": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "1. Main/3. Email"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-19T17:06:57Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

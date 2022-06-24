@@ -1,0 +1,167 @@
+{
+	"name": "test adf status api",
+	"properties": {
+		"activities": [
+			{
+				"name": "Until inner activity",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Init pipelineRunId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(variables('activityType'),'ExecutePipeline'))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "get error message",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat('https://management.azure.com/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/resourceGroups/peregrine-dev/providers/Microsoft.DataFactory/factories/peregrine-development/pipelineruns/',variables('pipelineRunId'),'/queryActivityruns?api-version=2018-06-01')",
+									"type": "Expression"
+								},
+								"connectVia": {
+									"referenceName": "vm-shir",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "POST",
+								"body": {
+									"value": "@concat('{\"lastUpdatedAfter\":\"',getPastTime(1, 'Month'),'\",\"lastUpdatedBefore\":\"',getFutureTime(10, 'Month'),'\",\"filters\":[{\"operand\":\"Status\",\"operator\":\"Equals\",\"values\":[\"Failed\"]}]}')",
+									"type": "Expression"
+								},
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://management.azure.com/"
+								}
+							}
+						},
+						{
+							"name": "activityType",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get error message",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "activityType",
+								"value": {
+									"value": "@activity('get error message').output.value[0].activityType",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "If Pipeline Activity",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "activityType",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@equals(variables('activityType'),'ExecutePipeline')",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Set ErrorMessage",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "pipelineRunId",
+											"value": {
+												"value": "@activity('get error message').output.value[sub(length(activity('get error message').output.value),1)].error.message",
+												"type": "Expression"
+											}
+										}
+									}
+								],
+								"ifTrueActivities": [
+									{
+										"name": "Set pipelineRunId",
+										"type": "SetVariable",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"variableName": "pipelineRunId",
+											"value": {
+												"value": "@activity('get error message').output.value[0].output.pipelineRunId",
+												"type": "Expression"
+											}
+										}
+									}
+								]
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
+			},
+			{
+				"name": "Init pipelineRunId",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineRunId",
+					"value": {
+						"value": "@pipeline().parameters.pipelineRunId",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"pipelineRunId": {
+				"type": "string",
+				"defaultValue": "5f13f692-84bd-4797-ae28-0289109922e9"
+			}
+		},
+		"variables": {
+			"pipelineRunId": {
+				"type": "String"
+			},
+			"activityType": {
+				"type": "String",
+				"defaultValue": "ExecutePipeline"
+			},
+			"ErrorMessage": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "Testing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-19T16:10:43Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

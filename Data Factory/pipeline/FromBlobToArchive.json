@@ -1,0 +1,456 @@
+{
+	"name": "FromBlobToArchive",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup control table",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from ctl.control_table_parameter where active_flag=''Y'' and pipeline_name=''',pipeline().Pipeline,''' and measurement_model = ''',pipeline().parameters.measurement_model,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "control_table_parameter"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup control table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Lookup pipeline step log id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup control table').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "copy to archive folder",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Pipeline Data Transfer Logging Start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "csv_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().source_name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "csv_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@concat(item().target_path,'/',pipeline().parameters.project_id)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().target_name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Delete",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Pipeline Data Transfer Logging Success",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().source_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Start",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Running",
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Success",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "copy to archive folder",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Success",
+									"Data_copied": {
+										"value": "@activity('copy to archive folder').output.dataWritten",
+										"type": "Expression"
+									},
+									"Data_read": {
+										"value": "@activity('copy to archive folder').output.dataRead",
+										"type": "Expression"
+									},
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Pipeline Data Transfer Logging Failed",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "copy to archive folder",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Pipeline Data Transfer Logging",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ID": {
+										"value": "@activity('Lookup pipeline step log id').output.firstRow.id",
+										"type": "Expression"
+									},
+									"Status": "Failed",
+									"Data_copied": "-1",
+									"Data_read": "-1",
+									"Source_path": {
+										"value": "@item().source_path",
+										"type": "Expression"
+									},
+									"Source_name": {
+										"value": "@item().source_name",
+										"type": "Expression"
+									},
+									"Target_path": {
+										"value": "@item().target_path",
+										"type": "Expression"
+									},
+									"Target_name": {
+										"value": "@item().target_name",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Audit Logging Start",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Running",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Success",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ForEach",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Success",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Lookup pipeline step log id",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select id from ctl.pipeline_step_log where pipeline_log_id=',pipeline().parameters.pipeline_log_id,' and pipeline_name=''',pipeline().Pipeline,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "pipeline_step_log"
+						}
+					},
+					"firstRowOnly": true
+				}
+			}
+		],
+		"parameters": {
+			"project_id": {
+				"type": "string"
+			},
+			"measurement_model": {
+				"type": "string"
+			},
+			"pipeline_log_id": {
+				"type": "string"
+			},
+			"ui_project_id": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "1. Main/2. Moody API call"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-17T20:28:45Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

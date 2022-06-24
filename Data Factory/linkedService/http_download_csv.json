@@ -1,0 +1,22 @@
+{
+	"name": "http_download_csv",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"parameters": {
+			"download_base_url": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "@{linkedService().download_base_url}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "vm-shir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

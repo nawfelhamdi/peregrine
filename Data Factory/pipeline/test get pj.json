@@ -1,0 +1,441 @@
+{
+	"name": "test get pj",
+	"properties": {
+		"activities": [
+			{
+				"name": "Check project existence",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get Serect - header_authorization_key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - storage_account_base_url",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_content_type",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - api_base_url",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_accept",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_authorization_method",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - storage_account_sas_key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Init storage_account_container",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Init storage_account_input_folder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(activity('Get Serect - api_base_url').output.value,'/projects_module/projects','?',encodeUriComponent('f[name][eq]'),'=',encodeUriComponent(pipeline().parameters.project_name),'&',encodeUriComponent('f[t_0][eq]'),'=',encodeUriComponent(pipeline().parameters.start_date),'&',encodeUriComponent('f[t_1][eq]'),'=',encodeUriComponent(pipeline().parameters.end_date))",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "vm-shir",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"accept": {
+							"value": "@activity('Get Serect - header_accept').output.value",
+							"type": "Expression"
+						},
+						"Authorization": {
+							"value": "@concat(activity('Get Serect - header_authorization_method').output.value,' ',activity('Get Serect - header_authorization_key').output.value)",
+							"type": "Expression"
+						},
+						"Content-Type": {
+							"value": "@activity('Get Serect - header_content_type').output.value",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Get Serect - api_base_url",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/api-base-url?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_accept",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-accept?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_authorization_method",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-authorization-method?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - storage_account_sas_key",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/storage-account-sas-key?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_content_type",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-content-type?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - storage_account_base_url",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/storage-account-base-url?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_authorization_key",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(variables('key_vault_url'),'/secrets/header-authorization-key?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Init storage_account_container",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "storage_account_container",
+					"value": {
+						"value": "@toLower(pipeline().parameters.measurement_model)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Init storage_account_input_folder",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "storage_account_input_folder",
+					"value": {
+						"value": "@concat('processed','/',pipeline().parameters.id)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Check project existence",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@empty(activity('Check project existence').output.data)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Lookup1_copy1",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select ',activity('Check project existence').output.data[0],string(equals(activity('Check project existence').output.data[0],'[]')))",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "1",
+										"table": "1"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Lookup1",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select ',activity('Check project existence').output.data,string(equals(activity('Check project existence').output.data,'[]')))",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": "1",
+										"table": "1"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"project_name": {
+				"type": "string",
+				"defaultValue": "Default project - trigger gmm"
+			},
+			"start_date": {
+				"type": "string",
+				"defaultValue": "2019-12-31"
+			},
+			"end_date": {
+				"type": "string",
+				"defaultValue": "2020-03-31"
+			},
+			"description": {
+				"type": "string",
+				"defaultValue": "This is a demo project"
+			},
+			"measurement_model": {
+				"type": "string",
+				"defaultValue": "GMM"
+			},
+			"id": {
+				"type": "string"
+			},
+			"pipeline_log_id": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"project_id": {
+				"type": "String"
+			},
+			"key_vault_url": {
+				"type": "String",
+				"defaultValue": "https://peregrine-key-vault.vault.azure.net"
+			},
+			"storage_account_container": {
+				"type": "String"
+			},
+			"storage_account_input_folder": {
+				"type": "String"
+			},
+			"storage_account_output_folder": {
+				"type": "String",
+				"defaultValue": "output"
+			}
+		},
+		"folder": {
+			"name": "Testing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-22T18:22:50Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

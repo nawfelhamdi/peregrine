@@ -1,0 +1,746 @@
+{
+	"name": "Download_output",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Serect - api_base_url",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(pipeline().parameters.Key_vault_url,'/secrets/api-base-url?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_accept",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(pipeline().parameters.Key_vault_url,'/secrets/header-accept?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_authorization_method",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(pipeline().parameters.Key_vault_url,'/secrets/header-authorization-method?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_content_type",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(pipeline().parameters.Key_vault_url,'/secrets/header-content-type?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "Get Serect - header_authorization_key",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(pipeline().parameters.Key_vault_url,'/secrets/header-authorization-key?api-version=7.0')",
+						"type": "Expression"
+					},
+					"method": "GET",
+					"disableCertValidation": false,
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "ForEach download export",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Serect - api_base_url",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_accept",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_authorization_method",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_content_type",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_authorization_key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Lookup control table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup control table').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Export output_variables",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat(activity('Get Serect - api_base_url').output.value,item().target_name,'?',encodeUriComponent(item().system_parameter),'=',encodeUriComponent(pipeline().parameters.project_id))",
+									"type": "Expression"
+								},
+								"connectVia": {
+									"referenceName": "vm-shir",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "GET",
+								"headers": {
+									"accept": {
+										"value": "@activity('Get Serect - header_accept').output.value",
+										"type": "Expression"
+									},
+									"Authorization": {
+										"value": "@concat(activity('Get Serect - header_authorization_method').output.value,' ',activity('Get Serect - header_authorization_key').output.value)",
+										"type": "Expression"
+									},
+									"Content-Type": {
+										"value": "@activity('Get Serect - header_content_type').output.value",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Generate download export link",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Export output_variables",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat(activity('Get Serect - api_base_url').output.value,'/data_management_module/export_files','?',encodeUriComponent('f[task_id][eq]'),'=',encodeUriComponent(activity('Export output_variables').output.data.id))",
+									"type": "Expression"
+								},
+								"connectVia": {
+									"referenceName": "vm-shir",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "GET",
+								"headers": {
+									"accept": {
+										"value": "@activity('Get Serect - header_accept').output.value",
+										"type": "Expression"
+									},
+									"Authorization": {
+										"value": "@concat(activity('Get Serect - header_authorization_method').output.value,' ',activity('Get Serect - header_authorization_key').output.value)",
+										"type": "Expression"
+									},
+									"Content-Type": {
+										"value": "@activity('Get Serect - header_content_type').output.value",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Upload export to blob",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Generate download export link",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET",
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "http",
+									"type": "DatasetReference",
+									"parameters": {
+										"relative_url": {
+											"value": "@replace(activity('Generate download export link').output.data[0].attributes.active_blob_url,variables('download_base_url'),'')",
+											"type": "Expression"
+										},
+										"base_url": {
+											"value": "@variables('download_base_url')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "csv_no_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@pipeline().parameters.storage_account_container",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@concat(pipeline().parameters.storage_account_output_folder,'/export/',pipeline().parameters.project_id)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@activity('Generate download export link').output.data[0].attributes.file_name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Lookup control table",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Audit Logging Start",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from ctl.control_table_parameter where active_flag=''Y'' and pipeline_name=''',pipeline().Pipeline,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"schema": "ctl",
+							"table": "control_table_parameter"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Generate Report List",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Get Serect - header_authorization_key",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_content_type",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_authorization_method",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - header_accept",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Get Serect - api_base_url",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat(activity('Get Serect - api_base_url').output.value,'/projects_module/reports','?',encodeUriComponent('f[project_id][eq]'),'=',encodeUriComponent(pipeline().parameters.project_id))",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "vm-shir",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"accept": {
+							"value": "@activity('Get Serect - header_accept').output.value",
+							"type": "Expression"
+						},
+						"Authorization": {
+							"value": "@concat(activity('Get Serect - header_authorization_method').output.value,' ',activity('Get Serect - header_authorization_key').output.value)",
+							"type": "Expression"
+						},
+						"Content-Type": {
+							"value": "@activity('Get Serect - header_content_type').output.value",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "ForEach download report",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Generate Report List",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Generate Report List').output.data",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Upload report to blob",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Generate report download link",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET",
+										"requestTimeout": ""
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "http",
+									"type": "DatasetReference",
+									"parameters": {
+										"relative_url": {
+											"value": "@replace(activity('Generate report download link').output.data.url,variables('download_base_url'),'')",
+											"type": "Expression"
+										},
+										"base_url": {
+											"value": "@variables('download_base_url')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "csv_no_header",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@pipeline().parameters.storage_account_container",
+											"type": "Expression"
+										},
+										"Directory": {
+											"value": "@concat(pipeline().parameters.storage_account_output_folder,'/report/',pipeline().parameters.project_id,'/',item().attributes.hierarchy_node_name)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@concat(item().attributes.report_name,'.xml')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Generate report download link",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": {
+									"value": "@concat(activity('Get Serect - api_base_url').output.value,'/projects_module/reports/',item().id,'/generate_url')",
+									"type": "Expression"
+								},
+								"connectVia": {
+									"referenceName": "vm-shir",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "POST",
+								"headers": {
+									"accept": {
+										"value": "@activity('Get Serect - header_accept').output.value",
+										"type": "Expression"
+									},
+									"Authorization": {
+										"value": "@concat(activity('Get Serect - header_authorization_method').output.value,' ',activity('Get Serect - header_authorization_key').output.value)",
+										"type": "Expression"
+									},
+									"Content-Type": {
+										"value": "@activity('Get Serect - header_content_type').output.value",
+										"type": "Expression"
+									}
+								},
+								"body": "{}"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Audit Logging Start",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Running",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Audit Logging Success",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ForEach download report",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "ForEach download export",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Success",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"parameters": {
+			"project_id": {
+				"type": "string"
+			},
+			"key_vault_url": {
+				"type": "string"
+			},
+			"storage_account_output_folder": {
+				"type": "string"
+			},
+			"storage_account_container": {
+				"type": "string"
+			},
+			"pipeline_log_id": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"download_base_url": {
+				"type": "String",
+				"defaultValue": "https://i17eyca1stg.blob.core.windows.net/"
+			}
+		},
+		"folder": {
+			"name": "1. Main/2. Moody API call"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-15T19:48:07Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

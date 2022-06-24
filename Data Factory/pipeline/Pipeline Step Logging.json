@@ -1,0 +1,77 @@
+{
+	"name": "Pipeline Step Logging",
+	"properties": {
+		"activities": [
+			{
+				"name": "Insert step logging record",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[ctl].[sp_pipeline_step_log_update]",
+					"storedProcedureParameters": {
+						"data_source": {
+							"value": {
+								"value": "@pipeline().parameters.Data_source",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"id": {
+							"value": {
+								"value": "@pipeline().parameters.ID",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"name": {
+							"value": {
+								"value": "@pipeline().parameters.Name",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"status": {
+							"value": {
+								"value": "@pipeline().parameters.Status",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"ID": {
+				"type": "string"
+			},
+			"Name": {
+				"type": "string"
+			},
+			"Status": {
+				"type": "string"
+			},
+			"Data_source": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "1. Main/4. Status"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-15T19:48:07Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

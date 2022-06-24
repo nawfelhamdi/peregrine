@@ -1,0 +1,81 @@
+{
+	"name": "test pause",
+	"properties": {
+		"activities": [
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "csv_header",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "moody",
+							"Directory": "control_table",
+							"File": {
+								"value": "@variables('process_file')",
+								"type": "Expression"
+							}
+						}
+					},
+					"timeout": "7.00:00:00",
+					"sleep": 10
+				}
+			},
+			{
+				"name": "Delete1",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "csv_header",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "moody",
+							"Directory": "control_table",
+							"File": {
+								"value": "@variables('process_file')",
+								"type": "Expression"
+							}
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"variables": {
+			"process_file": {
+				"type": "String",
+				"defaultValue": "testing.txt"
+			}
+		},
+		"folder": {
+			"name": "Testing"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-13T13:36:27Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
