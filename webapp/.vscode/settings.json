@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/microsoft.web/sites/subscriptions/529ce17b-846b-434d-9b93-6a49ea48ee99/resourceGroups/peregrine-test/providers/Microsoft.Web/sites/pregrine-server",
+  "appService.deploySubpath": "."
+}
