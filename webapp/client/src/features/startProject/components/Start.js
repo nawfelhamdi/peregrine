@@ -77,8 +77,7 @@ function Start(props) {
         moody_project_id: '??', // TODO: TO REMOVE AFTER BUILD AUTH FEATURE
       };
       const stepRouteUrl = 'preparation';
-      // props.startProject(projectData, stepRouteUrl);
-      // console.log(formData);
+      props.startProject(projectData, stepRouteUrl);
     },
   });
 
