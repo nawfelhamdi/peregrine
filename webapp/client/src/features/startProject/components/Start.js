@@ -21,8 +21,33 @@ const measurementModels = [
 
 const validationSchema = yup.object({
   projectName: yup.string().required('Please add project name'),
-  startDate: yup.date().required('Please add project start date'),
-  endDate: yup.date().required('Please add project end date'),
+  // : yup.date().required('Please add project end date'),
+  startDate: yup
+    .string()
+    .test(
+      'startDate',
+      'Please make sure if is the last day of the month',
+      (value) => {
+        let startDate = new Date(value);
+        let month = startDate.getMonth();
+        startDate.setDate(startDate.getDate() + 1);
+        return startDate.getMonth() !== month;
+      }
+    )
+    .required('Please add project start date'),
+  endDate: yup
+    .string()
+    .test(
+      'endDate',
+      'Please make sure if is the last day of the month',
+      (value) => {
+        let startDate = new Date(value);
+        let month = startDate.getMonth();
+        startDate.setDate(startDate.getDate() + 1);
+        return startDate.getMonth() !== month;
+      }
+    )
+    .required('Please add project end date'),
 });
 
 function classNames(...classes) {
@@ -52,7 +77,8 @@ function Start(props) {
         moody_project_id: '??', // TODO: TO REMOVE AFTER BUILD AUTH FEATURE
       };
       const stepRouteUrl = 'preparation';
-      props.startProject(projectData, stepRouteUrl);
+      // props.startProject(projectData, stepRouteUrl);
+      // console.log(formData);
     },
   });
 
