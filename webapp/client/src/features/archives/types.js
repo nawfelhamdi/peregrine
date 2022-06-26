@@ -1,0 +1,3 @@
+export const LOADING_ARCHIVES = 'LOADING_ARCHIVES';
+export const GET_ARCHIVES = 'GET_ARCHIVES';
+export const GET_ERRORS = 'GET_ERRORS';

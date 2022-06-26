@@ -24,13 +24,13 @@ export const list = async (req: Request, res: Response, next:NextFunction) => {
         const containerClient =  blobServiceClient.getContainerClient(containerName);
         
             let i = 1;
-            let result: any[]= []
+            let files: any[]= []
             let blobs = containerClient.listBlobsFlat({ prefix: "archive/processed/1231/" });
             for await (const blob of blobs) {
-              result.push(blob)
+              files.push(blob)
             }
           
-            return res.status(201).json({message:'success',result  });
+            return res.status(201).json({message:'success',files  });
         
     } catch (err) {
       const customError = new CustomError(

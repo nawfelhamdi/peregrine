@@ -12,8 +12,8 @@ import Preparation from './features/startProject/components/Preparation';
 import RunMoodys from './features/startProject/components/RunMoodys';
 import Validate from './features/startProject/components/Validate';
 // Archive feature
-import Archive from './features/archive/Index';
-import Files from './features/archive/components/Files';
+import Archive from './features/archives/Index';
+import Files from './features/archives/components/Files';
 
 // Reports feature
 import Reports from './features/reports/Index';
