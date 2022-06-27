@@ -7,6 +7,7 @@ import { Navigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { startProject } from '../actions';
+import moment from 'moment';
 
 const measurementModels = [
   {
@@ -45,6 +46,13 @@ const validationSchema = yup.object({
         let month = startDate.getMonth();
         startDate.setDate(startDate.getDate() + 1);
         return startDate.getMonth() !== month;
+      }
+    )
+    .test(
+      'startDate',
+      'Please Make sure the end date is after the start date',
+      (value) => {
+        moment().isAfter(value); //true
       }
     )
     .required('Please add project end date'),
@@ -221,6 +229,7 @@ function Start(props) {
             <input
               placeholder="Project name"
               type="date"
+              onkeydown="return false"
               className="mt-1 flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
               id="startDate"
               name="startDate"
@@ -247,7 +256,7 @@ function Start(props) {
           <div className="col-span-2">
             <input
               placeholder="date"
-              // required
+              onkeydown="return false"
               type="date"
               className="mt-1 flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
               id="endDate"
