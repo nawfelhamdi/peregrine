@@ -13,6 +13,7 @@ import RunMoodys from './features/startProject/components/RunMoodys';
 import Validate from './features/startProject/components/Validate';
 // Archive feature
 import Archive from './features/archives/Index';
+import Diretories from './features/archives/components/Diretories';
 import Files from './features/archives/components/Files';
 
 // Reports feature
@@ -32,11 +33,10 @@ function App() {
             <Route path="validate" element={<Validate />} />
           </Route>
           <Route path="/archive" element={<Archive />}>
-            <Route path="files" element={<Files />} />
+            <Route path="directories" element={<Diretories />} />
+            <Route path="directories/:diretoryId" element={<Files />} />
           </Route>
-          <Route path="/reports" element={<Reports />}>
-            {/* <Route path="start" element={<Start />} /> */}
-          </Route>
+          <Route path="/reports" element={<Reports />}></Route>
         </Routes>
       </HashRouter>
     </Provider>

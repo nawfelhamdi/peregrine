@@ -1,9 +1,11 @@
 import { Router } from "express";
 
-import { list } from "../controllers/archives/list";
+import { listDiretories } from "../controllers/archives/listDiretories";
+import { listFiles } from "../controllers/archives/listFiles";
 
 const router = Router();
 
-router.get("/", list);
+router.get("/", listDiretories);
+router.get("/:directoryId", listFiles);
 
 export default router;

@@ -9,9 +9,9 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 import { CustomError } from "../../utils/CustomError";
 
 
-export const list = async (req: Request, res: Response, next:NextFunction) => {
+export const listFiles = async (req: Request, res: Response, next:NextFunction) => {
+
     try {
-      
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;
           if (!AZURE_STORAGE_CONNECTION_STRING) {
@@ -22,10 +22,8 @@ export const list = async (req: Request, res: Response, next:NextFunction) => {
         );
         const containerName = 'gmm';
         const containerClient =  blobServiceClient.getContainerClient(containerName);
-        
-            let i = 1;
             let files: any[]= []
-            let blobs = containerClient.listBlobsFlat({ prefix: "archive/processed/1231/" });
+            let blobs = containerClient.listBlobsFlat({ prefix: `archive/processed/${req.params.directoryId}` }); 
             for await (const blob of blobs) {
               files.push(blob)
             }

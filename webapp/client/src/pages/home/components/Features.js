@@ -33,7 +33,7 @@ const features = [
     id: 2,
     title: 'Archive',
     description: 'Access past projects and data',
-    href: 'archive/files',
+    href: 'archive/directories',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

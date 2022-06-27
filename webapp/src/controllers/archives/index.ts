@@ -1,1 +1,2 @@
-export * from "./list";
+export * from "./listDiretories";
+export * from "./listFiles";
