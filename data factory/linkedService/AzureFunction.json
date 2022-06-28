@@ -7,7 +7,7 @@
 		"typeProperties": {
 			"functionAppUrl": "https://peregrine-data-profiling.azurewebsites.net/",
 			"authentication": "Anonymous",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5NWEzMjZkMi1kNzBjLTRlMDQtYmQwYy03MDc0ZjVkMDZhYTEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2ZTYzN2I4ZC0yOGUyLTQwODItYjlkMC0xMDY2MmJiNzQ0YjgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "vm-shir",
