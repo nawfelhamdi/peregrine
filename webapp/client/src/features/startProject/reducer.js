@@ -1,9 +1,6 @@
 import {
   LOADING_PEOJECT,
   NAVIGATE_TO_NEXT_STEP,
-  LOADING_PIPELINE_LOG,
-  GET_PIPELINE_LOG,
-  LOADING_PIPELINE_STEPS_LOG,
   LOADING_TRIGGER_API,
   TRIGGER_API,
   SET_NAVIGATION_TAB,
@@ -68,11 +65,6 @@ export default function reducer(state = initialState, action) {
         loadingPipelineLog: false,
         prepationPiplineLog: action.payload,
       };
-    // case LOADING_PREPARATION_PIPELINE_STEPS_LOG:
-    //   return {
-    //     ...state,
-    //     loadingPrepationPipelineStepsLog: true,
-    //   };
     case GET_PREPARATION_PIPELINE_STEPS_LOG:
       let preparationProgressBar = 0;
       state.preparationPiplineStepsLog.forEach((element) => {

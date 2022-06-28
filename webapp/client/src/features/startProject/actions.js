@@ -2,10 +2,7 @@ import {
   LOADING_PEOJECT,
   NAVIGATE_TO_NEXT_STEP,
   GET_ERRORS,
-  PROCESS_FAILED,
   PROCESS_COMPLETED, //TODO: REFACTOR NAME
-  LOADING_PIPELINE_LOG,
-  GET_PIPELINE_LOG,
   LOADING_PIPELINE_STEPS_LOG,
   GET_PREPARATION_PIPELINE_STEPS_LOG,
   GET_API_PIPELINE_STEPS_LOG,
@@ -144,7 +141,6 @@ export const getApiCallPiplineLog =
   };
 
 export const getApiCallPiplineStepsLog = (piplineLogId) => (dispatch) => {
-  // dispatch(activateTab('run'));
   dispatch({ type: LOADING_PIPELINE_STEPS_LOG });
   axios
     .get(
