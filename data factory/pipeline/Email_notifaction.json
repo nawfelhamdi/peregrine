@@ -139,7 +139,7 @@
 		"parameters": {
 			"EmailTo": {
 				"type": "string",
-				"defaultValue": "anson.tung1@ca.ey.com"
+				"defaultValue": "danish.anis@ca.ey.com"
 			},
 			"Subject": {
 				"type": "string",
