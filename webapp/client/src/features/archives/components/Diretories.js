@@ -6,10 +6,10 @@ import { getArchiveDirectories } from '../actions';
 function DirectoryCard({ directory }) {
   return (
     <Link to={`${directory.name.split('/')[2]}`}>
-      <div className="overflow-hidden border rounded duration-300 transform bg-white hover:bg-skin-base hover:text-white  p-4 transition ">
+      <div className="overflow-hidden border w-[200px] rounded duration-300 transform bg-white hover:bg-skin-base hover:text-white transition ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-16  w-16 text-skin-base mx-auto"
+          className="h-10  w-10 text-skin-base mx-auto"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -32,9 +32,9 @@ function Directories(props) {
     props.getArchiveDirectories();
   }, []);
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl  md:px-16 lg:py-20">
+    <div className="pl-16 py-16 sm:max-w-xl">
       {!props.archives.loadingDirectories ? (
-        <div className="grid gap-2 grid-cols-4  md:grid-cols-5 sm:mx-auto md:max-w-full">
+        <div className="grid gap-2 grid-col sm:mx-auto">
           {props.archives.directories.map((directory, index) => (
             <DirectoryCard key={index} directory={directory} />
           ))}

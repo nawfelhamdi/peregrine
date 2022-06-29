@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { getArchivesFiles } from '../actions';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 function FileCard({ file }) {
   return (
     <div className="overflow-hidden transition-shadow border p-4 duration-300 bg-white rounded">
@@ -50,6 +50,17 @@ function Files(props) {
   }, []);
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl  md:px-16 lg:py-20">
+      <Link className="flex items-center w-36 my-4" to="/archive/directories">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-12  w-12 text-skin-base mx-auto"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+        </svg>
+        <span className="text-bold text-2xl">{diretoryId}</span>
+      </Link>
       {!props.archives.loadingFiles ? (
         <div className="grid gap-5 md:grid-cols-3 sm:mx-auto md:max-w-full">
           {props.archives.files.map((file, index) => (
