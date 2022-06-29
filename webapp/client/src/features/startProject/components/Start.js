@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { useFormik } from 'formik';
@@ -7,8 +8,7 @@ import { Navigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { startProject } from '../actions';
-import moment from 'moment';
-
+// import moment from 'moment';
 const measurementModels = [
   {
     id: 1,
@@ -21,41 +21,45 @@ const measurementModels = [
 ];
 
 const validationSchema = yup.object({
-  projectName: yup.string().required('Please add project name'),
-  // : yup.date().required('Please add project end date'),
+  projectName: yup.string().required('Please enter project name'),
   startDate: yup
-    .string()
-    .test(
-      'startDate',
-      'Please make sure if is the last day of the month',
-      (value) => {
-        let startDate = new Date(value);
-        let month = startDate.getMonth();
-        startDate.setDate(startDate.getDate() + 1);
-        return startDate.getMonth() !== month;
-      }
-    )
-    .required('Please add project start date'),
+    .date()
+    .test('startDate', 'Please enter the last day of that month', (value) => {
+      let startDate = new Date(value);
+      let month = startDate.getMonth();
+      startDate.setDate(startDate.getDate() + 1);
+      return startDate.getMonth() !== month;
+    })
+    .min('01/01/1970', 'Please enter a valid date')
+    .required('Please enter project start date'),
   endDate: yup
-    .string()
-    .test(
-      'endDate',
-      'Please make sure if is the last day of the month',
-      (value) => {
-        let startDate = new Date(value);
-        let month = startDate.getMonth();
-        startDate.setDate(startDate.getDate() + 1);
-        return startDate.getMonth() !== month;
+    .date()
+    .required('Please enter project end date')
+    .test('endDate', 'Please enter the last day of that month', (value) => {
+      let startDate = new Date(value);
+      let month = startDate.getMonth();
+      startDate.setDate(startDate.getDate() + 1);
+      return startDate.getMonth() !== month;
+    })
+    .when('startDate', (startDate, schema) => {
+      if (startDate) {
+        const dayAfter = new Date(startDate.getTime() + 86400000);
+
+        return schema.min(
+          dayAfter,
+          'The end date must be after the start date'
+        );
       }
-    )
-    .test(
-      'startDate',
-      'Please Make sure the end date is after the start date',
-      (value) => {
-        moment().isAfter(value); //true
-      }
-    )
-    .required('Please add project end date'),
+
+      return schema;
+    })
+    // .max('12/31/2050', 'Please enter a valid date before 2050')
+    .test('endDate', 'Please enter a valid date', (value) => {
+      let test = new Date(value);
+
+      return Date.now() > test;
+    })
+    .min(yup.ref('startDate'), 'The start date must be before the end date'),
 });
 
 function classNames(...classes) {
@@ -229,7 +233,6 @@ function Start(props) {
             <input
               placeholder="Project name"
               type="date"
-              onkeydown="return false"
               className="mt-1 flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
               id="startDate"
               name="startDate"
@@ -256,7 +259,6 @@ function Start(props) {
           <div className="col-span-2">
             <input
               placeholder="date"
-              onkeydown="return false"
               type="date"
               className="mt-1 flex-grow w-full h-10 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none md:mr-2 md:mb-0 focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
               id="endDate"
