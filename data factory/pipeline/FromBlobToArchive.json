@@ -140,7 +140,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().target_path,'/',pipeline().parameters.project_id)",
+											"value": "@concat(item().target_path,'/',concat(pipeline().parameters.project_id,' - ',pipeline().parameters.measurement_model,' - ',pipeline().parameters.start_date,' - ',pipeline().parameters.end_date,' - ',utcNow()))",
 											"type": "Expression"
 										},
 										"File": {
@@ -443,6 +443,12 @@
 				"type": "string"
 			},
 			"ui_project_id": {
+				"type": "string"
+			},
+			"start_date": {
+				"type": "string"
+			},
+			"end_date": {
 				"type": "string"
 			}
 		},
