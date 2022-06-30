@@ -31,9 +31,9 @@ const features = [
   },
   {
     id: 2,
-    title: 'Archive',
-    description: 'Access past projects and data',
-    href: 'archive/directories',
+    title: 'Data Governance',
+    description: 'Access Data Quality status​',
+    href: 'data/profiling',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -52,10 +52,26 @@ const features = [
     ),
   },
   {
-    id: 5,
+    id: 3,
+    title: 'Archive',
+    description: 'Access past projects and data',
+    href: 'archive',
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-10 w-10 text-skin-base"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+      </svg>
+    ),
+  },
+  {
+    id: 4,
     title: 'Reports',
     description: "View the output folder of Moody's RI",
-    href: 'reports',
+    href: '#',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +101,7 @@ const FeatureCard = ({ feature: { title, description, icon, href } }) => {
         <h6 className="text-center mb-2 text-sm font-bold leading-5 tracking-wider uppercase">
           {title}
         </h6>
-        <p className="mb-2 opacity-90">{description}</p>
+        <p className="mb-2 opacity-90 h-10">{description}</p>
       </div>
     </Link>
   );
@@ -93,7 +109,7 @@ const FeatureCard = ({ feature: { title, description, icon, href } }) => {
 export default function Features() {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-32">
-      <div className="grid gap-5 row-gap-5 md:grid-cols-3">
+      <div className="grid gap-5 row-gap-5 md:grid-cols-4">
         {features.map((feature) => (
           <FeatureCard key={feature.id} feature={feature} />
         ))}

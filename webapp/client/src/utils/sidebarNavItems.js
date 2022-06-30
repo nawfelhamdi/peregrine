@@ -1,19 +1,5 @@
 const navigation = {
-  startproject: [
-    {
-      name: ' ',
-      subNavItems: [
-        {
-          name: ' ',
-          url: ' ',
-        },
-        {
-          name: ' ',
-          url: ' ',
-        },
-      ],
-    },
-  ],
+  startproject: [],
   archive: [
     {
       name: 'File Catalog',
@@ -25,6 +11,10 @@ const navigation = {
         {
           name: 'Output Files',
           url: 'output-files',
+        },
+        {
+          name: 'Reports',
+          url: 'reports',
         },
       ],
     },
@@ -42,6 +32,21 @@ const navigation = {
     {
       name: 'BI Dashboards',
       subNavItems: [],
+    },
+  ],
+  data: [
+    {
+      name: 'Data Governance',
+      subNavItems: [
+        {
+          name: 'Data Profiling',
+          url: 'profiling',
+        },
+        {
+          name: 'DQ Dashboard',
+          url: 'quality',
+        },
+      ],
     },
   ],
 };

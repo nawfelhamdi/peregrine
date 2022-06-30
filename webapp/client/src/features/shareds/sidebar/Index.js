@@ -36,10 +36,12 @@ function Sidebar(props) {
                 {item.name}
               </p>
               {item.subNavItems.map((item, index) => (
-                <div key={index} className="pl-4">
-                  <p className="flex items-center justify-center text-md font-semibold my-3 text-white rounded-md w-full h-12 bg-[#555555]">
-                    {item.name}
-                  </p>
+                <div className="ml-4">
+                  <Link to={item.url} key={index}>
+                    <p className="flex items-center justify-center text-md font-semibold my-3 text-white rounded-md w-full h-12 bg-[#555555]">
+                      {item.name}
+                    </p>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -11,7 +11,7 @@ import axios from 'axios';
 export const getArchiveDirectories = () => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_DIRECTORIES });
   axios
-    .get(`${process.env.REACT_APP_API_URL}/archives`)
+    .get(`${process.env.REACT_APP_API_URL}/archives/directories`)
     .then((res) => {
       dispatch({
         type: GET_ARCHIVES_DIRECTORIES,
@@ -29,11 +29,32 @@ export const getArchiveDirectories = () => (dispatch) => {
 export const getArchivesFiles = (diretoryId) => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_FILES });
   axios
-    .get(`${process.env.REACT_APP_API_URL}/archives/${diretoryId}`)
+    .get(
+      `${process.env.REACT_APP_API_URL}/archives/directories/files/${diretoryId}`
+    )
     .then((res) => {
       dispatch({
         type: GET_ARCHIVES_FILES,
         payload: res.data.files,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({
+        type: GET_ERRORS,
+      });
+    });
+};
+export const listArchiveBlobs = (container, prefix) => (dispatch) => {
+  dispatch({ type: LOADING_ARCHIVES_FILES });
+  axios
+    .get(
+      `${process.env.REACT_APP_API_URL}/archives/?container=${container}&prefix=${prefix}`
+    )
+    .then((res) => {
+      dispatch({
+        type: GET_ARCHIVES_FILES,
+        payload: res.data.result,
       });
     })
     .catch((error) => {
