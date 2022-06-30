@@ -146,7 +146,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().target_path,'/',concat(pipeline().parameters.project_id,' - ',pipeline().parameters.measurement_model,' - ',pipeline().parameters.start_date,' - ',pipeline().parameters.end_date,' - ',variables('timestamp')))",
+											"value": "@concat(item().target_path,'/',concat(pipeline().parameters.project_id,' - ',pipeline().parameters.measurement_model,' - ', formatDateTime(pipeline().parameters.start_date, 'yyyyMMdd'),' - ', formatDateTime(pipeline().parameters.end_date, 'yyyyMMdd'),' - ', formatDateTime(variables('timestamp'), 'yyyyMMddhhmmssms')))",
 											"type": "Expression"
 										},
 										"File": {
