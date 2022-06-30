@@ -21,21 +21,21 @@ const measurementModels = [
 ];
 
 const validationSchema = yup.object({
-  projectName: yup.string().required('Please enter project name'),
+  projectName: yup.string().required('Enter name'),
   startDate: yup
     .date()
-    .test('startDate', 'Please enter the last day of that month', (value) => {
+    .required('Select a date')
+    .test('startDate', 'Select the last date of the month', (value) => {
       let startDate = new Date(value);
       let month = startDate.getMonth();
       startDate.setDate(startDate.getDate() + 1);
       return startDate.getMonth() !== month;
     })
-    .min('01/01/1970', 'Please enter a valid date')
-    .required('Please enter project start date'),
+    .min('01/01/1900', 'Enter a valid date'),
   endDate: yup
     .date()
-    .required('Please enter project end date')
-    .test('endDate', 'Please enter the last day of that month', (value) => {
+    .required('Select a date')
+    .test('endDate', 'Select the last date of the month', (value) => {
       let startDate = new Date(value);
       let month = startDate.getMonth();
       startDate.setDate(startDate.getDate() + 1);
@@ -45,21 +45,18 @@ const validationSchema = yup.object({
       if (startDate) {
         const dayAfter = new Date(startDate.getTime() + 86400000);
 
-        return schema.min(
-          dayAfter,
-          'The end date must be after the start date'
-        );
+        return schema.min(dayAfter, 'Enter a valid date');
       }
 
       return schema;
     })
     // .max('12/31/2050', 'Please enter a valid date before 2050')
-    .test('endDate', 'Please enter a valid date', (value) => {
+    .test('endDate', 'Enter a valid date', (value) => {
       let test = new Date(value);
 
       return Date.now() > test;
     })
-    .min(yup.ref('startDate'), 'The start date must be before the end date'),
+    .min(yup.ref('startDate'), 'Enter a valid date'),
 });
 
 function classNames(...classes) {
@@ -242,7 +239,7 @@ function Start(props) {
           </div>
           {/* Input Error */}
           <div className="mt-1 ml-4 w-full col-start-2 col-span-2">
-            {formik.touched.startDate && Boolean(formik.errors.startDate) ? (
+            {Boolean(formik.errors.startDate) ? (
               <p className="text-red-400 w-full  bg-white text-sm">
                 {formik.errors.startDate}
               </p>
@@ -269,13 +266,21 @@ function Start(props) {
           </div>
           {/* Input Error */}
           <div className="mt-1 ml-4 w-full col-start-2 col-span-2">
-            {formik.touched.endDate && Boolean(formik.errors.endDate) ? (
+            {Boolean(formik.errors.endDate) ? (
               <p className="text-red-400 w-full  bg-white text-sm">
                 {formik.errors.endDate}
               </p>
             ) : null}
           </div>
         </div>
+        <div className="grid grid-cols-3 gap-0 max-w-xl">
+          <div className="flex justify-start items-center col-span-3 border rounded h-12 p-4">
+            <label className="block text-md font-medium text-gray-700">
+              Data Quality check status
+            </label>
+          </div>
+        </div>
+
         <button
           type="submit"
           className="top-8 relative font-bold inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-right"
