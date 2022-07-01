@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getArchiveDirectories, getArchivesFiles } from '../actions';
 import MainListItem from './MainListItem';
+import Tabs from './Tabs';
 
-const DirectoryCard = ({ directory, children, getArchivesFiles }) => {
+const DirectoryCard = ({
+  directory,
+  container,
+  children,
+  getArchivesFiles,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [seletedRow, setSeletedRow] = useState('');
   const handleFilesDatils = (directory) => {
-    getArchivesFiles(directory.name.split('/')[2]);
+    getArchivesFiles(directory.name.split('/')[2], container);
     setIsOpen(!isOpen);
     setSeletedRow(directory.name);
-    console.log(directory.name);
   };
   return (
     <div className="border rounded shadow-sm">
@@ -61,11 +66,14 @@ const DirectoryCard = ({ directory, children, getArchivesFiles }) => {
 };
 
 function Main(props) {
+  const [container, setContainer] = useState('gmm');
+
   useEffect(() => {
-    props.getArchiveDirectories();
-  }, []);
+    props.getArchiveDirectories(container);
+  }, [container]);
   return (
     <div class="px-4 py-16 md:px-16 lg:py-20">
+      <Tabs setContainer={setContainer} />
       <div class="space-y-4">
         {!props.archives.loadingDirectories ? (
           <div className="grid gap-2 grid-col sm:mx-auto">
@@ -73,6 +81,7 @@ function Main(props) {
               <DirectoryCard
                 key={index}
                 directory={directory}
+                container={container}
                 children={<MainListItem />}
                 getArchivesFiles={props.getArchivesFiles}
               />

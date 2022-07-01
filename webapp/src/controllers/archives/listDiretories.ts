@@ -19,7 +19,7 @@ export const listDiretories = async (req: Request, res: Response, next:NextFunct
         const blobServiceClient = BlobServiceClient.fromConnectionString(
           AZURE_STORAGE_CONNECTION_STRING
         );
-        const containerName = 'gmm';
+        const containerName = `${req.query.container}`;
         const containerClient =  blobServiceClient.getContainerClient(containerName);
 
             let directories: any[]= []

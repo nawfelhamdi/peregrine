@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { listArchiveBlobs } from '../actions';
+import Tabs from './Tabs';
 
 function InputFiles(props) {
-  let container = 'gmm';
+  const [container, setContainer] = useState('gmm');
   let prefix = 'raw';
   useEffect(() => {
     props.listArchiveBlobs(container, prefix);
-  }, []);
+    console.log(container);
+  }, [container]);
 
   return (
     <div class="px-4 py-16 md:px-16 lg:py-20">
+      <Tabs setContainer={setContainer} />
       <div className="border border-[#EAEAF2] rounded-md p-0">
         {/* Header */}
         <div className="h-12  px-4 py-3  border-b border-[#EAEAF2]  bg-gray-200 rounded-t-md hidden sm:block">
@@ -39,7 +42,7 @@ function InputFiles(props) {
             {props.archives.files.map((file, index) => (
               <div
                 key={index}
-                className="h-28 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]"
+                className="h-30 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]"
               >
                 <div className="text-xs text-gray-600 block sm:hidden mb-2">
                   <p className="text-sm font-medium">

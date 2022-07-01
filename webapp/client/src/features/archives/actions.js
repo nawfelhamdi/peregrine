@@ -8,10 +8,12 @@ import {
 
 import axios from 'axios';
 
-export const getArchiveDirectories = () => (dispatch) => {
+export const getArchiveDirectories = (container) => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_DIRECTORIES });
   axios
-    .get(`${process.env.REACT_APP_API_URL}/archives/directories`)
+    .get(
+      `${process.env.REACT_APP_API_URL}/archives/directories?container=${container}`
+    )
     .then((res) => {
       dispatch({
         type: GET_ARCHIVES_DIRECTORIES,
@@ -26,11 +28,11 @@ export const getArchiveDirectories = () => (dispatch) => {
     });
 };
 
-export const getArchivesFiles = (diretoryId) => (dispatch) => {
+export const getArchivesFiles = (diretoryId, container) => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_FILES });
   axios
     .get(
-      `${process.env.REACT_APP_API_URL}/archives/directories/files/${diretoryId}`
+      `${process.env.REACT_APP_API_URL}/archives/directories/files/${diretoryId}?container=${container}`
     )
     .then((res) => {
       dispatch({

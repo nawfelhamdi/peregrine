@@ -20,7 +20,7 @@ export const listFiles = async (req: Request, res: Response, next:NextFunction) 
         const blobServiceClient = BlobServiceClient.fromConnectionString(
           AZURE_STORAGE_CONNECTION_STRING
         );
-        const containerName = 'gmm';
+        const containerName = `${req.query.container}`;
         const containerClient =  blobServiceClient.getContainerClient(containerName);
             let files: any[]= []
             let blobs = containerClient.listBlobsFlat({ prefix: `archive/processed/${req.params.directoryId}` }); 
