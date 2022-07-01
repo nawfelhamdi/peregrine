@@ -211,49 +211,20 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "DelimitedTextSource",
-									"additionalColumns": [
-										{
-											"name": "created_by",
-											"value": "Data Factory"
-										},
-										{
-											"name": "created_date",
-											"value": {
-												"value": "@utcNow()",
-												"type": "Expression"
-											}
-										},
-										{
-											"name": "last_updated_by",
-											"value": "Data Factory"
-										},
-										{
-											"name": "last_updated_date",
-											"value": {
-												"value": "@utcNow()",
-												"type": "Expression"
-											}
-										},
-										{
-											"name": "project_id",
-											"value": {
-												"value": "@pipeline().parameters.project_id",
-												"type": "Expression"
-											}
-										}
-									],
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ',item().source_path,'.',item().source_name,' where project_id=',pipeline().parameters.project_id,' and last_updated_date=(select max(last_updated_date) from ',item().source_path,'.',item().source_name,' where project_id=',pipeline().parameters.project_id,')')",
+										"type": "Expression"
 									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "@{replace(item().system_parameter,'{project_id}',string(pipeline().parameters.project_id))}",
+										"type": "Expression"
+									},
 									"writeBehavior": "insert",
 									"sqlWriterUseTableLock": false,
 									"disableMetricsCollection": false
@@ -270,14 +241,14 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "csv_file",
+									"referenceName": "AzureSqlTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"Container": {
+										"schema": {
 											"value": "@item().source_path",
 											"type": "Expression"
 										},
-										"File": {
+										"table": {
 											"value": "@item().source_name",
 											"type": "Expression"
 										}
