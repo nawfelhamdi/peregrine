@@ -1,5 +1,5 @@
 {
-	"name": "FromBlobToArchive",
+	"name": "FromStgToRaw",
 	"properties": {
 		"activities": [
 			{
@@ -57,12 +57,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Set variable - timestamp",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"userProperties": [],
@@ -72,133 +66,6 @@
 						"type": "Expression"
 					},
 					"activities": [
-						{
-							"name": "copy to archive folder",
-							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "Pipeline Data Transfer Logging Start",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "DelimitedTextSource",
-									"storeSettings": {
-										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"enablePartitionDiscovery": false
-									},
-									"formatSettings": {
-										"type": "DelimitedTextReadSettings"
-									}
-								},
-								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "csv_file",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@item().source_name",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "csv_file",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": {
-											"value": "@concat(item().target_path,'/',concat(pipeline().parameters.project_id,' - ',pipeline().parameters.measurement_model,' - ', formatDateTime(pipeline().parameters.start_date, 'yyyyMMdd'),' - ', formatDateTime(pipeline().parameters.end_date, 'yyyyMMdd'),' - ', formatDateTime(variables('timestamp'), 'yyyyMMddhhmmssms')))",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@item().target_name",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						},
-						{
-							"name": "Delete",
-							"type": "Delete",
-							"dependsOn": [
-								{
-									"activity": "Pipeline Data Transfer Logging Success",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "csv_file",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@item().source_name",
-											"type": "Expression"
-										}
-									}
-								},
-								"enableLogging": false,
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							}
-						},
 						{
 							"name": "Pipeline Data Transfer Logging Start",
 							"type": "ExecutePipeline",
@@ -240,7 +107,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "copy to archive folder",
+									"activity": "from stg to raw",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -259,14 +126,6 @@
 										"type": "Expression"
 									},
 									"Status": "Success",
-									"Data_copied": {
-										"value": "@activity('copy to archive folder').output.dataWritten",
-										"type": "Expression"
-									},
-									"Data_read": {
-										"value": "@activity('copy to archive folder').output.dataRead",
-										"type": "Expression"
-									},
 									"Source_path": {
 										"value": "@item().source_path",
 										"type": "Expression"
@@ -291,7 +150,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "copy to archive folder",
+									"activity": "from stg to raw",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -330,6 +189,88 @@
 									}
 								}
 							}
+						},
+						{
+							"name": "from stg to raw",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Pipeline Data Transfer Logging Start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select * from ',item().source_path,'.',item().source_name,' where project_id=',pipeline().parameters.project_id,' and last_updated_date=(select max(last_updated_date) from ',item().source_path,'.',item().source_name,' where project_id=',pipeline().parameters.project_id,')')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "@{replace(item().system_parameter,'{project_id}',string(pipeline().parameters.project_id))}",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().source_path",
+											"type": "Expression"
+										},
+										"table": {
+											"value": "@item().source_name",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AzureSqlTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"schema": {
+											"value": "@item().target_path",
+											"type": "Expression"
+										},
+										"table": {
+											"value": "@item().target_name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}
@@ -398,6 +339,41 @@
 				}
 			},
 			{
+				"name": "Audit Logging Failed",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ForEach",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
 				"name": "Lookup pipeline step log id",
 				"type": "Lookup",
 				"dependsOn": [
@@ -436,51 +412,25 @@
 					},
 					"firstRowOnly": true
 				}
-			},
-			{
-				"name": "Set variable - timestamp",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "timestamp",
-					"value": {
-						"value": "@utcNow()",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"parameters": {
-			"project_id": {
-				"type": "string"
-			},
 			"measurement_model": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PAA"
 			},
 			"pipeline_log_id": {
 				"type": "string"
 			},
-			"ui_project_id": {
+			"project_id": {
 				"type": "string"
-			},
-			"start_date": {
-				"type": "string"
-			},
-			"end_date": {
-				"type": "string"
-			}
-		},
-		"variables": {
-			"timestamp": {
-				"type": "String"
 			}
 		},
 		"folder": {
-			"name": "1. Main/2. Moody API call"
+			"name": "1. Main/1. Data Preparation/pending"
 		},
 		"annotations": [],
-		"lastPublishTime": "2022-06-17T20:28:45Z"
+		"lastPublishTime": "2022-06-20T14:19:14Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

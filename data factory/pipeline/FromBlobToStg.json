@@ -1,5 +1,5 @@
 {
-	"name": "FromBlobToArchive",
+	"name": "FromBlobToStg",
 	"properties": {
 		"activities": [
 			{
@@ -57,12 +57,6 @@
 						"dependencyConditions": [
 							"Succeeded"
 						]
-					},
-					{
-						"activity": "Set variable - timestamp",
-						"dependencyConditions": [
-							"Succeeded"
-						]
 					}
 				],
 				"userProperties": [],
@@ -73,9 +67,89 @@
 					},
 					"activities": [
 						{
-							"name": "copy to archive folder",
+							"name": "Get Existence of Files",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "csv_file",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": {
+											"value": "@concat(item().source_path,'/',pipeline().parameters.project_id)",
+											"type": "Expression"
+										},
+										"File": {
+											"value": "@item().source_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"fieldList": [
+									"exists"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							}
+						},
+						{
+							"name": "Existence validation",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Get Existence of Files",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@activity('Get Existence of Files').output.exists",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Fail Message - Existence",
+										"type": "Fail",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"message": {
+												"value": "@concat(item().source_path,'.',item().source_name,' does not exist.')",
+												"type": "Expression"
+											},
+											"errorCode": "000"
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "from blob to stg",
 							"type": "Copy",
 							"dependsOn": [
+								{
+									"activity": "Existence validation",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
 								{
 									"activity": "Pipeline Data Transfer Logging Start",
 									"dependencyConditions": [
@@ -94,6 +168,37 @@
 							"typeProperties": {
 								"source": {
 									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "created_by",
+											"value": "Data Factory"
+										},
+										{
+											"name": "created_date",
+											"value": {
+												"value": "@utcNow()",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "last_updated_by",
+											"value": "Data Factory"
+										},
+										{
+											"name": "last_updated_date",
+											"value": {
+												"value": "@utcNow()",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "project_id",
+											"value": {
+												"value": "@pipeline().parameters.project_id",
+												"type": "Expression"
+											}
+										}
+									],
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
@@ -104,15 +209,10 @@
 									}
 								},
 								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobStorageWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -130,7 +230,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
+											"value": "@concat(item().source_path,'/',pipeline().parameters.project_id)",
 											"type": "Expression"
 										},
 										"File": {
@@ -142,62 +242,20 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "csv_file",
+									"referenceName": "AzureSqlTable",
 									"type": "DatasetReference",
 									"parameters": {
-										"Container": {
-											"value": "@concat(item().target_path,'/',concat(pipeline().parameters.project_id,' - ',pipeline().parameters.measurement_model,' - ', formatDateTime(pipeline().parameters.start_date, 'yyyyMMdd'),' - ', formatDateTime(pipeline().parameters.end_date, 'yyyyMMdd'),' - ', formatDateTime(variables('timestamp'), 'yyyyMMddhhmmssms')))",
+										"schema": {
+											"value": "@item().target_path",
 											"type": "Expression"
 										},
-										"File": {
+										"table": {
 											"value": "@item().target_name",
 											"type": "Expression"
 										}
 									}
 								}
 							]
-						},
-						{
-							"name": "Delete",
-							"type": "Delete",
-							"dependsOn": [
-								{
-									"activity": "Pipeline Data Transfer Logging Success",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "csv_file",
-									"type": "DatasetReference",
-									"parameters": {
-										"Container": {
-											"value": "@concat(item().source_path,'/',pipeline().parameters.ui_project_id)",
-											"type": "Expression"
-										},
-										"File": {
-											"value": "@item().source_name",
-											"type": "Expression"
-										}
-									}
-								},
-								"enableLogging": false,
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							}
 						},
 						{
 							"name": "Pipeline Data Transfer Logging Start",
@@ -240,7 +298,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "copy to archive folder",
+									"activity": "from blob to stg",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -260,11 +318,11 @@
 									},
 									"Status": "Success",
 									"Data_copied": {
-										"value": "@activity('copy to archive folder').output.dataWritten",
+										"value": "@activity('from blob to stg').output.rowsCopied",
 										"type": "Expression"
 									},
 									"Data_read": {
-										"value": "@activity('copy to archive folder').output.dataRead",
+										"value": "@activity('from blob to stg').output.rowsRead",
 										"type": "Expression"
 									},
 									"Source_path": {
@@ -291,7 +349,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "copy to archive folder",
+									"activity": "from blob to stg",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -398,6 +456,41 @@
 				}
 			},
 			{
+				"name": "Audit Logging Failed",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ForEach",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Pipeline Step Logging",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ID": {
+							"value": "@pipeline().parameters.pipeline_log_id",
+							"type": "Expression"
+						},
+						"Name": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"Status": "Failed",
+						"Data_source": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
 				"name": "Lookup pipeline step log id",
 				"type": "Lookup",
 				"dependsOn": [
@@ -436,51 +529,25 @@
 					},
 					"firstRowOnly": true
 				}
-			},
-			{
-				"name": "Set variable - timestamp",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "timestamp",
-					"value": {
-						"value": "@utcNow()",
-						"type": "Expression"
-					}
-				}
 			}
 		],
 		"parameters": {
-			"project_id": {
-				"type": "string"
-			},
 			"measurement_model": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "PAA"
 			},
 			"pipeline_log_id": {
 				"type": "string"
 			},
-			"ui_project_id": {
+			"project_id": {
 				"type": "string"
-			},
-			"start_date": {
-				"type": "string"
-			},
-			"end_date": {
-				"type": "string"
-			}
-		},
-		"variables": {
-			"timestamp": {
-				"type": "String"
 			}
 		},
 		"folder": {
-			"name": "1. Main/2. Moody API call"
+			"name": "1. Main/1. Data Preparation/pending"
 		},
 		"annotations": [],
-		"lastPublishTime": "2022-06-17T20:28:45Z"
+		"lastPublishTime": "2022-06-20T20:38:30Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
