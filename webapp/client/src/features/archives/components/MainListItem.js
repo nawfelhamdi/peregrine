@@ -69,7 +69,7 @@ function Files(props) {
           ))}
         </div>
       ) : (
-        <p className="text-center">Loading ...</p>
+        <p className="text-center my-4 font-bold">Loading ...</p>
       )}
     </div>
   );

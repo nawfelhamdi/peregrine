@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Tabs(props) {
+export default function ContainerTabs(props) {
   const [seleted, setSelected] = useState('gmm');
 
   const handleSlectMesearmentApproach = (approach) => {
