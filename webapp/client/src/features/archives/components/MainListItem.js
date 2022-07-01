@@ -26,7 +26,10 @@ function Files(props) {
       {!props.archives.loadingFiles ? (
         <div>
           {props.archives.files.map((file, index) => (
-            <div className="h-24 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]">
+            <div
+              key={index}
+              className="h-24 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]"
+            >
               <div className="text-xs text-gray-600 block sm:hidden mb-2">
                 <p className="text-sm font-medium">
                   Filename:

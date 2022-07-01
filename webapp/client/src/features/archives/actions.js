@@ -3,6 +3,7 @@ import {
   GET_ARCHIVES_DIRECTORIES,
   LOADING_ARCHIVES_FILES,
   GET_ARCHIVES_FILES,
+  SET_SORT,
   GET_ERRORS,
 } from './types';
 
@@ -47,6 +48,7 @@ export const getArchivesFiles = (diretoryId, container) => (dispatch) => {
       });
     });
 };
+
 export const listArchiveBlobs = (container, prefix) => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_FILES });
   axios
@@ -65,4 +67,8 @@ export const listArchiveBlobs = (container, prefix) => (dispatch) => {
         type: GET_ERRORS,
       });
     });
+};
+
+export const sortByModifiedAt = () => (dispatch) => {
+  dispatch({ type: SET_SORT });
 };

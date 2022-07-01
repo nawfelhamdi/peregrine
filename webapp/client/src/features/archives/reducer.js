@@ -3,6 +3,7 @@ import {
   GET_ARCHIVES_DIRECTORIES,
   LOADING_ARCHIVES_FILES,
   GET_ARCHIVES_FILES,
+  SET_SORT,
   // GET_ERRORS,
 } from './types';
 
@@ -36,6 +37,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         loadingFiles: false,
         files: action.payload,
+      };
+    case SET_SORT:
+      let files = state.files.sort((a, b) => -1);
+      return {
+        files: files,
       };
 
     default:

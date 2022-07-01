@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
-
 import moment from 'moment';
-import { connect } from 'react-redux';
-import { listArchiveBlobs } from '../actions';
 import ContainerTabs from './ContainerTabs';
 import PrefixSearch from './PrefixSearch';
+
+import { connect } from 'react-redux';
+import { listArchiveBlobs, sortByModifiedAt } from '../actions';
 
 function InputFiles(props) {
   const [container, setContainer] = useState('gmm');
   const [prefix, setPrefix] = useState('raw');
+  const [sort, setSort] = useState(false);
+
   useEffect(() => {
     props.listArchiveBlobs(container, prefix);
   }, [container]);
   const handleSerchBlobs = () => {
     props.listArchiveBlobs(container, prefix);
+  };
+  const handleSortByModifiedAt = () => {
+    setSort(!sort);
+    props.sortByModifiedAt();
   };
   return (
     <div className="px-4 py-16 md:px-16 lg:py-20">
@@ -29,8 +35,29 @@ function InputFiles(props) {
         {/* Header */}
         <div className="h-12  px-4 py-3  border-b border-[#EAEAF2]  bg-gray-200 rounded-t-md hidden sm:block">
           <div className="flex justify-between">
-            <div className="text-xs text-gray-600">
+            <div className="text-xs text-gray-600 flex items-center justify-center">
               <p className="text-sm font-medium">Directory</p>
+              <button
+                className="flex items-center justify-center w-8 h-8 bg-white border rounded-full mx-2"
+                onClick={() => handleSortByModifiedAt()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
+                    sort ? 'transform rotate-180' : ''
+                  }`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                  />
+                </svg>
+              </button>
             </div>
             <div className="text-xs text-gray-600">
               <p className="text-sm font-medium">Filename</p>
@@ -71,7 +98,6 @@ function InputFiles(props) {
                         </span>
                       </p>
                     </div>
-
                     <div className="flex justify-between">
                       <div className="text-xs text-gray-600 sm:block hidden">
                         <p className="text-sm font-medium">
@@ -110,13 +136,11 @@ function InputFiles(props) {
                 ))}
               </div>
             ) : (
-              <p className="text-center my-4 font-bold">
-                No blobs archive blobs found.
-              </p>
+              <p className="text-center my-4">No blobs archive blobs found.</p>
             )}
           </div>
         ) : (
-          <p className="text-center my-4 font-bold">Loading ...</p>
+          <p className="text-center my-4">Loading ...</p>
         )}
       </div>
     </div>
@@ -128,5 +152,6 @@ const mapStateToProps = (state) => ({
 });
 const mapActionsToProps = {
   listArchiveBlobs,
+  sortByModifiedAt,
 };
 export default connect(mapStateToProps, mapActionsToProps)(InputFiles);
