@@ -6,6 +6,7 @@ function SearchFileCatalog(props) {
   const [directory, setDirectory] = useState('');
   const handleSearch = () => {
     props.getArchiveDirectories(props.container, directory);
+    setDirectory('');
   };
   return (
     <form className="w-full md:max-w-xl" onSubmit={handleSearch}>
