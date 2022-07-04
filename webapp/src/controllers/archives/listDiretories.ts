@@ -23,10 +23,9 @@ export const listDiretories = async (req: Request, res: Response, next:NextFunct
         const containerClient =  blobServiceClient.getContainerClient(containerName);
 
             let directories: any[]= []
-            let blobs = containerClient.listBlobsByHierarchy("/", { prefix: "archive/processed/" }); 
+            let blobs = containerClient.listBlobsByHierarchy("/", { prefix: req.query.directory !==undefined?`archive/processed/${req.query.directory}`:"archive/processed/"  }); 
             for await (const blob of blobs) {
               directories.push(blob)
-              // console.log(blob)
             }
           
             return res.status(201).json({message:'success',directories  });
