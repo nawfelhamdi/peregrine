@@ -4,16 +4,18 @@ import {
   LOADING_ARCHIVES_FILES,
   GET_ARCHIVES_FILES,
   SET_SORT,
+  SET_SORT_FILE_CATALOG,
   GET_ERRORS,
 } from './types';
 
 import axios from 'axios';
 
-export const getArchiveDirectories = (container) => (dispatch) => {
+export const getArchiveDirectories = (container, directory) => (dispatch) => {
   dispatch({ type: LOADING_ARCHIVES_DIRECTORIES });
+  let directoryReq = directory ? `&directory=${directory}` : '';
   axios
     .get(
-      `${process.env.REACT_APP_API_URL}/archives/directories?container=${container}`
+      `${process.env.REACT_APP_API_URL}/archives/directories?container=${container}${directoryReq}`
     )
     .then((res) => {
       dispatch({
@@ -69,6 +71,9 @@ export const listArchiveBlobs = (container, prefix) => (dispatch) => {
     });
 };
 
-export const sortByModifiedAt = () => (dispatch) => {
+export const sort = () => (dispatch) => {
   dispatch({ type: SET_SORT });
+};
+export const sortFileCatalog = () => (dispatch) => {
+  dispatch({ type: SET_SORT_FILE_CATALOG });
 };
