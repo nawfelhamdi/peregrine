@@ -6,7 +6,7 @@ import logo from '../../../assets/logo.png';
 
 function Sidebar(props) {
   //   const [open, setOpen] = useState(false); //TODO: add mobile side bar
-  const [seleted, setSelected] = useState('');
+  const [seleted, setSelected] = useState('File Catalog');
   let query = useLocation();
 
   useEffect(() => {
@@ -32,8 +32,15 @@ function Sidebar(props) {
         {props.sidebarItems.navigation.map((item, index) => (
           <>
             <div key={index} className="text-center h-screen">
-              <p className="flex items-center justify-center text-lg font-bold rounded-md w-full h-12 bg-[#555555] text-white">
-                {item.name}
+              <p
+                className={`${
+                  seleted === item.name
+                    ? 'text-skin-base border-2 transition animation-300 border-[#FFE416]'
+                    : 'text-white'
+                } flex items-center justify-center text-lg font-bold rounded-md w-full h-12 bg-[#555555]`}
+                onClick={() => setSelected(item.name)}
+              >
+                <Link to={item.url}>{item.name}</Link>
               </p>
               {item.subNavItems.map((item, index) => (
                 <div className="ml-4">

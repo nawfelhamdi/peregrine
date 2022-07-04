@@ -3,6 +3,7 @@ const navigation = {
   archive: [
     {
       name: 'File Catalog',
+      url: 'file-catalog',
       subNavItems: [
         {
           name: 'Input Files',
@@ -19,24 +20,10 @@ const navigation = {
       ],
     },
   ],
-  reports: [
-    {
-      name: 'Reports',
-      subNavItems: [
-        {
-          name: 'Project Reports',
-          url: 'project-reports',
-        },
-      ],
-    },
-    {
-      name: 'BI Dashboards',
-      subNavItems: [],
-    },
-  ],
   data: [
     {
       name: 'Data Governance',
+      url: 'data',
       subNavItems: [
         {
           name: 'Data Profiling',

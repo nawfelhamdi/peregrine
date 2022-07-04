@@ -13,7 +13,7 @@ import RunMoodys from './features/startProject/components/RunMoodys';
 import Validation from './features/startProject/components/Validation';
 // Archive feature
 import Archive from './features/archives/Index';
-import Main from './features/archives/components/Main';
+import FileCatalog from './features/archives/components/FileCatalog';
 import InputFiles from './features/archives/components/InputFiles';
 import OutputFiles from './features/archives/components/OutputFiles';
 import Reports from './features/archives/components/Reports';
@@ -22,6 +22,10 @@ import Reports from './features/archives/components/Reports';
 import Data from './features/data/Index';
 import Profiling from './features/data/components/Profiling';
 import Quality from './features/data/components/Quality';
+
+// Data Governance
+import ReportsOutput from './features/reports/Index';
+import Download from './features/reports/components/Download';
 
 function App() {
   return (
@@ -37,7 +41,7 @@ function App() {
             <Route path="validate" element={<Validation />} />
           </Route>
           <Route path="/archive" element={<Archive />}>
-            <Route index element={<Main />} />
+            <Route path="file-catalog" element={<FileCatalog />} />
             <Route path="input-files" element={<InputFiles />} />
             <Route path="output-files" element={<OutputFiles />} />
             <Route path="reports" element={<Reports />} />
@@ -45,6 +49,9 @@ function App() {
           <Route path="/data" element={<Data />}>
             <Route path="profiling" element={<Profiling />} />
             <Route path="quality" element={<Quality />} />
+          </Route>
+          <Route path="/reports" element={<ReportsOutput />}>
+            <Route path="download" element={<Download />} />
           </Route>
         </Routes>
       </HashRouter>

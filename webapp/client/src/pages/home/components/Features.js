@@ -54,7 +54,7 @@ const features = [
   {
     id: 3,
     title: 'Archive',
-    description: 'Access past projects and data',
+    description: 'Access Input & Output files and Reports',
     href: 'archive',
     icon: (
       <svg
@@ -64,28 +64,6 @@ const features = [
         fill="currentColor"
       >
         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-      </svg>
-    ),
-  },
-  {
-    id: 4,
-    title: 'Reports',
-    description: "View the output folder of Moody's RI",
-    href: '#',
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-10 w-10 text-skin-base"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
       </svg>
     ),
   },
@@ -109,7 +87,7 @@ const FeatureCard = ({ feature: { title, description, icon, href } }) => {
 export default function Features() {
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-32">
-      <div className="grid gap-5 row-gap-5 md:grid-cols-4">
+      <div className="grid gap-5 row-gap-5 md:grid-cols-3">
         {features.map((feature) => (
           <FeatureCard key={feature.id} feature={feature} />
         ))}
