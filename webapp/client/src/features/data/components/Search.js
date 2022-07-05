@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { search } from '../actions';
 
-export default function PrefixSearch({ prefix, setPrefix, handleSerchBlobs }) {
+function PrefixSearch(props) {
+  const [searchInput, setSearchInput] = useState('');
+  const handleSerchBlobs = () => {
+    props.search(searchInput);
+  };
   return (
-    <form className="max-w-xs lg:max-w-xl w-full" onSubmit={handleSerchBlobs}>
+    <form className="w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
       <label
         for="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
@@ -30,10 +36,10 @@ export default function PrefixSearch({ prefix, setPrefix, handleSerchBlobs }) {
           type="search"
           id="default-search"
           className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 "
-          placeholder="Search blobs by prefix (case-sensitive)"
+          placeholder="Search by file name"
           required
-          value={prefix}
-          onChange={(e) => setPrefix(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
         />
         <button
           type="submit"
@@ -45,3 +51,9 @@ export default function PrefixSearch({ prefix, setPrefix, handleSerchBlobs }) {
     </form>
   );
 }
+
+const mapStateToProps = (state) => ({
+  archives: state.archives,
+});
+const mapActionsToProps = { search };
+export default connect(mapStateToProps, mapActionsToProps)(PrefixSearch);

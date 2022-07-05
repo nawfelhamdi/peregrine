@@ -23,7 +23,7 @@ const navigation = {
   data: [
     {
       name: 'Data Governance',
-      url: 'data',
+      url: '#',
       subNavItems: [
         {
           name: 'Data Profiling',

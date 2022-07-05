@@ -24,7 +24,16 @@ export const listArchiveBlobs = async (req: Request, res: Response, next:NextFun
             let result: any[]= []
             let blobs = containerClient.listBlobsFlat({ prefix: `${req.query.prefix}` }); 
             for await (const blob of blobs) {
-              result.push(blob)
+              const item = {
+                fileName: blob.name.split('/').pop(),
+                projectId: blob.name.split('/')[blob.name.split('/').length - 2],
+                createdOn: blob.properties.createdOn,
+                lastModified: blob.properties.lastModified,
+                blobName: blob.name
+
+              }
+              result.push(item)
+              // console.log(blob)
             }
           
             return res.status(201).json({message:'success',result  });

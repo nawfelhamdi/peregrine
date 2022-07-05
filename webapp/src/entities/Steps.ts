@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 
-@Entity("pipeline_step_log")
+@Entity({ schema: "ctl", name:"pipeline_step_log" })
+
 export class Step  {
 
     @PrimaryGeneratedColumn()

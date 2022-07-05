@@ -55,7 +55,7 @@ const features = [
     id: 3,
     title: 'Archive',
     description: 'Access Input & Output files and Reports',
-    href: 'archive',
+    href: 'archive/file-catalog',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

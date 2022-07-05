@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 
-@Entity("project")
+@Entity({ schema: "ctl", name:"project" })
+
 export class Project  {
 
     @PrimaryGeneratedColumn()

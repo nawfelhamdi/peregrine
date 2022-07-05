@@ -4,8 +4,10 @@ import {
   LOADING_ARCHIVES_FILES,
   GET_ARCHIVES_FILES,
   SET_SORT,
+  SET_SORT_BY_FILE_NAME,
   SET_SORT_FILE_CATALOG,
   GET_ERRORS,
+  SET_SEARCH,
 } from './types';
 
 import axios from 'axios';
@@ -74,6 +76,13 @@ export const listArchiveBlobs = (container, prefix) => (dispatch) => {
 export const sort = () => (dispatch) => {
   dispatch({ type: SET_SORT });
 };
+export const sortByfileName = (sort) => (dispatch) => {
+  dispatch({ type: SET_SORT_BY_FILE_NAME, payload: sort });
+};
 export const sortFileCatalog = () => (dispatch) => {
   dispatch({ type: SET_SORT_FILE_CATALOG });
+};
+
+export const search = (searchInput) => (dispatch) => {
+  dispatch({ type: SET_SEARCH, payload: searchInput });
 };

@@ -6,7 +6,7 @@ import logo from '../../../assets/logo.png';
 
 function Sidebar(props) {
   //   const [open, setOpen] = useState(false); //TODO: add mobile side bar
-  const [seleted, setSelected] = useState('File Catalog');
+  const [seleted, setSelected] = useState('');
   let query = useLocation();
 
   useEffect(() => {

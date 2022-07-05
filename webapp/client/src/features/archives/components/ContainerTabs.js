@@ -9,7 +9,7 @@ export default function ContainerTabs(props) {
   };
 
   return (
-    <div className="flex md:max-w-full relative z-90 mb-8">
+    <div className="flex relative z-90">
       <div className="flex items-center space-x-2 mx-2 lg:space-x-8">
         <button
           onClick={() => handleSlectMesearmentApproach('gmm')}
