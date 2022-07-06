@@ -1,21 +1,34 @@
 import {
+  LOADING_DATA_PROFILING_FILES,
+  GET_DATA_PROFILING_FILES,
   LOADING_DATA_HEALTH_CHECK,
   GET_DATA_HEALTH_CHECK,
   // GET_ERRORS,
   SET_SORT_BY_FILE_NAME,
-  SET_SEARCH,
+  SET_SEARCH_DATA,
 } from './types';
 
 const initialState = {
   loading: false,
   columns: [],
 
-  loadingFiles: false,
-  files: [],
+  loadingProfilingFiles: false,
+  profilingfiles: [],
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case LOADING_DATA_PROFILING_FILES:
+      return {
+        ...state,
+        loadingProfilingFiles: true,
+      };
+    case GET_DATA_PROFILING_FILES:
+      return {
+        ...state,
+        loadingProfilingFiles: false,
+        profilingfiles: action.payload,
+      };
     case LOADING_DATA_HEALTH_CHECK:
       return {
         ...state,
@@ -50,15 +63,16 @@ export default function reducer(state = initialState, action) {
       return {
         files: orderfiles,
       };
-    case SET_SEARCH:
-      let searchedfiles = state.files.filter(
+    case SET_SEARCH_DATA:
+      let searchedProfilingfiles = state.profilingfiles.filter(
         (element) =>
           element.fileName === action.payload ||
           element.projectId === action.payload
       );
       return {
-        files: searchedfiles,
+        profilingfiles: searchedProfilingfiles,
       };
+
     default:
       return state;
   }

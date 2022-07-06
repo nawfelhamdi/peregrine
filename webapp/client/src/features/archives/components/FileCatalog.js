@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { AiFillInfoCircle } from 'react-icons/ai';
+
 import MainListItem from './MainListItem';
 import ContainerTabs from './ContainerTabs';
 import SearchFileCatalog from './SearchFileCatalog';
@@ -17,10 +19,12 @@ const DirectoryCard = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [seletedRow, setSeletedRow] = useState('');
-  const handleFilesDatils = (directory) => {
+  const handleFilesDetails = (directory) => {
     getArchivesFiles(directory.name.split('/')[2], container);
     setIsOpen(!isOpen);
     setSeletedRow(directory.name);
+    console.log(directory.name);
+    console.log(seletedRow);
   };
   return (
     <div className="border rounded shadow-sm">
@@ -29,7 +33,7 @@ const DirectoryCard = ({
         aria-label="Open item"
         title="Open item"
         className="flex items-center justify-end flex-row-reverse	 w-full p-4 focus:outline-none"
-        onClick={() => handleFilesDatils(directory)}
+        onClick={() => handleFilesDetails(directory)}
       >
         <div className="text-md font-medium flex items-center space-x-2">
           <svg
@@ -93,6 +97,20 @@ function FileCatalog(props) {
         <SearchFileCatalog container={container} />
       </div>
       <div class="space-y-4">
+        <div className="flex items-center my-2">
+          <AiFillInfoCircle className="h-8 w-8  text-black" />
+          <p className="ml-4 font-semibold flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6  w-6 text-skin-base mx-auto mx-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+            </svg>
+            <span>Project ID + Project Name + time stamp</span>
+          </p>
+        </div>
         {!props.archives.loadingDirectories ? (
           <>
             {props.archives.directories.length > 0 ? (

@@ -1,31 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import React, { useEffect, useState } from 'react';
 import { saveAs } from 'file-saver';
-
-import ContainerTabs from './ContainerTabs';
 import Search from './Search';
-
 import { connect } from 'react-redux';
-import { listArchiveBlobs, sort, sortByfileName } from '../actions';
+import { getProfilingFiles, sortByfileName } from '../actions';
+import moment from 'moment';
 const { BlobServiceClient } = require('@azure/storage-blob');
 
-function InputFiles(props) {
-  const [container, setContainer] = useState('gmm');
-  const [sort, setSort] = useState(false);
+function Profiling(props) {
   const [sortByfileName, setSortByfileName] = useState(false);
-  const prefix = 'raw/';
   useEffect(() => {
-    props.listArchiveBlobs(container, prefix);
-  }, [container]);
-
-  const handleSort = () => {
-    setSort(!sort);
-    props.sort();
-  };
-  const handleSortByFileName = () => {
-    setSortByfileName(!sortByfileName);
-    props.sortByfileName(sortByfileName);
-  };
+    props.getProfilingFiles();
+  }, []);
 
   const account = 'peregrineblob';
   const sas =
@@ -34,9 +19,9 @@ function InputFiles(props) {
   const blobServiceClient = new BlobServiceClient(
     `https://${account}.blob.core.windows.net${sas}`
   );
-  async function download(blobName, fileName) {
-    const containerClient = blobServiceClient.getContainerClient(container);
-    const blobClient = containerClient.getBlobClient(blobName);
+  async function download(fileName) {
+    const containerClient = blobServiceClient.getContainerClient('testoutput');
+    const blobClient = containerClient.getBlobClient(fileName);
 
     const downloadBlockBlobResponse = await blobClient.download();
     const downloaded = await blobToString(
@@ -61,40 +46,20 @@ function InputFiles(props) {
       });
     }
   }
+  const handleSortByFileName = () => {
+    setSortByfileName(!sortByfileName);
+    props.sortByfileName(sortByfileName);
+  };
+
   return (
     <div className="px-4 py-16 md:px-16 lg:py-20">
       <div className="flex justify-between items-start mb-8">
-        <ContainerTabs setContainer={setContainer} />
         <Search />
       </div>
-      <div className="border border-[#EAEAF2] rounded-md p-0">
+      <div className="my-8 border border-[#EAEAF2] rounded-md">
         {/* Header */}
         <div className="h-12  px-4 py-3  border-b border-[#EAEAF2]  bg-gray-200 rounded-t-md hidden sm:block">
           <div className="flex justify-between">
-            <div className="text-xs text-gray-600 flex items-center justify-center">
-              <p className="text-sm font-medium">Project ID</p>
-              <button
-                className="flex items-center justify-center w-8 h-8 bg-white border rounded-full mx-2"
-                onClick={() => handleSort()}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
-                    sort ? 'transform rotate-180' : ''
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                </svg>
-              </button>
-            </div>
             <div className="text-xs text-gray-600 flex items-center justify-center">
               <p className="text-sm font-medium">File Name</p>
               <button
@@ -133,28 +98,20 @@ function InputFiles(props) {
           </div>
         </div>
         {/* Body */}
-        {!props.archives.loadingFiles ? (
+        {!props.dataGovernance.loadingProfilingFiles ? (
           <div>
-            {props.archives.files.length > 0 ? (
+            {props.dataGovernance.profilingfiles ? (
               <div>
-                {props.archives.files.map((file, index) => (
+                {props.dataGovernance.profilingfiles.map((file, index) => (
                   <div
                     key={index}
                     className="h-30 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]"
                   >
                     <div className="text-xs text-gray-600 block sm:hidden mb-2">
                       <p className="text-sm font-medium">
-                        Project ID:
-                        <span className="text-sm ml-2 text-black">
-                          {file.projectId}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="text-xs text-gray-600 block sm:hidden mb-2">
-                      <p className="text-sm font-medium">
                         File Name:
                         <button
-                          onClick={() => download(file.blobName, file.fileName)}
+                          onClick={() => download(file.fileName)}
                           className="text-sm ml-2 text-black underline flex justify-between w-full"
                         >
                           <span> {file.fileName}</span>
@@ -180,11 +137,8 @@ function InputFiles(props) {
 
                     <div className="flex justify-between">
                       <div className="text-xs text-gray-600 sm:block hidden">
-                        <p className="text-sm font-medium">{file.projectId}</p>
-                      </div>
-                      <div className="text-xs text-gray-600 sm:block hidden">
                         <button
-                          onClick={() => download(file.blobName, file.fileName)}
+                          onClick={() => download(file.fileName)}
                           className="text-sm font-medium underline"
                         >
                           {file.fileName}
@@ -213,9 +167,7 @@ function InputFiles(props) {
                         </div>
                         <div className="text-xs text-gray-600 sm:block hidden">
                           <button
-                            onClick={() =>
-                              download(file.blobName, file.fileName)
-                            }
+                            onClick={() => download(file.fileName)}
                             className="flex items-center justify-center w-5 h-5  rounded-full bg-[#1996fc]"
                           >
                             <svg
@@ -252,11 +204,10 @@ function InputFiles(props) {
 }
 
 const mapStateToProps = (state) => ({
-  archives: state.archives,
+  dataGovernance: state.dataGovernance,
 });
 const mapActionsToProps = {
-  listArchiveBlobs,
-  sort,
+  getProfilingFiles,
   sortByfileName,
 };
-export default connect(mapStateToProps, mapActionsToProps)(InputFiles);
+export default connect(mapStateToProps, mapActionsToProps)(Profiling);

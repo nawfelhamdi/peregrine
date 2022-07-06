@@ -10,9 +10,9 @@ function Quality(props) {
   return (
     <div className="px-4 py-16 md:px-16 lg:py-20">
       <>
-        {!props.data.loading ? (
+        {!props.dataGovernance.loading ? (
           <>
-            {props.data.columns.map((item, index) => (
+            {props.dataGovernance.columns.map((item, index) => (
               <HealthCheckCard key={index} item={item} />
             ))}
           </>
@@ -25,7 +25,7 @@ function Quality(props) {
 }
 
 const mapStateToProps = (state) => ({
-  data: state.data,
+  dataGovernance: state.dataGovernance,
 });
 const mapActionsToProps = {
   getDataHealthCheck,

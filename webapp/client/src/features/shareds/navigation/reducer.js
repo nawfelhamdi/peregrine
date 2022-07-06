@@ -4,6 +4,7 @@ import navigation from '../../../utils/sidebarNavItems';
 const initialState = {
   navigation: [],
   currentItem: '',
+  activeItem: '',
 };
 
 export default function reducer(state = initialState, action) {
@@ -13,6 +14,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         navigation: navigation[action.payload.navItem],
         currentItem: action.payload.currentItem,
+        activeItem: action.payload.activeItem,
       };
 
     default:

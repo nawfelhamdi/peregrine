@@ -1,9 +1,9 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Sidebar from '../shareds/sidebar/Index';
+import Sidebar from '../shareds/navigation/Index';
 import Tabs from './components/Tabs';
-import Topbar from '../shareds/Topbar';
+import Topbar from '../shareds/navigation/components/Topbar';
 
 export default function Index() {
   return (

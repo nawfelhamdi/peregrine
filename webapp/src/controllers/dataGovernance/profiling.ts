@@ -9,7 +9,7 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 import { CustomError } from "../../utils/CustomError";
 
 
-export const listArchiveBlobs = async (req: Request, res: Response, next:NextFunction) => {
+export const profiling = async (req: Request, res: Response, next:NextFunction) => {
     try {
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -19,27 +19,25 @@ export const listArchiveBlobs = async (req: Request, res: Response, next:NextFun
         const blobServiceClient = BlobServiceClient.fromConnectionString(
           AZURE_STORAGE_CONNECTION_STRING
         );
-        const containerName = `${req.query.container}`;
+        const containerName = `testoutput`;
         const containerClient =  blobServiceClient.getContainerClient(containerName);
-            let result: any[]= []
-            let blobs = containerClient.listBlobsFlat({ prefix: `${req.query.prefix}` }); 
+            let files: any[]= []
+            let blobs = containerClient.listBlobsFlat({ prefix: `` }); 
             for await (const blob of blobs) {
-              const item = {
-                fileName: blob.name.split('/').pop(),
-                projectId: blob.name.split('/')[blob.name.split('/').length - 2],
-                createdOn: blob.properties.createdOn,
-                lastModified: blob.properties.lastModified,
-                blobName: blob.name
-
-              }
-              result.push(item)
+                const item = {
+                    fileName: blob.name,
+                    createdOn: blob.properties.createdOn,
+                    lastModified: blob.properties.lastModified,
+                   
+                  }
+                  files.push(item)
             }
           
-            return res.status(201).json({message:'success',result  });
+            return res.status(201).json({message:'success',files  });
         
     } catch (err) {
       const customError = new CustomError(
-        "Can't list input files blobs",
+        "Can't list archives blobs",
         500,
         err,
       );

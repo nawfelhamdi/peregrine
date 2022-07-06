@@ -1,39 +1,32 @@
 const navigation = {
   startproject: [],
-  archive: [
+  archives: [
     {
-      name: 'File Catalog',
-      url: 'file-catalog',
-      subNavItems: [
-        {
-          name: 'Input Files',
-          url: 'input-files',
-        },
-        {
-          name: 'Output Files',
-          url: 'output-files',
-        },
-        {
-          name: 'Reports',
-          url: 'reports',
-        },
-      ],
+      title: 'Archive',
+      subTitle: '(Moody’s RI Input Files)',
+      url: 'archive',
+    },
+    {
+      title: 'Input Files',
+      url: 'input-files',
+    },
+    {
+      title: 'Output Files',
+      url: 'output-files',
+    },
+    {
+      title: 'Disclosure Reports',
+      url: 'gmm-reports',
     },
   ],
-  data: [
+  datagovernance: [
     {
-      name: 'Data Governance',
-      url: '#',
-      subNavItems: [
-        {
-          name: 'Data Profiling',
-          url: 'profiling',
-        },
-        {
-          name: 'DQ Dashboard',
-          url: 'quality',
-        },
-      ],
+      title: 'Data Profiling',
+      url: 'data-profiling',
+    },
+    {
+      title: 'DQ Dashboard',
+      url: 'quality',
     },
   ],
 };

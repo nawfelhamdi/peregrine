@@ -5,19 +5,22 @@ import { saveAs } from 'file-saver';
 
 import { connect } from 'react-redux';
 import { listArchiveBlobs, sort, sortByfileName } from '../actions';
-import ContainerTabs from './ContainerTabs';
+import ReportsTabs from './ReportsTabs';
 import Search from './Search';
+import { Link } from 'react-router-dom';
 const { BlobServiceClient } = require('@azure/storage-blob');
 
 function Reports(props) {
-  const [container, setContainer] = useState('gmm');
+  const [container, setContainer] = useState('paa');
+  const [seleted, setSelected] = useState('paa');
+
   const [sort, setSort] = useState(false);
   const [sortByfileName, setSortByfileName] = useState(false);
-  const prefix = 'output/export';
+  const prefix = 'output/report';
 
   useEffect(() => {
     props.listArchiveBlobs(container, prefix);
-  }, [container]);
+  }, []);
 
   const handleSort = () => {
     setSort(!sort);
@@ -27,6 +30,7 @@ function Reports(props) {
     setSortByfileName(!sortByfileName);
     props.sortByfileName(sortByfileName);
   };
+
   const account = 'peregrineblob';
   const sas =
     '?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupitfx&se=2022-07-30T18:00:17Z&st=2022-07-05T10:00:17Z&spr=https&sig=%2F4m%2BnV9irJZpPUPIg71P5sarSd%2FXRsfIe%2B%2BHLhMorwQ%3D';
@@ -61,10 +65,11 @@ function Reports(props) {
       });
     }
   }
+
   return (
     <div class="px-4 py-16 md:px-16 lg:py-20">
       <div className="flex justify-between items-start mb-8">
-        <ContainerTabs setContainer={setContainer} />
+        <ReportsTabs />
         <Search />
       </div>
       <div className="border border-[#EAEAF2] rounded-md p-0">

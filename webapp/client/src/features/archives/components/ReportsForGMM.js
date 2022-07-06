@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
+
 import moment from 'moment';
 import { saveAs } from 'file-saver';
 
-import ContainerTabs from './ContainerTabs';
-import Search from './Search';
-
 import { connect } from 'react-redux';
-import { listArchiveBlobs, sort, sortByfileName } from '../actions';
+import { listGmmReports, sort, sortByfileName } from '../actions';
+import Search from './Search';
+import ReportsTabs from './ReportsTabs';
 const { BlobServiceClient } = require('@azure/storage-blob');
 
-function InputFiles(props) {
+function ReportsForGMM(props) {
   const [container, setContainer] = useState('gmm');
+  const [seleted, setSelected] = useState('paa');
+
   const [sort, setSort] = useState(false);
   const [sortByfileName, setSortByfileName] = useState(false);
-  const prefix = 'raw/';
+
+  // const prefix = 'output';
+
   useEffect(() => {
-    props.listArchiveBlobs(container, prefix);
+    props.listGmmReports();
   }, [container]);
 
   const handleSort = () => {
@@ -61,39 +65,45 @@ function InputFiles(props) {
       });
     }
   }
+
   return (
-    <div className="px-4 py-16 md:px-16 lg:py-20">
+    <div class="px-4 py-16 md:px-16 lg:py-20">
       <div className="flex justify-between items-start mb-8">
-        <ContainerTabs setContainer={setContainer} />
+        <ReportsTabs />
         <Search />
       </div>
       <div className="border border-[#EAEAF2] rounded-md p-0">
         {/* Header */}
         <div className="h-12  px-4 py-3  border-b border-[#EAEAF2]  bg-gray-200 rounded-t-md hidden sm:block">
           <div className="flex justify-between">
-            <div className="text-xs text-gray-600 flex items-center justify-center">
-              <p className="text-sm font-medium">Project ID</p>
-              <button
-                className="flex items-center justify-center w-8 h-8 bg-white border rounded-full mx-2"
-                onClick={() => handleSort()}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
-                    sort ? 'transform rotate-180' : ''
-                  }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            <div className="flex justify-between w-full sm:w-1/5">
+              <div className="text-xs text-gray-600 flex items-center justify-center">
+                <p className="text-sm font-medium">Project ID</p>
+                <button
+                  className="flex items-center justify-center w-8 h-8 bg-white border rounded-full mx-2"
+                  onClick={() => handleSort()}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
+                      sort ? 'transform rotate-180' : ''
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="text-xs text-gray-600 float-left">
+                <p className="text-sm font-medium">Sub Folder</p>
+              </div>
             </div>
             <div className="text-xs text-gray-600 flex items-center justify-center">
               <p className="text-sm font-medium">File Name</p>
@@ -152,6 +162,14 @@ function InputFiles(props) {
                     </div>
                     <div className="text-xs text-gray-600 block sm:hidden mb-2">
                       <p className="text-sm font-medium">
+                        Subfolder:
+                        <span className="text-sm ml-2 text-black">
+                          {file.subfolder}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="text-xs text-gray-600 block sm:hidden mb-2">
+                      <p className="text-sm font-medium">
                         File Name:
                         <button
                           onClick={() => download(file.blobName, file.fileName)}
@@ -179,9 +197,19 @@ function InputFiles(props) {
                     </div>
 
                     <div className="flex justify-between">
-                      <div className="text-xs text-gray-600 sm:block hidden">
-                        <p className="text-sm font-medium">{file.projectId}</p>
+                      <div className="flex justify-between w-full sm:w-1/5">
+                        <div className="text-xs text-gray-600 sm:block hidden">
+                          <p className="text-sm font-medium">
+                            {file.projectId}
+                          </p>
+                        </div>
+                        <div className="text-xs text-gray-600 sm:block hidden ">
+                          <p className="text-sm font-medium">
+                            {file.subfolder}
+                          </p>
+                        </div>
                       </div>
+
                       <div className="text-xs text-gray-600 sm:block hidden">
                         <button
                           onClick={() => download(file.blobName, file.fileName)}
@@ -255,8 +283,8 @@ const mapStateToProps = (state) => ({
   archives: state.archives,
 });
 const mapActionsToProps = {
-  listArchiveBlobs,
+  listGmmReports,
   sort,
   sortByfileName,
 };
-export default connect(mapStateToProps, mapActionsToProps)(InputFiles);
+export default connect(mapStateToProps, mapActionsToProps)(ReportsForGMM);

@@ -5,7 +5,7 @@ const features = [
   {
     id: 1,
     title: 'Start Project',
-    description: 'Initiate an IFRS 17 project calculation run',
+    description: 'Initiate a new IFRS 17 project',
     href: 'start-project/start',
     icon: (
       <svg
@@ -32,8 +32,8 @@ const features = [
   {
     id: 2,
     title: 'Data Governance',
-    description: 'Access Data Quality status​',
-    href: 'data/profiling',
+    description: 'Access the data quality dashboard and DQ profiling reports​',
+    href: 'data-governance/data-profiling',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ const features = [
     id: 3,
     title: 'Archive',
     description: 'Access Input & Output files and Reports',
-    href: 'archive/file-catalog',
+    href: 'archives/archive',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,13 @@ const features = [
 
 const FeatureCard = ({ feature: { title, description, icon, href } }) => {
   return (
-    <Link to={href}>
+    <Link
+      to={href}
+      onClick={() => {
+        localStorage.setItem('activeTab', href.split('/').pop());
+        console.log(href);
+      }}
+    >
       <div className="text-center p-4 duration-300 transform bg-white hover:bg-skin-base hover:text-skin-muted border rounded shadow-sm hover:-translate-y-2 py-12">
         <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-skin-base">
           {icon}

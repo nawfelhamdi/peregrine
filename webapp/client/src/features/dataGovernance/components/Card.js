@@ -6,7 +6,7 @@ export default function HealthCheckCard({
   return (
     <div
       className={` shadow-sm rounded-md my-2 px-4 py-3 h-30 border-2 ${
-        !health_status
+        health_status
           ? 'border-red-400 bg-red-50'
           : 'border-green-500 bg-green-50'
       }`}

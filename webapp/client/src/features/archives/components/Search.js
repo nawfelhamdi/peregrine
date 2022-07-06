@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { search } from '../actions';
 
-function PrefixSearch(props) {
+function Search(props) {
   const [searchInput, setSearchInput] = useState('');
   const handleSerchBlobs = () => {
     props.search(searchInput);
+    console.log('search');
   };
   return (
     <form className="w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
@@ -56,4 +57,4 @@ const mapStateToProps = (state) => ({
   archives: state.archives,
 });
 const mapActionsToProps = { search };
-export default connect(mapStateToProps, mapActionsToProps)(PrefixSearch);
+export default connect(mapStateToProps, mapActionsToProps)(Search);

@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 
-@Entity({ schema: "hck", name:"health_status_check" })
+@Entity({ schema: "hck", name:"dq_dashboard_health_status" })
 export class Data  {
 
     @PrimaryGeneratedColumn()
@@ -23,7 +23,19 @@ export class Data  {
     distinct: number
 
     @Column()
-    health_status: number
+    health_status: boolean
+
+    @Column()
+    created_by: string
+
+    @CreateDateColumn({type:"datetime2"})
+    created_date: Date
+
+    @Column()
+    last_updated_by: string
+
+    @UpdateDateColumn({type:"datetime2"})
+    last_updated_date: Date
 }
 
 

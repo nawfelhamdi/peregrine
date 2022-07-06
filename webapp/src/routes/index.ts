@@ -3,7 +3,7 @@ import { Router } from "express";
 import projects from "./projects";
 import piplines from "./pipelines";
 import archives from "./archives";
-import data from "./data";
+import data from "./dataGovernance";
 
 
 const router = Router();

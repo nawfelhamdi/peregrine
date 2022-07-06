@@ -17,15 +17,12 @@ import FileCatalog from './features/archives/components/FileCatalog';
 import InputFiles from './features/archives/components/InputFiles';
 import OutputFiles from './features/archives/components/OutputFiles';
 import Reports from './features/archives/components/Reports';
+import ReportsForGMM from './features/archives/components/ReportsForGMM';
 
 // Data Governance
-import Data from './features/data/Index';
-import Profiling from './features/data/components/Profiling';
-import Quality from './features/data/components/Quality';
-
-// Data Governance
-import ReportsOutput from './features/reports/Index';
-import Download from './features/reports/components/Download';
+import DataGovernance from './features/dataGovernance/Index';
+import Profiling from './features/dataGovernance/components/Profiling';
+import Quality from './features/dataGovernance/components/Quality';
 
 function App() {
   return (
@@ -40,18 +37,16 @@ function App() {
             <Route path="run" element={<RunMoodys />} />
             <Route path="validate" element={<Validation />} />
           </Route>
-          <Route path="/archive" element={<Archive />}>
-            <Route path="file-catalog" element={<FileCatalog />} />
+          <Route path="/archives" element={<Archive />}>
+            <Route path="archive" element={<FileCatalog />} />
             <Route path="input-files" element={<InputFiles />} />
             <Route path="output-files" element={<OutputFiles />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="gmm-reports" element={<ReportsForGMM />} />
           </Route>
-          <Route path="/data" element={<Data />}>
-            <Route path="profiling" element={<Profiling />} />
+          <Route path="/data-governance" element={<DataGovernance />}>
+            <Route path="data-profiling" element={<Profiling />} />
             <Route path="quality" element={<Quality />} />
-          </Route>
-          <Route path="/reports" element={<ReportsOutput />}>
-            <Route path="download" element={<Download />} />
           </Route>
         </Routes>
       </HashRouter>

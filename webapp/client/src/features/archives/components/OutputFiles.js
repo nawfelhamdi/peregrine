@@ -10,7 +10,7 @@ function OutputFiles(props) {
   const [container, setContainer] = useState('gmm');
   const [sort, setSort] = useState(false);
   const [sortByfileName, setSortByfileName] = useState(false);
-  const prefix = 'processed';
+  const prefix = 'output/export';
 
   useEffect(() => {
     props.listArchiveBlobs(container, prefix);

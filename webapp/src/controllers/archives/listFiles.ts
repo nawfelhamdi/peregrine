@@ -10,7 +10,6 @@ import { CustomError } from "../../utils/CustomError";
 
 
 export const listFiles = async (req: Request, res: Response, next:NextFunction) => {
-
     try {
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;

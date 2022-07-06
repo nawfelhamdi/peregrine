@@ -1,13 +1,32 @@
 import {
+  LOADING_DATA_PROFILING_FILES,
+  GET_DATA_PROFILING_FILES,
   LOADING_DATA_HEALTH_CHECK,
   GET_DATA_HEALTH_CHECK,
   GET_ERRORS,
   SET_SORT_BY_FILE_NAME,
-  SET_SEARCH,
+  SET_SEARCH_DATA,
 } from './types';
 
 import axios from 'axios';
 
+export const getProfilingFiles = () => (dispatch) => {
+  dispatch({ type: LOADING_DATA_PROFILING_FILES });
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/data/profiling`)
+    .then((res) => {
+      dispatch({
+        type: GET_DATA_PROFILING_FILES,
+        payload: res.data.files,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch({
+        type: GET_ERRORS,
+      });
+    });
+};
 export const getDataHealthCheck = () => (dispatch) => {
   dispatch({ type: LOADING_DATA_HEALTH_CHECK });
   axios
@@ -31,5 +50,5 @@ export const sortByfileName = (sort) => (dispatch) => {
 };
 
 export const search = (searchInput) => (dispatch) => {
-  dispatch({ type: SET_SEARCH, payload: searchInput });
+  dispatch({ type: SET_SEARCH_DATA, payload: searchInput });
 };

@@ -80,6 +80,7 @@ export default function reducer(state = initialState, action) {
           element.fileName === action.payload ||
           element.projectId === action.payload
       );
+      console.log('filter');
       return {
         files: searchedfiles,
       };

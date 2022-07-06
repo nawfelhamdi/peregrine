@@ -53,7 +53,7 @@ function PrefixSearch(props) {
 }
 
 const mapStateToProps = (state) => ({
-  archives: state.archives,
+  dataGovernance: state.dataGovernance,
 });
 const mapActionsToProps = { search };
 export default connect(mapStateToProps, mapActionsToProps)(PrefixSearch);

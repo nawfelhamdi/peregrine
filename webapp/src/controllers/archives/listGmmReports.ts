@@ -9,7 +9,7 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 import { CustomError } from "../../utils/CustomError";
 
 
-export const listArchiveBlobs = async (req: Request, res: Response, next:NextFunction) => {
+export const listGmmReports = async (req: Request, res: Response, next:NextFunction) => {
     try {
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -19,14 +19,15 @@ export const listArchiveBlobs = async (req: Request, res: Response, next:NextFun
         const blobServiceClient = BlobServiceClient.fromConnectionString(
           AZURE_STORAGE_CONNECTION_STRING
         );
-        const containerName = `${req.query.container}`;
+        const containerName = `gmm`;
         const containerClient =  blobServiceClient.getContainerClient(containerName);
             let result: any[]= []
-            let blobs = containerClient.listBlobsFlat({ prefix: `${req.query.prefix}` }); 
+            let blobs = containerClient.listBlobsFlat({ prefix: `output/report` }); 
             for await (const blob of blobs) {
               const item = {
                 fileName: blob.name.split('/').pop(),
-                projectId: blob.name.split('/')[blob.name.split('/').length - 2],
+                projectId: blob.name.split('/')[blob.name.split('/').length - 3],
+                subfolder: blob.name.split('/')[blob.name.split('/').length - 2],
                 createdOn: blob.properties.createdOn,
                 lastModified: blob.properties.lastModified,
                 blobName: blob.name
