@@ -14,8 +14,6 @@ function Sidebar(props) {
     let currentItem = query.pathname.split('/')[1].replace('-', ' ');
     props.setNavigation(navItem, currentItem);
     setActiveTab(localStorage.getItem('activeTab'));
-    // console.log('activeTab' + activeTab);
-    // console.log('TEST' + localStorage.getItem('activeTab'));
   }, [activeTab]);
   const handleSetActiveTab = (activeTab) => {
     setActiveTab(activeTab);

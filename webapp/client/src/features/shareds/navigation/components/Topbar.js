@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Transition } from '@headlessui/react';
-
+import MobileSidebar from './MobileSidebar';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -11,6 +11,7 @@ function Topbar({ currentItem }) {
   return (
     <div className="flex justify-between items-center w-full h-16 px-4 md:px-16 bg-skin-base">
       <div className="flex items-center h-12 space-x-2 md:space-x-4 ">
+        <MobileSidebar />
         <Link to="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +30,7 @@ function Topbar({ currentItem }) {
         </Link>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 text-skin-muted"
+          className="w-6 h-6 text-skin-muted"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -37,13 +38,13 @@ function Topbar({ currentItem }) {
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        <p className="text-white text-lg font-semibold capitalize">
+        <p className="text-white text-sm md:text-lg font-medium md:font-semibold capitalize">
           {currentItem}
         </p>
       </div>
       <ul className="flex items-center space-x-2  md:space-x-4">
         <li>
-          <Link to="#" className="flex items-center justify-center ">
+          <Link to="#" className="hidden md:flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8 text-skin-muted"
@@ -61,7 +62,7 @@ function Topbar({ currentItem }) {
           </Link>
         </li>
         <li>
-          <Link to="#" className="flex items-center justify-center ">
+          <Link to="#" className="hidden md:flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-8 w-8 text-skin-muted"
@@ -81,11 +82,11 @@ function Topbar({ currentItem }) {
         <li>
           <Menu as="div" className="ml-3 relative">
             <div>
-              <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+              <Menu.Button className="bg-[#555555] p-1 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                 <span className="sr-only">Open user menu</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-skin-muted"
+                  className="w-8 h-8 text-skin-base"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >

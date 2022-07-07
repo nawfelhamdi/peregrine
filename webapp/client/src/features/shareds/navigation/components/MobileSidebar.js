@@ -1,28 +1,33 @@
-import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import React, { Fragment, useState, useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 
 import { Disclosure, Transition, Dialog } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 
 import { connect } from 'react-redux';
-
-function styleNavItem(current) {
-  let navItemStyle = classNames({
-    'flex items-center text-sm py-4 px-6 mr-8 h-12 overflow-hidden text-ellipsis whitespace-nowrap rounded-r-md hover:bg-skin-fill hover:shadow-md hover:text-white transition duration-300 ease-in-out': true,
-    'bg-skin-fill text-white transition duration-300 ease-in-out': current,
-    'text-[#848F97]': !current,
-  });
-  return navItemStyle;
-}
+import { setNavigation } from '../actions';
 
 function MobileSidebar(props) {
   const [isShowing, setIsShowing] = useState(false);
+  const [activeTab, setActiveTab] = useState('');
+  let query = useLocation();
 
+  useEffect(() => {
+    let navItem = query.pathname.split('/')[1].replace('-', '');
+    let currentItem = query.pathname.split('/')[1].replace('-', ' ');
+    props.setNavigation(navItem, currentItem);
+    setActiveTab(localStorage.getItem('activeTab'));
+  }, [activeTab]);
+
+  const handleSetActiveTab = (activeTab) => {
+    setActiveTab(activeTab);
+    localStorage.setItem('activeTab', activeTab.split('/').pop());
+    setIsShowing(false);
+  };
   return (
-    <div>
-      <div className=" flex md:hidden">
-        <Disclosure.Button className="p-1 rounded-md bg-[#E5E5E5] text-skin-base hover:text-skin-inverted hover:bg-skin-fill transition duration-300 ease-in-out">
+    <Disclosure>
+      <div className="flex lg:hidden">
+        <Disclosure.Button className="p-1 rounded-md bg-[#555555] text-skin-base hover:text-skin-inverted hover:bg-skin-fill transition duration-300 ease-in-out">
           <MenuIcon
             className="block h-8 w-8"
             onClick={() => setIsShowing((isShowing) => !isShowing)}
@@ -56,11 +61,11 @@ function MobileSidebar(props) {
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <div className="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
-              <div className="px-4 pt-5 pb-2 flex">
+            <div className="relative max-w-xs w-full bg-skin-base shadow-xl pb-12 flex flex-col overflow-y-auto">
+              <div className="px-4 pt-5 pb-2 flex justify-end">
                 <button
                   type="button"
-                  className="p-1 rounded-md bg-[#E5E5E5] text-skin-base hover:text-skin-inverted hover:bg-skin-fill transition duration-300 ease-in-out"
+                  className="p-1 rounded-md bg-[#555555] text-skin-base hover:text-skin-inverted hover:bg-skin-fill transition duration-300 ease-in-out"
                   onClick={() => setIsShowing(false)}
                 >
                   <XIcon className="h-8 w-8" />
@@ -68,13 +73,15 @@ function MobileSidebar(props) {
               </div>
               <ul className="relative pt-5">
                 {props.sidebarItems.navigation.map((item) => (
-                  <li className="relative my-5" key={item.title}>
+                  <li className="relative my-5 px-4" key={item.title}>
                     <Link
-                      to={item.href}
-                      className={styleNavItem(
-                        props.dashboardNav.currentItem === item.title
-                      )}
-                      onClick={() => props.setCurrentNavItem(item.title)}
+                      to={item.url}
+                      className={`${
+                        activeTab === item.url
+                          ? 'text-skin-base border-2 transition animation-300 border-[#FFE416]'
+                          : 'text-white'
+                      } flex items-center flex-col justify-center text-lg font-semibold rounded-md w-full h-12 bg-[#555555] px-2`}
+                      onClick={() => handleSetActiveTab(item.url)}
                     >
                       <span className="text-lg font-medium">{item.title}</span>
                     </Link>
@@ -85,12 +92,12 @@ function MobileSidebar(props) {
           </Transition.Child>
         </Dialog>
       </Transition.Root>
-    </div>
+    </Disclosure>
   );
 }
 
 const mapStateToProps = (state) => ({
   sidebarItems: state.sidebarItems,
 });
-const mapActionsToProps = {};
+const mapActionsToProps = { setNavigation };
 export default connect(mapStateToProps, mapActionsToProps)(MobileSidebar);
