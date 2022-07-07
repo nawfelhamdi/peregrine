@@ -2,7 +2,7 @@
 	"name": "ui_trigger_data_profiling",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
