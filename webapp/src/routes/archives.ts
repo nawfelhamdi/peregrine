@@ -1,7 +1,9 @@
 import { Router } from "express";
 
-import { listDiretories } from "../controllers/archives/listDiretories";
-import { listFiles } from "../controllers/archives/listFiles";
+import { getArchives } from "../controllers/archives/getArchives";
+import { getArchiveFiles } from "../controllers/archives/getArchiveFiles";
+import { getFiles } from "../controllers/archives/getFiles";
+
 import { listArchiveBlobs } from "../controllers/archives/listArchiveBlobs";
 import { listGmmReports } from "../controllers/archives/listGmmReports";
 
@@ -9,9 +11,10 @@ import { listGmmReports } from "../controllers/archives/listGmmReports";
 
 const router = Router();
 
-router.get("/", listArchiveBlobs);
-router.get("/directories", listDiretories);
-router.get("/directories/files/:directoryId", listFiles);
+router.get("/archive", getArchives);
+router.get("/archive/:directoryId", getArchiveFiles);
+router.get("/files", getFiles);
+// router.get("/", listArchiveBlobs);
 router.get("/gmm-reports", listGmmReports);
 
 export default router;

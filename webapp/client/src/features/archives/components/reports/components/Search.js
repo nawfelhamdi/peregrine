@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { search } from '../actions';
+import { searchFiles } from '../../../actions';
 
 function Search(props) {
   const [searchInput, setSearchInput] = useState('');
   const handleSerchBlobs = () => {
-    props.search(searchInput);
-    setSearchInput('');
+    props.searchFiles(searchInput);
   };
   return (
-    <form className="w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
+    <form className="mr-56 w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
       <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
         Search
       </label>
@@ -34,7 +33,7 @@ function Search(props) {
           type="search"
           id="default-search"
           className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 "
-          placeholder="Search by file name"
+          placeholder="Search by project ID or by file name"
           required
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
@@ -51,7 +50,7 @@ function Search(props) {
 }
 
 const mapStateToProps = (state) => ({
-  dataGovernance: state.dataGovernance,
+  archives: state.archives,
 });
-const mapActionsToProps = { search };
+const mapActionsToProps = { searchFiles };
 export default connect(mapStateToProps, mapActionsToProps)(Search);

@@ -4,8 +4,10 @@ import {
   LOADING_DATA_HEALTH_CHECK,
   GET_DATA_HEALTH_CHECK,
   // GET_ERRORS,
-  SET_SORT_BY_FILE_NAME,
+  SET_SORT_PROFILING_DATA_FILES,
   SET_SEARCH_DATA,
+  SET_SORT_BY_UPDATED_DATE,
+  SET_SORT_BY_CREATED_DATE,
 } from './types';
 
 const initialState = {
@@ -40,28 +42,32 @@ export default function reducer(state = initialState, action) {
         loading: false,
         columns: action.payload,
       };
-    case SET_SORT_BY_FILE_NAME:
-      let orderfiles = state.files.sort((a, b) => {
-        if (action.payload) {
-          if (a.fileName < b.fileName) {
-            return -1;
-          }
-          if (a.fileName > b.fileName) {
-            return 1;
-          }
-          return 0;
-        } else {
-          if (a.fileName < b.fileName) {
-            return 1;
-          }
-          if (a.fileName > b.fileName) {
-            return -1;
-          }
-          return 0;
+    case SET_SORT_PROFILING_DATA_FILES:
+      let orderfiles = state.profilingfiles.sort((a, b) => {
+        if (a.fileName.toLowerCase() < b.fileName.toLowerCase()) {
+          return -1;
         }
+        if (a.fileName.toLowerCase() > b.fileName.toLowerCase()) {
+          return 1;
+        }
+        return 0;
       });
       return {
-        files: orderfiles,
+        profilingfiles: orderfiles,
+      };
+    case SET_SORT_BY_UPDATED_DATE:
+      let orderfilesByUpadtedDate = state.profilingfiles.sort((a, b) => {
+        return -1;
+      });
+      return {
+        profilingfiles: orderfilesByUpadtedDate,
+      };
+    case SET_SORT_BY_CREATED_DATE:
+      let orderfilesByCreatedDate = state.profilingfiles.sort((a, b) => {
+        return -1;
+      });
+      return {
+        profilingfiles: orderfilesByCreatedDate,
       };
     case SET_SEARCH_DATA:
       let searchedProfilingfiles = state.profilingfiles.filter(

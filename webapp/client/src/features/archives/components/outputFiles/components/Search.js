@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { search } from '../actions';
+import { searchFiles } from '../../../actions';
 
 function Search(props) {
   const [searchInput, setSearchInput] = useState('');
   const handleSerchBlobs = () => {
-    props.search(searchInput);
-    console.log('search');
+    props.searchFiles(searchInput);
   };
   return (
-    <form className="w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
-      <label
-        for="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
-      >
+    <form className="mr-56 w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
+      <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
         Search
       </label>
       <div className="relative">
@@ -26,9 +22,9 @@ function Search(props) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             ></path>
           </svg>
@@ -56,5 +52,5 @@ function Search(props) {
 const mapStateToProps = (state) => ({
   archives: state.archives,
 });
-const mapActionsToProps = { search };
+const mapActionsToProps = { searchFiles };
 export default connect(mapStateToProps, mapActionsToProps)(Search);

@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { getArchiveDirectories } from '../actions';
+import { searchFiles } from '../../../actions';
 
-function SearchFileCatalog(props) {
-  const [directory, setDirectory] = useState('');
-  const handleSearch = () => {
-    props.getArchiveDirectories(props.container, directory);
-    setDirectory('');
+function Search(props) {
+  const [searchInput, setSearchInput] = useState('');
+  const handleSerchBlobs = () => {
+    props.searchFiles(searchInput);
   };
   return (
-    <form className="w-full md:max-w-xl" onSubmit={handleSearch}>
-      <label
-        for="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
-      >
+    <form className="mr-56 w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
+      <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
         Search
       </label>
       <div className="relative">
@@ -26,9 +22,9 @@ function SearchFileCatalog(props) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             ></path>
           </svg>
@@ -37,10 +33,10 @@ function SearchFileCatalog(props) {
           type="search"
           id="default-search"
           className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 "
-          placeholder="Search by project ID"
+          placeholder="Search by project ID or by file name"
           required
-          value={directory}
-          onChange={(e) => setDirectory(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
         />
         <button
           type="submit"
@@ -56,7 +52,5 @@ function SearchFileCatalog(props) {
 const mapStateToProps = (state) => ({
   archives: state.archives,
 });
-const mapActionsToProps = {
-  getArchiveDirectories,
-};
-export default connect(mapStateToProps, mapActionsToProps)(SearchFileCatalog);
+const mapActionsToProps = { searchFiles };
+export default connect(mapStateToProps, mapActionsToProps)(Search);

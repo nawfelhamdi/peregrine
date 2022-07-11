@@ -9,7 +9,7 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 import { CustomError } from "../../utils/CustomError";
 
 
-export const listFiles = async (req: Request, res: Response, next:NextFunction) => {
+export const getArchiveFiles = async (req: Request, res: Response, next:NextFunction) => {
     try {
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -21,17 +21,24 @@ export const listFiles = async (req: Request, res: Response, next:NextFunction) 
         );
         const containerName = `${req.query.container}`;
         const containerClient =  blobServiceClient.getContainerClient(containerName);
-            let files: any[]= []
+            let archivefiles: any[]= []
             let blobs = containerClient.listBlobsFlat({ prefix: `archive/processed/${req.params.directoryId}` }); 
             for await (const blob of blobs) {
-              files.push(blob)
+              const item = {
+                fileName: blob.name.split('/').pop(),
+                createdOn: blob.properties.createdOn,
+                lastModified: blob.properties.lastModified,
+                blobName: blob.name
+
+              }
+              archivefiles.push(item)
             }
           
-            return res.status(201).json({message:'success',files  });
+            return res.status(201).json({message:'success',archivefiles  });
         
     } catch (err) {
       const customError = new CustomError(
-        "Can't list archives blobs",
+        "Can't list archive files",
         500,
         err,
       );

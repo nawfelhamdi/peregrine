@@ -4,8 +4,10 @@ import {
   LOADING_DATA_HEALTH_CHECK,
   GET_DATA_HEALTH_CHECK,
   GET_ERRORS,
-  SET_SORT_BY_FILE_NAME,
+  SET_SORT_PROFILING_DATA_FILES,
   SET_SEARCH_DATA,
+  SET_SORT_BY_UPDATED_DATE,
+  SET_SORT_BY_CREATED_DATE,
 } from './types';
 
 import axios from 'axios';
@@ -46,7 +48,25 @@ export const getDataHealthCheck = () => (dispatch) => {
 };
 
 export const sortByfileName = (sort) => (dispatch) => {
-  dispatch({ type: SET_SORT_BY_FILE_NAME, payload: sort });
+  if (!sort) {
+    dispatch({ type: SET_SORT_PROFILING_DATA_FILES, payload: sort });
+  } else {
+    dispatch(getProfilingFiles());
+  }
+};
+export const sortByCreatedDate = (sort) => (dispatch) => {
+  if (!sort) {
+    dispatch({ type: SET_SORT_BY_CREATED_DATE, payload: sort });
+  } else {
+    dispatch(getProfilingFiles());
+  }
+};
+export const sortByUpdatedDate = (sort) => (dispatch) => {
+  if (!sort) {
+    dispatch({ type: SET_SORT_BY_UPDATED_DATE, payload: sort });
+  } else {
+    dispatch(getProfilingFiles());
+  }
 };
 
 export const search = (searchInput) => (dispatch) => {

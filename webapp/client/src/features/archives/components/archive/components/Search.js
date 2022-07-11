@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { search } from '../actions';
+import { searchAchives } from '../../../actions';
 
 function Search(props) {
-  const [searchInput, setSearchInput] = useState('');
-  const handleSerchBlobs = () => {
-    props.search(searchInput);
-    setSearchInput('');
+  const [directory, setDirectory] = useState('');
+  const handleSearchAchives = () => {
+    props.searchAchives(directory);
+    setDirectory('');
   };
   return (
-    <form className="w-full md:max-w-xl" onSubmit={handleSerchBlobs}>
+    <form className="mr-56 w-full md:max-w-xl" onSubmit={handleSearchAchives}>
       <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
         Search
       </label>
       <div className="relative">
-        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+        <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none md:mr-2">
           <svg
             className="w-5 h-5 text-gray-500 dark:text-gray-400"
             fill="none"
@@ -33,11 +33,11 @@ function Search(props) {
         <input
           type="search"
           id="default-search"
-          className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 "
-          placeholder="Search by file name"
+          className="block p-4 pl-10 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 "
+          placeholder="Search by project ID"
           required
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          value={directory}
+          onChange={(e) => setDirectory(e.target.value)}
         />
         <button
           type="submit"
@@ -51,7 +51,9 @@ function Search(props) {
 }
 
 const mapStateToProps = (state) => ({
-  dataGovernance: state.dataGovernance,
+  archives: state.archives,
 });
-const mapActionsToProps = { search };
+const mapActionsToProps = {
+  searchAchives,
+};
 export default connect(mapStateToProps, mapActionsToProps)(Search);

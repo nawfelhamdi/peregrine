@@ -12,17 +12,17 @@ import Preparation from './features/startProject/components/Preparation';
 import RunMoodys from './features/startProject/components/RunMoodys';
 import Validation from './features/startProject/components/Validation';
 // Archive feature
-import Archive from './features/archives/Index';
-import FileCatalog from './features/archives/components/FileCatalog';
-import InputFiles from './features/archives/components/InputFiles';
-import OutputFiles from './features/archives/components/OutputFiles';
-import Reports from './features/archives/components/Reports';
-import ReportsForGMM from './features/archives/components/ReportsForGMM';
+import Archives from './features/archives/Index';
+import Archive from './features/archives/components/archive/Index';
+import InputFiles from './features/archives/components/inputFiles/Index';
+import OutputFiles from './features/archives/components/outputFiles/Index';
+import PaaReports from './features/archives/components/reports/PaaReports';
+import GmmReports from './features/archives/components/reports/GmmReports';
 
 // Data Governance
 import DataGovernance from './features/dataGovernance/Index';
 import Profiling from './features/dataGovernance/components/Profiling';
-import Quality from './features/dataGovernance/components/Quality';
+import QualityStatus from './features/dataGovernance/components/QualityStatus';
 
 function App() {
   return (
@@ -37,16 +37,16 @@ function App() {
             <Route path="run" element={<RunMoodys />} />
             <Route path="validate" element={<Validation />} />
           </Route>
-          <Route path="/archives" element={<Archive />}>
-            <Route path="archive" element={<FileCatalog />} />
+          <Route path="/archives" element={<Archives />}>
+            <Route path="archive" element={<Archive />} />
             <Route path="input-files" element={<InputFiles />} />
             <Route path="output-files" element={<OutputFiles />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="gmm-reports" element={<ReportsForGMM />} />
+            <Route path="paa-reports" element={<PaaReports />} />
+            <Route path="gmm-reports" element={<GmmReports />} />
           </Route>
           <Route path="/data-governance" element={<DataGovernance />}>
             <Route path="data-profiling" element={<Profiling />} />
-            <Route path="quality" element={<Quality />} />
+            <Route path="quality" element={<QualityStatus />} />
           </Route>
         </Routes>
       </HashRouter>

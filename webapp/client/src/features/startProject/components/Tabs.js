@@ -25,14 +25,14 @@ function Tabs(props) {
                 ? 'start'
                 : '#'
             }
-            className="flex flex-col lg:flex-row py-2 items-center h-16 lg:h-12  px-6 lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
+            className="flex flex-col lg:flex-row py-2 items-center h-14 lg:h-12  px-3 text-sm font-medium lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
             style={({ isActive }) =>
               isActive && props.project.navigationTabs.indexOf('start') !== -1
                 ? activeStyle
                 : notActiveStyle
             }
           >
-            <span className="px-2 lg:mr-2  rounded-full text-lg font-medium lg:text-lg lg:font-bold transition duration-300 rounded-full bg-white">
+            <span className="px-2 h-5 w-5 md:h-8 md:w-8 lg:mr-2  rounded-full  font-medium text-sm md:text-lg lg:font-bold transition duration-300 rounded-full bg-white flex items-center justify-center">
               1
             </span>
             Start
@@ -45,7 +45,7 @@ function Tabs(props) {
                 ? 'preparation'
                 : '#'
             }
-            className="flex flex-col lg:flex-row py-2 items-center h-16 lg:h-12  px-6 lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
+            className="flex flex-col lg:flex-row py-2 items-center h-14 lg:h-12  px-3 text-sm font-medium lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
             style={({ isActive }) =>
               isActive &&
               props.project.navigationTabs.indexOf('preparation') !== -1
@@ -53,7 +53,7 @@ function Tabs(props) {
                 : notActiveStyle
             }
           >
-            <span className="px-2 lg:mr-2  rounded-full text-lg font-medium lg:text-lg lg:font-bold transition duration-300 rounded-full bg-white">
+            <span className="px-2 h-5 w-5 md:h-8 md:w-8 lg:mr-2  rounded-full  font-medium text-sm md:text-lg lg:font-bold transition duration-300 rounded-full bg-white flex items-center justify-center">
               2
             </span>
             Preparation
@@ -64,14 +64,14 @@ function Tabs(props) {
             to={
               props.project.navigationTabs.indexOf('run') !== -1 ? 'run' : '#'
             }
-            className="whitespace-nowrap flex flex-col lg:flex-row py-2 items-center h-16 lg:h-12  px-6 lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
+            className="flex flex-col lg:flex-row py-2 items-center h-14 lg:h-12  px-3 text-sm font-medium lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md"
             style={({ isActive }) =>
               isActive && props.project.navigationTabs.indexOf('run') !== -1
                 ? activeStyle
                 : notActiveStyle
             }
           >
-            <span className="px-2 lg:mr-2  rounded-full text-lg font-medium text-lg font-medium lg:font-bold transition duration-300 rounded-full bg-white">
+            <span className="px-2 h-5 w-5 md:h-8 md:w-8 lg:mr-2  rounded-full  font-medium text-sm md:text-lg lg:font-bold transition duration-300 rounded-full bg-white flex items-center justify-center">
               3
             </span>
             Run Moody's RI
@@ -89,8 +89,8 @@ function Tabs(props) {
               : notActiveStyle
           }
         >
-          <button className="flex flex-col lg:flex-row py-2 items-center h-16 lg:h-12 px-6 lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md">
-            <span className="px-2 lg:mr-2  rounded-full text-lg font-medium lg:text-lg lg:font-bold transition duration-300 rounded-full bg-white">
+          <button className="flex flex-col lg:flex-row py-2 items-center h-14 lg:h-12  px-3 text-sm font-medium lg:font-bold tracking-wide transition duration-200 rounded-md shadow-md">
+            <span className="px-2 h-5 w-5 md:h-8 md:w-8 lg:mr-2  rounded-full  font-medium text-sm md:text-lg lg:font-bold transition duration-300 rounded-full bg-white flex items-center justify-center">
               4
             </span>
             Validate

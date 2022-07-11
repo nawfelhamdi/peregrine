@@ -10,6 +10,12 @@ import { CustomError } from "../../utils/CustomError";
 
 
 export const listArchiveBlobs = async (req: Request, res: Response, next:NextFunction) => {
+  // console.log(typeof(req.query.prefix))
+  let test = 'undefined'
+  console.log(typeof(test))
+  console.log(test?'pass': 'no')
+  const prefix = req.query.prefix !== undefined?`${req.query.prefix}`:'raw';
+  // console.log(prefix)
     try {
         const AZURE_STORAGE_CONNECTION_STRING = 
         process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -19,10 +25,11 @@ export const listArchiveBlobs = async (req: Request, res: Response, next:NextFun
         const blobServiceClient = BlobServiceClient.fromConnectionString(
           AZURE_STORAGE_CONNECTION_STRING
         );
-        const containerName = `${req.query.container}`;
+        const containerName = req.query.container !== undefined ?`${req.query.container}`:'gmm';
+        // const prefix = req.query.prefix !== undefined?`${req.query.prefix}`:'/raw';
         const containerClient =  blobServiceClient.getContainerClient(containerName);
             let result: any[]= []
-            let blobs = containerClient.listBlobsFlat({ prefix: `${req.query.prefix}` }); 
+            let blobs = containerClient.listBlobsFlat({ prefix: `${prefix}` }); 
             for await (const blob of blobs) {
               const item = {
                 fileName: blob.name.split('/').pop(),

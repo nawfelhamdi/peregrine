@@ -19,7 +19,7 @@ export default function Header() {
               alt="Peregrine"
             />
           </Link>
-          <h1 className="max-w-lg  font-sans text-3xl font-bold leading-none tracking-tight text-skin-muted sm:text-4xl w-full mx-auto text-center">
+          <h1 className="max-w-lg  font-sans text-xl font-medium md:text-2xl md:font-bold leading-none tracking-tight text-skin-muted sm:text-4xl w-full mx-auto text-center">
             Peregrine
           </h1>
           <ul className="flex items-center space-x-4 md:space-x-8 ">
@@ -44,7 +44,7 @@ export default function Header() {
             <li>
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-skin-inverted bg-skin-button-accent transition duration-200 rounded shadow-md hover:opacity-80 focus:shadow-outline focus:outline-none"
+                className="inline-flex items-center justify-center h-10 md:h-12 px-4 md:px-6 font-medium tracking-wide text-skin-inverted bg-skin-button-accent transition duration-200 rounded shadow-md hover:opacity-80 focus:shadow-outline focus:outline-none"
               >
                 Login
               </Link>

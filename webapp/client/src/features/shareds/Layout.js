@@ -8,7 +8,7 @@ export default function Layout() {
     <div className="flex h-full bg-white relative">
       <Sidebar />
       <div className="flex-1">
-        <div className="w-full relative">
+        <div className="w-full">
           <div className="w-full relative z-10">
             <Topbar />
           </div>

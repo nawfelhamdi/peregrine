@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { saveAs } from 'file-saver';
 import Search from './Search';
 import { connect } from 'react-redux';
-import { getProfilingFiles, sortByfileName } from '../actions';
+import {
+  getProfilingFiles,
+  sortByfileName,
+  sortByCreatedDate,
+  sortByUpdatedDate,
+} from '../actions';
 import moment from 'moment';
 const { BlobServiceClient } = require('@azure/storage-blob');
 
 function Profiling(props) {
   const [sortByfileName, setSortByfileName] = useState(false);
+  const [sortByCreatedDate, setSortByCreatedDate] = useState(false);
+  const [sortByUpdatedDate, setSortByUpdatedDate] = useState(false);
   useEffect(() => {
     props.getProfilingFiles();
   }, []);
@@ -48,11 +55,25 @@ function Profiling(props) {
   }
   const handleSortByFileName = () => {
     setSortByfileName(!sortByfileName);
+    setSortByCreatedDate(false);
+    setSortByUpdatedDate(false);
     props.sortByfileName(sortByfileName);
+  };
+  const handleSortByCreatedDate = () => {
+    setSortByCreatedDate(!sortByCreatedDate);
+    setSortByfileName(false);
+    setSortByUpdatedDate(false);
+    props.sortByCreatedDate(sortByCreatedDate);
+  };
+  const handleSortByUpdatedDate = () => {
+    setSortByUpdatedDate(!sortByUpdatedDate);
+    setSortByfileName(false);
+    setSortByCreatedDate(false);
+    props.sortByUpdatedDate(sortByUpdatedDate);
   };
 
   return (
-    <div className="px-4 py-16 md:px-16 lg:py-20">
+    <div className="px-4 py-16 md:px-16 py-24">
       <div className="flex justify-between items-start mb-8">
         <Search />
       </div>
@@ -63,7 +84,9 @@ function Profiling(props) {
             <div className="text-xs text-gray-600 flex items-center justify-center">
               <p className="text-sm font-medium">File Name</p>
               <button
-                className="flex items-center justify-center w-8 h-8 bg-white border rounded-full mx-2"
+                className={`flex items-center justify-center w-8 h-8 border rounded-full mx-2 ${
+                  sortByfileName ? 'bg-skin-button-accent' : 'bg-white'
+                }`}
                 onClick={() => handleSortByFileName()}
               >
                 <svg
@@ -85,11 +108,57 @@ function Profiling(props) {
               </button>
             </div>
             <div className="flex justify-between w-full sm:w-1/3">
-              <div className="text-xs text-gray-600">
+              <div className="text-xs text-gray-600 flex items-center justify-center">
                 <p className="text-sm font-medium">Last Modified At</p>
+                <button
+                  className={`flex items-center justify-center w-8 h-8 border rounded-full mx-2 ${
+                    sortByUpdatedDate ? 'bg-skin-button-accent' : 'bg-white'
+                  }`}
+                  onClick={() => handleSortByUpdatedDate()}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
+                      sortByUpdatedDate ? 'transform rotate-180' : ''
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </button>
               </div>
-              <div className="text-xs text-gray-600 ">
+              <div className="text-xs text-gray-600 flex items-center justify-center">
                 <p className="text-sm font-medium float-left">Created At</p>
+                <button
+                  className={`flex items-center justify-center w-8 h-8 border rounded-full mx-2 ${
+                    sortByCreatedDate ? 'bg-skin-button-accent' : 'bg-white'
+                  }`}
+                  onClick={() => handleSortByCreatedDate()}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`w-4 h-4 text-gray-600 transition-transform duration-200  ${
+                      sortByCreatedDate ? 'transform rotate-180' : ''
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </button>
               </div>
               <div className="text-xs text-gray-600 ">
                 <p className="text-sm font-medium float-left">Download</p>
@@ -107,12 +176,12 @@ function Profiling(props) {
                     key={index}
                     className="h-30 sm:h-12 px-4 py-3 border-b border-[#EAEAF2]"
                   >
-                    <div className="text-xs text-gray-600 block sm:hidden mb-2">
-                      <p className="text-sm font-medium">
+                    <div className="text-xs block sm:hidden mb-2">
+                      <p className="text-sm text-gray-600 font-medium">
                         File Name:
                         <button
                           onClick={() => download(file.fileName)}
-                          className="text-sm ml-2 text-black underline flex justify-between w-full"
+                          className="text-sm underline text-[#1996fc] flex justify-between w-full"
                         >
                           <span> {file.fileName}</span>
                           <div className="flex items-center justify-center items-center w-5 h-5  rounded-full bg-[#1996fc]">
@@ -209,5 +278,7 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
   getProfilingFiles,
   sortByfileName,
+  sortByCreatedDate,
+  sortByUpdatedDate,
 };
 export default connect(mapStateToProps, mapActionsToProps)(Profiling);

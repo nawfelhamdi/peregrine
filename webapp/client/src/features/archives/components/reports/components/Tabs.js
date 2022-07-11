@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
 import { useLocation, Link } from 'react-router-dom';
 
 export default function ReportsTabs() {
-  const [active, setActiveTa] = useState('');
+  const [active, setActiveTab] = useState('');
   let query = useLocation();
   useEffect(() => {
-    setActiveTa(query.pathname);
-    console.log(query.pathname);
+    setActiveTab(query.pathname);
   }, []);
   return (
     <div className="flex relative z-90">
@@ -22,9 +20,9 @@ export default function ReportsTabs() {
         </Link>
 
         <Link
-          to="/archives/reports"
+          to="/archives/paa-reports"
           className={`${
-            active === '/archives/reports' ? 'bg-[#ffe600]' : 'bg-[#cccccc]'
+            active === '/archives/paa-reports' ? 'bg-[#ffe600]' : 'bg-[#cccccc]'
           } text-[#333333] flex items-center py-2 items-center h-12 px-4 md:px-8 font-bold tracking-wide transition duration-200 rounded-md shadow-md `}
         >
           PAA
