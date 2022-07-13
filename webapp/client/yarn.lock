@@ -86,6 +86,23 @@
   dependencies:
     "tslib" "^2.2.0"
 
+"@azure/msal-browser@^2.27.0":
+  "integrity" "sha512-PyATq2WvK+x32waRqqikym8wvn939iO9UhpFqhLwitNrfLa3PHUgJuuI9oLSQOS3/UzjYb8aqN+XzchU3n/ZuQ=="
+  "resolved" "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-2.27.0.tgz"
+  "version" "2.27.0"
+  dependencies:
+    "@azure/msal-common" "^7.1.0"
+
+"@azure/msal-common@^7.1.0":
+  "integrity" "sha512-WyfqE5mY/rggjqvq0Q5DxLnA33KSb0vfsUjxa95rycFknI03L5GPYI4HTU9D+g0PL5TtsQGnV3xzAGq9BFCVJQ=="
+  "resolved" "https://registry.npmjs.org/@azure/msal-common/-/msal-common-7.1.0.tgz"
+  "version" "7.1.0"
+
+"@azure/msal-react@^1.4.3":
+  "integrity" "sha512-xAdAXDn7ppy+dZCcpqoqJq/wJOB9MxPDhB2p50rkiIQfxCzxCt7rS7gskrOSlq2qYFUebJlOE0RkAk3DO6Uq7g=="
+  "resolved" "https://registry.npmjs.org/@azure/msal-react/-/msal-react-1.4.3.tgz"
+  "version" "1.4.3"
+
 "@azure/storage-blob@^12.10.0":
   "integrity" "sha512-FBEPKGnvtQJS8V8Tg1P9obgmVD9AodrIfwtwhBpsjenClhFyugMp3HPJY0tF7rInUB/CivKBCbnQKrUnKxqxzw=="
   "resolved" "https://registry.npmjs.org/@azure/storage-blob/-/storage-blob-12.10.0.tgz"
@@ -8094,7 +8111,7 @@
   optionalDependencies:
     "fsevents" "^2.3.2"
 
-"react@*", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.0.0", "react@^18.1.0", "react@>= 16", "react@>=16.8", "react@>=16.8.0":
+"react@*", "react@^16 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^18.0.0", "react@^18.1.0", "react@>= 16", "react@>=16.8", "react@>=16.8.0":
   "integrity" "sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   "version" "18.1.0"

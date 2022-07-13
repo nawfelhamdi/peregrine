@@ -4,10 +4,18 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Transition } from '@headlessui/react';
 import MobileSidebar from './MobileSidebar';
+import { useMsal } from '@azure/msal-react';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 function Topbar({ currentItem }) {
+  const { instance, accounts } = useMsal();
+  const handleLogout = () => {
+    instance.logoutPopup({
+      postLogoutRedirectUri: '/',
+      mainWindowRedirectUri: '/',
+    });
+  };
   return (
     <div className="fixed w-full top-0 left-0 pl-0 lg:pl-56">
       <div className="flex justify-between items-center w-full h-16 px-4 md:px-16 bg-skin-base">
@@ -112,7 +120,7 @@ function Topbar({ currentItem }) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <Menu.Item>
                     {({ active }) => (
                       <Link
@@ -122,21 +130,24 @@ function Topbar({ currentItem }) {
                           'block px-4 py-2 text-sm text-gray-700'
                         )}
                       >
-                        Your Profile
+                        <p className="font-bold">{accounts[0].name}</p>
+                        <p className="font-medium text-xs">
+                          {accounts[0].username}
+                        </p>
                       </Link>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <Link
-                        to="#"
+                      <button
+                        onClick={() => handleLogout()}
                         className={classNames(
                           active ? 'bg-gray-100' : '',
-                          'block px-4 py-2 text-sm text-gray-700'
+                          'block px-4 py-2 text-sm text-gray-700  w-full text-left'
                         )}
                       >
                         Sign out
-                      </Link>
+                      </button>
                     )}
                   </Menu.Item>
                 </Menu.Items>

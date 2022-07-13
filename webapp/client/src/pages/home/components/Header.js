@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
+import SignInButton from '../../auth/components/SignInButton';
+import ProfileMenu from '../../auth/components/ProfileMenu';
+import { useIsAuthenticated } from '@azure/msal-react';
 
 export default function Header() {
+  const isAuthenticated = useIsAuthenticated();
+
   return (
     <div className="shadow-md bg-skin-base">
       <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
@@ -41,14 +46,7 @@ export default function Header() {
                 </svg>
               </Link>
             </li>
-            <li>
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center h-10 md:h-12 px-4 md:px-6 font-medium tracking-wide text-skin-inverted bg-skin-button-accent transition duration-200 rounded shadow-md hover:opacity-80 focus:shadow-outline focus:outline-none"
-              >
-                Login
-              </Link>
-            </li>
+            <li>{isAuthenticated ? <ProfileMenu /> : <SignInButton />}</li>
           </ul>
         </div>
       </div>

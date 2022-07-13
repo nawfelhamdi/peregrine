@@ -1,13 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import Footer from '../../shareds/Footer';
 import logo from '../../assets/logo.png';
-import Main from './components/Main';
+import { connect } from 'react-redux';
 
-export default function Auth() {
+// import Main from './components/Main';
+import SignInButton from './components/SignInButton';
+import { useIsAuthenticated } from '@azure/msal-react';
+
+function Auth(props) {
+  const isAuthenticated = useIsAuthenticated();
+
   return (
     <>
+      {!isAuthenticated ? null : <Navigate to={props.auth.locationPath} />}
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 mb-28">
         <div className="max-w-md w-full space-y-8">
           <div>
@@ -24,15 +31,27 @@ export default function Auth() {
               />
             </Link>
 
-            <h2 className="mt-6 text-center text-md md:text-lg text-medium md:font-semibold text-gray-900">
+            {/* <h2 className="mt-6 text-center text-md md:text-lg text-medium md:font-semibold text-gray-900">
               Peregrine is a cloud-based aggregation and automation platform
-              designed to integrate with your architecture
-            </h2>
+              designed to integrate with your architecture.
+            </h2> */}
+            <p className="text-base text-gray-700 md:text-lg my-12 text-center">
+              Please sign-in to access the Peregrine Features
+            </p>
+            <div className="mt-12 flex justify-center">
+              <SignInButton />
+            </div>
           </div>
-          <Main />
+          {/* <Main /> */}
         </div>
       </div>
       <Footer />
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, null)(Auth);
