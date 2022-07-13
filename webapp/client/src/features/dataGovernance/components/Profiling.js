@@ -19,15 +19,14 @@ function Profiling(props) {
     props.getProfilingFiles();
   }, []);
 
-  const account = 'peregrineblob';
-  const sas =
-    '?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupitfx&se=2022-07-30T18:00:17Z&st=2022-07-05T10:00:17Z&spr=https&sig=%2F4m%2BnV9irJZpPUPIg71P5sarSd%2FXRsfIe%2B%2BHLhMorwQ%3D';
+  const account = process.env.REACT_APP_ACCOUNT;
+  const sas = process.env.REACT_APP_SAS;
 
   const blobServiceClient = new BlobServiceClient(
     `https://${account}.blob.core.windows.net${sas}`
   );
   async function download(fileName) {
-    const containerClient = blobServiceClient.getContainerClient('testoutput');
+    const containerClient = blobServiceClient.getContainerClient('testoutput'); //TODO: replace this container
     const blobClient = containerClient.getBlobClient(fileName);
 
     const downloadBlockBlobResponse = await blobClient.download();
@@ -41,7 +40,6 @@ function Profiling(props) {
     });
     saveAs(file);
 
-    // [Browsers only] A helper method used to convert a browser Blob into string.
     async function blobToString(blob) {
       const fileReader = new FileReader();
       return new Promise((resolve, reject) => {
@@ -53,6 +51,7 @@ function Profiling(props) {
       });
     }
   }
+
   const handleSortByFileName = () => {
     setSortByfileName(!sortByfileName);
     setSortByCreatedDate(false);

@@ -61,9 +61,8 @@ function PaaReports(props) {
     setSortProjectID(false);
   };
 
-  const account = 'peregrineblob';
-  const sas =
-    '?sv=2021-06-08&ss=bfqt&srt=co&sp=rwdlacupitfx&se=2022-07-30T18:00:17Z&st=2022-07-05T10:00:17Z&spr=https&sig=%2F4m%2BnV9irJZpPUPIg71P5sarSd%2FXRsfIe%2B%2BHLhMorwQ%3D';
+  const account = process.env.REACT_APP_ACCOUNT;
+  const sas = process.env.REACT_APP_SAS;
 
   const blobServiceClient = new BlobServiceClient(
     `https://${account}.blob.core.windows.net${sas}`
