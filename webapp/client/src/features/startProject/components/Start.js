@@ -273,14 +273,6 @@ function Start(props) {
             ) : null}
           </div>
         </div>
-        {/* <div className="grid grid-cols-3 gap-0 max-w-xl">
-          <div className="flex justify-start items-center col-span-3 border rounded h-12 p-4">
-            <label className="block text-md font-medium text-gray-700">
-              Data Quality check status
-            </label>
-          </div>
-        </div> */}
-
         <button
           type="submit"
           className="top-8 relative font-bold inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-right"

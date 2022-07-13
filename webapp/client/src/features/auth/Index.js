@@ -5,7 +5,6 @@ import Footer from '../../shareds/Footer';
 import logo from '../../assets/logo.png';
 import { connect } from 'react-redux';
 
-// import Main from './components/Main';
 import SignInButton from './components/SignInButton';
 import { useIsAuthenticated } from '@azure/msal-react';
 
@@ -42,7 +41,6 @@ function Auth(props) {
               <SignInButton />
             </div>
           </div>
-          {/* <Main /> */}
         </div>
       </div>
       <Footer />

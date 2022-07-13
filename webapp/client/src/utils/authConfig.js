@@ -13,8 +13,8 @@ import { LogLevel } from '@azure/msal-browser';
 export const msalConfig = {
   auth: {
     clientId: process.env.REACT_APP_AD_CLIENT_ID,
-    authority: 'https://login.microsoftonline.com/organizations',
-    redirectUri: 'https://peregrineapp.azurewebsites.net',
+    authority: process.env.REACT_APP_AD_AUTHORITY,
+    redirectUri: process.env.REACT_APP_AD_REDIRECT_URI,
   },
   cache: {
     cacheLocation: 'sessionStorage', // This configures where your cache will be stored

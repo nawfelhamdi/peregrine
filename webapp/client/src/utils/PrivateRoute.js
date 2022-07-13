@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useIsAuthenticated } from '@azure/msal-react';
-import { setLocationPath } from '../pages/auth/actions';
+import { setLocationPath } from '../features/auth/actions';
 const PrivateRoute = (props) => {
   const isAuthenticated = useIsAuthenticated();
   const location = useLocation();

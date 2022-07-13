@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
-import SignInButton from '../../auth/components/SignInButton';
-import ProfileMenu from '../../auth/components/ProfileMenu';
+import SignInButton from '../../../features/auth/components/SignInButton';
+import ProfileMenu from '../../../shareds/ProfileMenu';
 import { useIsAuthenticated } from '@azure/msal-react';
 
 export default function Header() {
