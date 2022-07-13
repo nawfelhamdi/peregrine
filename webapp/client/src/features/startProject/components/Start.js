@@ -5,6 +5,7 @@ import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Navigate } from 'react-router-dom';
+import { useMsal } from '@azure/msal-react';
 
 import { connect } from 'react-redux';
 import { startProject } from '../actions';
@@ -64,6 +65,8 @@ function classNames(...classes) {
 }
 
 function Start(props) {
+  const { accounts } = useMsal();
+
   const [selectedMeasurementModel, setSelectedMeasurementModel] = useState(
     measurementModels[0]
   );
@@ -81,9 +84,9 @@ function Start(props) {
         measurement_model: selectedMeasurementModel.name,
         start_date: formData.startDate,
         end_date: formData.endDate,
-        created_by: 'loged user', // TODO: TO REMOVE AFTER BUILD AUTH FEATURE
-        last_updated_by: 'loged User', // TODO: TO REMOVE AFTER BUILD AUTH FEATURE
-        moody_project_id: '??', // TODO: TO REMOVE AFTER BUILD AUTH FEATURE
+        created_by: accounts[0].name,
+        last_updated_by: accounts[0].name,
+        moody_project_id: '', // TODO: SET moody_project_id FIELD CONTENT
       };
       const stepRouteUrl = 'preparation';
       props.startProject(projectData, stepRouteUrl);
