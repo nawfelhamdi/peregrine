@@ -6,7 +6,7 @@ import ProfileMenu from '../../../../shareds/ProfileMenu';
 
 function Topbar({ currentItem }) {
   return (
-    <div className="fixed w-full top-0 left-0 pl-0 lg:pl-56">
+    <div className="fixed w-full top-0 left-0 pl-0 lg:pl-56 z-90">
       <div className="flex justify-between items-center w-full h-16 px-4 md:px-16 bg-skin-base">
         <div className="flex items-center h-12 space-x-2 md:space-x-4 ">
           <MobileSidebar />

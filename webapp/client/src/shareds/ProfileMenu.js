@@ -17,7 +17,7 @@ export default function ProfileMenu() {
     });
   };
   return (
-    <Menu as="div" className="ml-3 relative">
+    <Menu as="div" className="ml-3 relative z-90">
       <div>
         <Menu.Button className="bg-[#555555] p-1 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
           <span className="sr-only">Open user menu</span>

@@ -10,13 +10,13 @@ export default function Index() {
       <Sidebar />
       <div className="flex-1">
         <div className="w-full relative">
-          <div className="w-full relative z-10">
+          <div className="w-full relative z-30">
             <Topbar />
           </div>
-          <div className="px-2 pt-20 md:max-w-full md:px-8">
-            <Tabs />
-          </div>
-          <div className="relative z-0 md:max-w-full px-2 md:px-16">
+
+          <Tabs />
+
+          <div className="relative z-0 md:max-w-full px-2 md:px-16 lg:pt-60">
             <Outlet />
           </div>
         </div>

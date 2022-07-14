@@ -147,14 +147,12 @@ function Preparation(props) {
                           </button>
                           <Link to="/start-project/run">
                             <button
-                              disabled={
-                                props.project.preparationProgressBar !== 100
-                              }
+                              disabled={props.dataGovernance.loading}
                               className="my-8 disabled:bg-[#cccccc] inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-left"
                               onClick={() => handletriggerPipelineApi()}
                             >
                               <div className="flex items-center">
-                                <span>Validate</span>
+                                <span>Validate and run Moody’s RI</span>
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   className="h-6 w-6"
@@ -188,6 +186,7 @@ function Preparation(props) {
 
 const mapStateToProps = (state) => ({
   project: state.project,
+  dataGovernance: state.dataGovernance,
 });
 const mapActionsToProps = {
   getPreparationPipelineLogTimer,

@@ -12,7 +12,7 @@ function Tabs(props) {
   };
 
   return (
-    <div className="flex relative z-90 mt-8">
+    <div className="flex relative z-90">
       <div className="flex items-center space-x-2 mx-2 lg:space-x-8">
         <button
           onClick={() => handleGetBlobFiles('export')}

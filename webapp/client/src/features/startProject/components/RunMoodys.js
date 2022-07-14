@@ -56,7 +56,7 @@ function RunMoodys(props) {
             onClick={() => props.activateTab('validate')}
           >
             <div className="flex items-center">
-              <span>Validate</span>
+              <span>Results and Reports</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
