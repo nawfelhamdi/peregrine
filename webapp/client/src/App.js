@@ -4,6 +4,11 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 //  UI
 import Home from './pages/home/Index';
+import Privacy from './pages/privacy/Index';
+import Policy from './pages/policy/Index';
+import TermOfUse from './pages/termOfUse/Index';
+
+// utils
 import PrivateRoute from './utils/PrivateRoute';
 // Auth
 import Login from './features/auth/Index';
@@ -33,6 +38,9 @@ function App() {
           {/* public routes */}
 
           <Route path="/" element={<Home />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/policy" element={<Policy />} />
+          <Route path="/term-of-use" element={<TermOfUse />} />
           <Route path="/login" element={<Login />} />
 
           {/* private routes */}
