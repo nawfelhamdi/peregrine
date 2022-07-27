@@ -92,8 +92,8 @@ const FeatureCard = ({ feature: { title, description, icon, href } }) => {
 };
 export default function Features() {
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-32">
-      <div className="grid gap-5 row-gap-5 md:grid-cols-3">
+    <div className="px-4 py-24 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 mt-1">
+      <div className="grid gap-5 row-gap-5 md:grid-cols-3 md:h-96 items-center">
         {features.map((feature) => (
           <FeatureCard key={feature.id} feature={feature} />
         ))}
