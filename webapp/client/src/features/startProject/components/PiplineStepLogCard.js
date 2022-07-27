@@ -47,10 +47,7 @@ export default function PiplineStepLogCard(props) {
                 </div>
               )}
             </p>
-            {props.index + 1} :{' '}
-            {props.pipelineStepLog.pipeline_name
-              .replace(/([A-Z])/g, ' $1')
-              .trim()}
+            {props.index + 1} : {props.pipelineStepLog.pipeline_name}
           </p>
         </div>
       </div>
