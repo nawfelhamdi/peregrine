@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { list } from "../controllers/dataGovernance/list";
-import { profiling } from "../controllers/dataGovernance/profiling";
+import { list } from "../controllers/governance/list";
+import { profiling } from "../controllers/governance/profiling";
 
 const router = Router();
 
