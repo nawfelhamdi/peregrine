@@ -13,9 +13,7 @@ export default function Index() {
           <div className="w-full relative z-30">
             <Topbar />
           </div>
-
           <Tabs />
-
           <div className="relative z-0 md:max-w-full px-2 md:px-16 lg:pt-60">
             <Outlet />
           </div>

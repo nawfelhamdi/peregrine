@@ -28,7 +28,12 @@ const navigation = {
       title: 'DQ Dashboard',
       url: 'quality',
     },
+    {
+      title: 'Data Lineage',
+      url: 'lineage',
+    },
   ],
+  dashboard: [],
 };
 
 export default navigation;

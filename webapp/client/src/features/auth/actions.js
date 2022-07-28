@@ -3,7 +3,6 @@ import { LOADING_USER, SET_LOCATION_PATH } from './types';
 // Login
 export const loginUser = (userData) => (dispatch) => {
   dispatch({ type: LOADING_USER });
-  console.log(userData);
 };
 
 export const setLocationPath = (location) => (dispatch) => {

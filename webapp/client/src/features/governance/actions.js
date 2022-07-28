@@ -15,7 +15,7 @@ import axios from 'axios';
 export const getProfilingFiles = () => (dispatch) => {
   dispatch({ type: LOADING_DATA_PROFILING_FILES });
   axios
-    .get(`${process.env.REACT_APP_API_URL}/data/profiling`)
+    .get(`${process.env.REACT_APP_API_URL}/governance/profiling`)
     .then((res) => {
       dispatch({
         type: GET_DATA_PROFILING_FILES,
@@ -32,7 +32,7 @@ export const getProfilingFiles = () => (dispatch) => {
 export const getDataHealthCheck = () => (dispatch) => {
   dispatch({ type: LOADING_DATA_HEALTH_CHECK });
   axios
-    .get(`${process.env.REACT_APP_API_URL}/data/`)
+    .get(`${process.env.REACT_APP_API_URL}/governance/`)
     .then((res) => {
       dispatch({
         type: GET_DATA_HEALTH_CHECK,

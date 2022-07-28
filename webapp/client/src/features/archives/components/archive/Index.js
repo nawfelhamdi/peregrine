@@ -28,7 +28,7 @@ function Archive(props) {
   };
 
   return (
-    <>
+    <div className="mb-8">
       <Header
         sort={sort}
         handleSort={handleSort}
@@ -60,7 +60,7 @@ function Archive(props) {
           <p className="text-center">Loading ...</p>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -107,13 +107,13 @@ function Outputs(props) {
   }
   return (
     <>
-      <Tabs
+      {/* <Tabs
         activeTab={activeTab}
         container={container}
         setActiveTab={setActiveTab}
         prefix={prefix}
         moodyProjectId={moodyProjectId}
-      />
+      /> */}
       <div className=" py-8">
         <div className="border border-[#EAEAF2] rounded-md p-0">
           {/* Header */}

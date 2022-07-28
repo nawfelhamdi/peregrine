@@ -8,7 +8,7 @@ import PiplineStepLogCard from './PiplineStepLogCard';
 import { connect } from 'react-redux';
 import { getPreparationPipelineLogTimer, triggerPipelineApi } from '../actions';
 import { Link } from 'react-router-dom';
-import Quality from '../../dataGovernance/components/Quality';
+import Quality from '../../governance/components/Quality';
 function Preparation(props) {
   let [isOpen, setIsOpen] = useState(false);
 

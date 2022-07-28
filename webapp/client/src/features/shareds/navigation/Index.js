@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setNavigation } from './actions';
+import Tabs from '../../startProject/components/results/components/Tabs';
 import logo from '../../../assets/logo.png';
 
 function Sidebar(props) {
-  //   const [open, setOpen] = useState(false); //TODO: add mobile side bar
   const [activeTab, setActiveTab] = useState('');
   let query = useLocation();
 
@@ -15,6 +15,7 @@ function Sidebar(props) {
     props.setNavigation(navItem, currentItem);
     setActiveTab(localStorage.getItem('activeTab'));
   }, [activeTab]);
+
   const handleSetActiveTab = (activeTab) => {
     setActiveTab(activeTab);
     localStorage.setItem('activeTab', activeTab.split('/').pop());
@@ -52,6 +53,10 @@ function Sidebar(props) {
             </Link>
           </div>
         ))}
+        {query.pathname === '/start-project/results' ||
+        query.pathname === '/start-project/results/reports' ? (
+          <Tabs />
+        ) : null}
       </div>
     </div>
   );

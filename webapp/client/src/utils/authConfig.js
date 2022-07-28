@@ -17,7 +17,7 @@ export const msalConfig = {
     redirectUri: process.env.REACT_APP_AD_REDIRECT_URI,
   },
   cache: {
-    cacheLocation: 'sessionStorage', // This configures where your cache will be stored
+    cacheLocation: 'localStorage', // This configures where your cache will be stored
     storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
   },
   system: {
@@ -28,16 +28,16 @@ export const msalConfig = {
         }
         switch (level) {
           case LogLevel.Error:
-            console.error(message);
+            // console.error(message);
             return;
           case LogLevel.Info:
-            console.info(message);
+            // console.info(message);
             return;
           case LogLevel.Verbose:
-            console.debug(message);
+            // console.debug(message);
             return;
           case LogLevel.Warning:
-            console.warn(message);
+            // console.warn(message);
             return;
         }
       },

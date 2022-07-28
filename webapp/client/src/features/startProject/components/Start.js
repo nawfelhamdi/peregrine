@@ -96,7 +96,7 @@ function Start(props) {
   return (
     <div>
       <form className="py-8 space-y-2 mb-16" onSubmit={formik.handleSubmit}>
-        <div class="grid grid-cols-3 gap-0 max-w-xl">
+        <div className="grid grid-cols-3 gap-0 max-w-xl">
           <div className="flex justify-start items-center col-span-1">
             <label className="block font-medium text-gray-700">
               Project name
