@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setNavigation } from './actions';
-import Tabs from '../../startProject/components/results/components/Tabs';
+import Tabs from '../../project/components/results/components/Tabs';
 import logo from '../../../assets/logo.png';
 
 function Sidebar(props) {

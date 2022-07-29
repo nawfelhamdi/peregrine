@@ -14,12 +14,12 @@ import Unauthorized from './features/shareds/navigation/components/Unauthorized'
 // Auth
 import Login from './features/auth/Index';
 // Start Project feature
-import StartProject from './features/startProject/Index';
-import Start from './features/startProject/components/Start';
-import Preparation from './features/startProject/components/Preparation';
-import RunMoodys from './features/startProject/components/RunMoodys';
-import Outputs from './features/startProject/components/results/Outputs';
-import Reports from './features/startProject/components/results/Reports';
+import StartProject from './features/project/Index';
+import Start from './features/project/components/Start';
+import Preparation from './features/project/components/Preparation';
+import RunMoodys from './features/project/components/RunMoodys';
+import Outputs from './features/project/components/results/Outputs';
+import Reports from './features/project/components/results/Reports';
 // Archive feature
 import Archives from './features/archives/Index';
 import Archive from './features/archives/components/archive/Index';
