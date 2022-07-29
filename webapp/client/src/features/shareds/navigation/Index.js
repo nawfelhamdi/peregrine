@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setNavigation } from './actions';
-import Tabs from '../../project/components/results/components/Tabs';
+import ResultSidebarTabs from '../../project/components/ResultSidebarTabs';
 import logo from '../../../assets/logo.png';
 
 function Sidebar(props) {
@@ -53,9 +53,10 @@ function Sidebar(props) {
             </Link>
           </div>
         ))}
+        {/* This side bar items are showen only for in results and reports step for the start project feature */}
         {query.pathname === '/start-project/results' ||
         query.pathname === '/start-project/results/reports' ? (
-          <Tabs />
+          <ResultSidebarTabs />
         ) : null}
       </div>
     </div>

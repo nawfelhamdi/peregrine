@@ -18,8 +18,8 @@ import StartProject from './features/project/Index';
 import Start from './features/project/components/Start';
 import Preparation from './features/project/components/Preparation';
 import RunMoodys from './features/project/components/RunMoodys';
-import Outputs from './features/project/components/results/Outputs';
-import Reports from './features/project/components/results/Reports';
+import ResultOutputs from './features/project/components/ResultOutputs';
+import ResultReports from './features/project/components/ResultReports';
 // Archive feature
 import Archives from './features/archives/Index';
 import Archive from './features/archives/components/archive/Index';
@@ -54,8 +54,8 @@ function App() {
               <Route path="start" element={<Start />} />
               <Route path="preparation" element={<Preparation />} />
               <Route path="run" element={<RunMoodys />} />
-              <Route path="results/reports" element={<Reports />} />
-              <Route path="results" element={<Outputs />} />
+              <Route path="results/reports" element={<ResultReports />} />
+              <Route path="results" element={<ResultOutputs />} />
             </Route>
           </Route>
           <Route element={<PrivateRoute />}>

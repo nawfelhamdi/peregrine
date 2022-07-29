@@ -10,11 +10,11 @@ import {
   sortFilesByFileName,
   sortFilesByUpdatedDate,
   sortFilesByCreatedDate,
-} from '../../../archives/actions';
-import Tabs from './components/Tabs';
+} from '../../archives/actions';
+
 const { BlobServiceClient } = require('@azure/storage-blob');
 
-function Outputs(props) {
+function ResultOutputs(props) {
   const [container, setContainer] = useState('');
   const [prefix, setPrefix] = useState('');
   const [activeTab, setActiveTab] = useState('export');
@@ -107,13 +107,6 @@ function Outputs(props) {
   }
   return (
     <>
-      {/* <Tabs
-        activeTab={activeTab}
-        container={container}
-        setActiveTab={setActiveTab}
-        prefix={prefix}
-        moodyProjectId={moodyProjectId}
-      /> */}
       <div className=" py-8">
         <div className="border border-[#EAEAF2] rounded-md p-0">
           {/* Header */}
@@ -367,4 +360,4 @@ const mapActionsToProps = {
   sortFilesByUpdatedDate,
   sortFilesByCreatedDate,
 };
-export default connect(mapStateToProps, mapActionsToProps)(Outputs);
+export default connect(mapStateToProps, mapActionsToProps)(ResultOutputs);

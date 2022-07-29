@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getFiles } from '../../../../archives/actions';
+import { getFiles } from '../../archives/actions';
 import { Link } from 'react-router-dom';
 
-function Tabs() {
+function ResultSidebarTabs() {
   const [activeTab, setActiveTab] = useState('export');
 
   useEffect(() => {
@@ -45,4 +45,4 @@ function Tabs() {
 const mapActionsToProps = {
   getFiles,
 };
-export default connect(null, mapActionsToProps)(Tabs);
+export default connect(null, mapActionsToProps)(ResultSidebarTabs);

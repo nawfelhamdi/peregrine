@@ -10,11 +10,11 @@ import {
   sortFilesByFileName,
   sortFilesByUpdatedDate,
   sortFilesByCreatedDate,
-} from '../../../archives/actions';
-import Tabs from './components/Tabs';
+} from '../../archives/actions';
+
 const { BlobServiceClient } = require('@azure/storage-blob');
 
-function Reports(props) {
+function ResultReports(props) {
   const [container, setContainer] = useState('');
   const [prefix, setPrefix] = useState('');
   const [activeTab, setActiveTab] = useState('report');
@@ -351,4 +351,4 @@ const mapActionsToProps = {
   sortFilesByUpdatedDate,
   sortFilesByCreatedDate,
 };
-export default connect(mapStateToProps, mapActionsToProps)(Reports);
+export default connect(mapStateToProps, mapActionsToProps)(ResultReports);
