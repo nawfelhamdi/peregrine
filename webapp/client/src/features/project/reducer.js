@@ -33,7 +33,7 @@ const initialState = {
   apiPiplineStepsLog: [],
 
   triggerApiLoading: false,
-  navigationTabs: ['start'],
+  navigationTabs: ['start', 'results'],
 
   preparationProgressBar: 0,
 

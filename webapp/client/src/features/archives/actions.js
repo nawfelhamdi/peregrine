@@ -2,7 +2,6 @@ import {
   LOADING_ARCHIVES_FILES,
   GET_ARCHIVES_FILES,
   SET_SORT,
-  SET_SORT_BY_FILE_NAME,
   GET_ERRORS,
   SET_SEARCH,
   // archives
@@ -214,10 +213,30 @@ export const sortByCreatedDate = (sort) => (dispatch) => {
     dispatch(listArchiveBlobs());
   }
 };
+
 export const sortByUpdatedDate = (sort) => (dispatch) => {
   if (!sort) {
     dispatch({ type: SORT_ARCHIVE_BY_UPDATED_DATE, payload: sort });
   } else {
     dispatch(listArchiveBlobs());
   }
+};
+
+export const getResulsFiles = (prefix) => (dispatch) => {
+  let projectId = localStorage.getItem('projectId');
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/projects/${projectId}`)
+    .then((res) => {
+      if (res.data.project) {
+        dispatch(
+          getFiles(
+            res.data.project.measurement_model.toLowerCase(),
+            `output/${prefix}/${res.data.project.moody_project_id}`
+          )
+        );
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

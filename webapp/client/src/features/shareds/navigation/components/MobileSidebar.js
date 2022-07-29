@@ -6,6 +6,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 
 import { connect } from 'react-redux';
 import { setNavigation } from '../actions';
+import ResultSidebarTabs from '../../../project/components/ResultSidebarTabs';
 
 function MobileSidebar(props) {
   const [isShowing, setIsShowing] = useState(false);
@@ -88,6 +89,13 @@ function MobileSidebar(props) {
                   </li>
                 ))}
               </ul>
+              {/* This side bar items are showen only for in results and reports step for the start project feature */}
+              <div className="px-4">
+                {query.pathname === '/start-project/results' ||
+                query.pathname === '/start-project/results/reports' ? (
+                  <ResultSidebarTabs />
+                ) : null}
+              </div>
             </div>
           </Transition.Child>
         </Dialog>

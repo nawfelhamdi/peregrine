@@ -9,6 +9,7 @@ const PrivateRoute = (props) => {
   const location = useLocation();
   useEffect(() => {
     props.setLocationPath(JSON.stringify(location.pathname));
+    console.log('private route');
   }, []);
   return isAuthenticated ? (
     <Outlet />
