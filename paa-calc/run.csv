@@ -1,0 +1,25 @@
+run_number,description,calc_step_code
+101,PAA - Opening Balance at Current DR,PAA_OPENING_CURRENT
+102,PAA - Change in Discount Rate - Period Start,PAA_CHANGE_IN_DR_SOP
+120,PAA - New Business Recognition - During the Period,PAA_NB_RECOGNITION
+133,PAA - New Business To In Force - During the Period,PAA_NB_TO_IF
+135,PAA - Interest Accretion - During the Period,PAA_INTEREST_ACCRETION
+141,PAA - Release of Fulfilment Cash Flows - During the Period,PAA_FCF_RELEASE
+142,PAA - Variance of Cashflows - During the Period,PAA_CF_VARIANCE
+145,PAA - Amortization of Acquisition Expenses and Premium - Period End,PAA_AMORTIZATION
+146,PAA - Changes in Estimates that relate to Future Service - Period End,PAA_CHANGE_IN_ESTIMATES_FS
+155,PAA - Changes in Estimates linked to Financial Risk - Period End,PAA_CHANGE_IN_ESTIMATES_FINANCIAL_RISK 
+160,PAA - Change in Discount Rate - Period End,PAA_CHANGE_IN_DR_EOP
+199,PAA - Closing Balance at Current DR,PAA_CLOSING_CURRENT
+201,LIC Opening Current,LIC_OPENING_CURRENT
+203,LIC Change DR from CIR to PnL,LIC_CHANGE_IN_DR_SOP
+220,New Claims,LIC_NC_RECOGNITION
+233,LIC New Claims to In-force,LIC_NC_TO_IF
+235,LIC - Interest Accretion,LIC_INTEREST_ACCRETION
+241,LIC FCF Release,LIC_FCF_RELEASE
+242,LIC CF Variance,LIC_CF_VARIANCE
+246,Experience Adjustment and Non-Financial Assumption Changes,LIC_CHANGE_IN_ESTIMATES_PS_ISE_EOP
+247,Experience Adjustment and Non-Financial Assumption Changes,LIC_CHANGE_IN_ESTIMATES_CS_ISE_EOP
+256,Change in Risk Of Non-performance,LIC_CHANGE_IN_RNP
+260,Financial Assumptions Changes - Current Service,LIC_CHANGE_IN_DR_EOP
+299,LIC Closing Current,LIC_CLOSING_CURRENT
