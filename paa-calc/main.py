@@ -1,24 +1,29 @@
 #Replicates PAA calculations performed by Moody's RI V8.0 
-#Version 4 - August 18, 2022 - Runs locally
-
+#Version 5 (fixes bugs)
 ### CONFIGURATION
 from multiprocessing.pool import RUN
 #from this import d
 import pandas as pd
 import numpy as np
 import os
-import math
+import dateutil
+from datetime import datetime
+from dateutil import relativedelta
 import webbrowser
+import time
 
 
+### TO-DO:
+# Integrate explicit currency and date selection with Peregrine (most clients use only 1 currency anyways)
+# Implement queue and loops to calculate for all groups
+# Include interest (discount) rate calculations for PAA_INTEREST_ACCRETION
 
 
-#currency selector
-currency = 'BSD'
-group = 'BAF_BAH_Mort_Burial_2020_Remaining'
+#currency/group selector
+currency = 'KYD'
+group = 'BAF_CAY_Morb_Medsafe_2020_Remaining'
 
 #execution time tracking
-import time
 start_time = time.time()
 
 
@@ -74,15 +79,18 @@ varAllRuns.insert(2, "run_step", None)
 #create dictionary that aligns run numbers with their corresponding step code 
 runDict = dict(zip(run.run_number, run.calc_step_code))
 
+#print(runDict)
+#exit()
+
 #populate the run step column of varAllRuns using dictionary
 for row in varAllRuns.itertuples():
     try:
         varAllRuns.at[row.Index, "run_step"] = runDict[varAllRuns.at[row.Index, "run_number"]]
     except KeyError:
-        print("ERROR: Key " + str(varAllRuns.at[row.Index, "run_number"]) + " not found, continuing")
+        #print("ERROR: Key " + str(varAllRuns.at[row.Index, "run_number"]) + " not found, continuing")
         continue
 
-print(varAllRuns)
+#print(varAllRuns)
 
 
 #get list of periods from the column names in varAllRuns
@@ -112,9 +120,52 @@ for index, row in varAllRuns.iterrows():
 
             #main.loc[(main['run_number'] == row['run_number'] and main['variable'] == row['variable_name']), date] = row[date]
 
-### CALCULATIONS; all line numbers refer to line in Excel file titled PAA_LOGIC --> change documentation to somthing unique and static
 
-print(main)
+# Interest rate calculations
+interestRateTemplate = {'Type': ['PnL', 'Discount']}
+interestRates = pd.DataFrame(interestRateTemplate)
+
+### NOTE: FILENAMES WILL DIFFER IN ACTUAL RUNS (currently unknown and assumed)
+# create dataframes with pnl and discount rates
+pnl = pd.read_csv('ifrs_group_pnl_rates.csv', index_col=False)
+discount = pd.read_csv('ifrs_group_discount_rates.csv', index_col=False)
+
+#TIME PERIOD = MONTH (hardcoded)
+
+# Find time period
+d1 = datetime.strptime(dateList[0], "%Y-%m-%d")
+d2 = datetime.strptime(dateList[1], "%Y-%m-%d")
+delta = relativedelta.relativedelta(d2, d1)
+if delta.months + (delta.years * 12) == 0:
+    period = 'Year'
+    print('A')
+elif delta.months + (delta.years * 12) == 3:
+    period = 'Quarter'
+    print('B')
+else:
+    period = 'Month'
+    print('C')
+
+
+for date in dateList:
+    tmp = []
+    #discount rates
+    if discount.loc[(discount['run_number'] == list(runDict.keys())[list(runDict.values()).index('LIC_INTEREST_ACCRETION')]) & (discount['ifrs_group_code'] == group) & (discount['currency_code'] == currency) & (discount['time_period'] == period)].empty:
+        tmp.append(0)
+    else:
+        tmp.append(discount.loc[(discount['run_number'] == list(runDict.keys())[list(runDict.values()).index('LIC_INTEREST_ACCRETION')]) & (discount['ifrs_group_code'] == group) & (discount['currency_code'] == currency) & (discount['time_period'] == period)].iloc[0])
+
+    #pnl rates
+    if pnl.loc[(pnl['run_number'] == list(runDict.keys())[list(runDict.values()).index('PAA_INTEREST_ACCRETION')]) & (pnl['ifrs_group_code'] == group) & (pnl['currency_code'] == currency) & (pnl['time_period'] == period)].empty:
+        tmp.append(0)
+    else:
+        tmp.append(pnl.loc[(pnl['run_number'] == list(runDict.keys())[list(runDict.values()).index('PAA_INTEREST_ACCRETION')]) & (pnl['ifrs_group_code'] == group) & (pnl['currency_code'] == currency) & (pnl['time_period'] == period)].iloc[0])
+    
+    interestRates[date] = tmp
+
+
+
+### CALCULATIONS; all line numbers refer to line in Excel file titled PAA_LOGIC --> change documentation to somthing unique and static
 
 #########################################################################################################################################
 current_step = 'LIC_OPENING_CURRENT'
@@ -239,6 +290,13 @@ for index, date in enumerate(dateList):
 
                 main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_B_LIC_EOP_SUM'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_B_LIC_EOP_SUM'), dateList[index-1]].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_B_LIC_EOP'), date].iloc[0]
 
+#293:
+for index, date in enumerate(dateList):
+    if index == 0:
+         main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP'), date].iloc[0]
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), dateList[index-1]].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP'), date].iloc[0]
+
 
 #Line 241
 for index, date in enumerate(dateList):
@@ -256,6 +314,12 @@ for index, date in enumerate(dateList):
         main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_B_LIC'), date] = main.loc[(main['run_step'] == 'LIC_NC_TO_IF') & (main['variable'] == 'BEL_B_LIC'), date].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'DELTA_BEL_B_LIC'), date].iloc[0]
 
 #***Line 244 for variable IBEL_B_LIC to be coded; see comment in Excel cell
+for index, date in enumerate(dateList):
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IBEL_B_LIC'), date] = main.loc[(main['run_step'] == 'LIC_CHANGE_IN_DR_SOP') & (main['variable'] == 'BEL_B_LIC'), date].iloc[0] * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IBEL_B_LIC'), date] = (main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_B_LIC'), date].iloc[0] - main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_B_LIC_EOP_SUM'), date].iloc[0]) * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+
 #####TO-DO: IMPLEMENT INTEREST RATE CALCULATIONS
 
 #Line 250
@@ -263,6 +327,12 @@ for index, date in enumerate(dateList):
     main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_E_LIC'), date] = main.loc[(main['run_step'] == 'LIC_NC_RECOGNITION') & (main['variable'] == 'B_VAR_ACT_BEL'), date].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'DELTA_BEL_E_LIC'), date].iloc[0]
 
 #***Line 251 for variable IBEL_E_LIC to becoded 
+for index, date in enumerate(dateList):
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IBEL_E_LIC'), date] = main.loc[(main['run_step'] == 'LIC_CHANGE_IN_DR_SOP') & (main['variable'] == 'BEL_E_LIC'), date].iloc[0] * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IBEL_E_LIC'), date] = (main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_E_LIC'), date].iloc[0] - main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), date].iloc[0]) * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+
 
 #Line 252 
 for index, date in enumerate(dateList):
@@ -278,13 +348,6 @@ for index, date in enumerate(dateList):
 #Line 254
 for index, date in enumerate(dateList):
     main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_LIC'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_B_LIC'), date].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'BEL_E_LIC'), date].iloc[0]
-
-#293:
-for index, date in enumerate(dateList):
-    if index == 0:
-         main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP'), date].iloc[0]
-    else:
-        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP_SUM'), dateList[index-1]].iloc[0] + main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_BEL_E_LIC_EOP'), date].iloc[0]
 
 #Line 311
 for index, date in enumerate(dateList):
@@ -346,6 +409,13 @@ for date in dateList:
     main.loc[(main['run_step'] == current_step) & (main['variable'] == 'DELTA_BEL_E_LIC'), date] = main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IBEL_E_LIC_SUM'), date].iloc[0]
 
 #***Line 353 for variable IRA_LIC to be coded once PNL rates are incorporated
+for index, date in enumerate(dateList):
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IRA_LIC'), date] = main.loc[(main['run_step'] == 'LIC_NC_TO_IF') & (main['variable'] == 'RA_LIC'), date].iloc[0] * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+    else:
+        if varAllRuns.loc[(varAllRuns['run_step'] == current_step ) & (varAllRuns['variable_name'] == 'IRA_LIC') & (varAllRuns['ifrs_group_code'] == group), date].empty:
+            main.loc[(main['run_step'] == current_step) & (main['variable'] == 'IRA_LIC'), date] = (main.loc[(main['run_step'] == current_step) & (main['variable'] == 'RA_LIC'), dateList[index-1]].iloc[0] - main.loc[(main['run_step'] == current_step) & (main['variable'] == 'CF_RA_LIC_EOP_SUM'), dateList[index-1]].iloc[0]) * interestRates.loc[(interestRates['Type'] == 'PnL'), date].iloc[0]
+
 
 #Line 354
 for index, date in enumerate(dateList):
@@ -725,8 +795,10 @@ for index, date in enumerate(dateList):
 current_step = 'PAA_CHANGE_IN_DR_SOP'
 #########################################################################################################################################
 
+#if this variable is not explicitly defined, calculate...
 #Line 18
-main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC'), dateList[0]] = main.loc[(main['run_step'] == 'PAA_OPENING_CURRENT') & (main['variable'] == 'LRC'), date].iloc[0]
+if varAllRuns.loc[(varAllRuns['run_step'] == current_step ) & (varAllRuns['variable_name'] == 'LRC') & (varAllRuns['ifrs_group_code'] == group), date].empty:
+    main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC'), dateList[0]] = main.loc[(main['run_step'] == 'PAA_OPENING_CURRENT') & (main['variable'] == 'LRC'), dateList[0]].iloc[0]
 
 #########################################################################################################################################
 current_step = 'PAA_NB_RECOGNITION'
@@ -757,11 +829,33 @@ for index, date in enumerate(dateList):
 current_step = 'PAA_INTEREST_ACCRETION' 
 #########################################################################################################################################
 
-#***FOR LINES 66, 67, 69 TO BE CODED AFTER DISCOUNT RATES ARE ADDED
+# ALL ARE CURRENTLY CONSTANT -- INTEREST RATE TABLE TO BE GENERATED AND FACTORS INCLUDED
 
 #Line 68
 for index, date in enumerate(dateList):
-    main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_LC'), date] = main.loc[(main['run_step'] == 'PAA_OPENING_CURRENT') & (main['variable'] == 'LRC_LC'), date].iloc[0]
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC'), date] = main.loc[(main['run_step'] == 'PAA_NB_RECOGNITION') & (main['variable'] == 'LRC'), dateList[1]].iloc[0]
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC'), date] = main.loc[(main['run_step'] == 'PAA_NB_TO_IF') & (main['variable'] == 'LRC'), date].iloc[0] * (1 + interestRates.loc[(interestRates['Type'] == 'Discount'), date].iloc[0])
+
+#Line 69
+for index, date in enumerate(dateList):
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_AQE'), date] = main.loc[(main['run_step'] == 'PAA_NB_RECOGNITION') & (main['variable'] == 'LRC_AQE'), dateList[1]].iloc[0]
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_AQE'), date] = main.loc[(main['run_step'] == 'PAA_NB_RECOGNITION') & (main['variable'] == 'LRC_AQE'), date].iloc[0] * (1 + interestRates.loc[(interestRates['Type'] == 'Discount'), date].iloc[0])
+
+#Line 70
+for index, date in enumerate(dateList):
+    main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_LC'), date] = main.loc[(main['run_step'] == 'PAA_OPENING_CURRENT') & (main['variable'] == 'LRC_LC'), date].iloc[0] * (1 + interestRates.loc[(interestRates['Type'] == 'Discount'), date].iloc[0])
+
+#Line 71
+for index, date in enumerate(dateList):
+    if index == 0:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_P'), date] = main.loc[(main['run_step'] == 'PAA_NB_RECOGNITION') & (main['variable'] == 'LRC_P'), dateList[1]].iloc[0] 
+    else:
+        main.loc[(main['run_step'] == current_step) & (main['variable'] == 'LRC_P'), date] = main.loc[(main['run_step'] == 'PAA_NB_TO_IF') & (main['variable'] == 'LRC_P'), date].iloc[0] * (1 + interestRates.loc[(interestRates['Type'] == 'Discount'), date].iloc[0])
+
 
 #########################################################################################################################################
 current_step = 'PAA_FCF_RELEASE'
@@ -938,4 +1032,3 @@ webbrowser.open('demo.csv')
 #display execution time --> 0.000000001 seconds!
 print("--- %s seconds ---" % (time.time() - start_time))
 #exit()
-#and we're done!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
