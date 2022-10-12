@@ -12,6 +12,7 @@ let notActiveStyle = {
   background: '#cccccc',
   color: '#333333',
   borderRadius: '5px',
+  // cursor: 'not-allowed', // TODO: add this the disableed tabs
 };
 
 function Tabs(props) {

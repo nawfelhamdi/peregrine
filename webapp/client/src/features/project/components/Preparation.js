@@ -145,11 +145,17 @@ function Preparation(props) {
                             </svg>
                             <span>Back</span>
                           </button>
-                          <Link to="/start-project/run">
-                            <button
-                              disabled={props.dataGovernance.loading}
-                              className="my-8 disabled:bg-[#cccccc] inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-left"
-                              onClick={() => handletriggerPipelineApi()}
+                          <button
+                            disabled={props.dataGovernance.loading}
+                            className="disabled:bg-[#cccccc] inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-left"
+                            onClick={() => handletriggerPipelineApi()}
+                          >
+                            <Link
+                              to={
+                                !props.dataGovernance.loading
+                                  ? '/start-project/run'
+                                  : '#'
+                              }
                             >
                               <div className="flex items-center">
                                 <span>Validate and run Moody’s RI</span>
@@ -168,8 +174,8 @@ function Preparation(props) {
                                   />
                                 </svg>
                               </div>
-                            </button>
-                          </Link>
+                            </Link>
+                          </button>
                         </div>
                       </div>
                     </div>

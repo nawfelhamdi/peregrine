@@ -15,7 +15,7 @@ const policies = [
       },
       {
         id: 2,
-        subTitle: '2. Who manages the Tool?',
+        subTitle: '2. Who manages the Tool?!',
         paragraphs: [
           'EY” refers to one or more of the member firms of Ernst & Young Global Limited (“EYG”), each of which is a separate legal entity and can act as a data controller in its own right. The entity that is acting as data controller by providing this Tool on which your personal data will be processed and stored is EY Global Services Limited. EY Global Services Limited licenses the Tool from Bright Starr Limited trading as Unily, The Granary, Abbey Mill Business Park, Lower Eashing, Godalming GU7 2QW.',
           'The personal data in the Tool is shared by EY Global Services Limited with one or more member firms of EYG (see “Who can access your personal data” section below).',

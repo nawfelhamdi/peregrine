@@ -106,7 +106,7 @@ function ResultOutputs(props) {
   }
   return (
     <>
-      <div className=" py-8">
+      <div className=" py-2">
         <div className="border border-[#EAEAF2] rounded-md p-0">
           {/* Header */}
           <div className="h-12  px-4 py-3  border-b border-[#EAEAF2]  bg-gray-200 rounded-t-md hidden sm:block">

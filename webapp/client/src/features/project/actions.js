@@ -83,7 +83,7 @@ export const getPreparationPiplineLog =
   };
 
 export const getPrepationPiplineStepsLog = (piplineLogId) => (dispatch) => {
-  dispatch(activateTab('run'));
+  // dispatch(activateTab('run'));
   dispatch({ type: LOADING_PIPELINE_STEPS_LOG });
   axios
     .get(
@@ -151,6 +151,9 @@ export const getApiCallPiplineStepsLog = (piplineLogId) => (dispatch) => {
         type: GET_API_PIPELINE_STEPS_LOG,
         payload: res.data.piplineStepsLog,
       });
+      // if (res.data.piplineStepsLog.length === 4) {
+      //   dispatch(activateTab('results'));
+      // }
     })
     .catch((error) => {
       console.log(error);

@@ -48,12 +48,16 @@ function RunMoodys(props) {
           </Link>
         </button>
         <button
+          onClick={() => props.activateTab('results')}
           disabled={props.project.moodysProgressBar !== 100}
           className="my-8 disabled:bg-[#cccccc] inline-flex items-center justify-center h-12 px-8 md:px-12 font-medium tracking-wide transition duration-200 rounded-md shadow-md text-gray-900 bg-skin-button-accent disabled:opacity-70 float-left"
         >
           <Link
-            to="/start-project/validate"
-            onClick={() => props.activateTab('validate')}
+            to={
+              props.project.moodysProgressBar === 100
+                ? '/start-project/results'
+                : '#'
+            }
           >
             <div className="flex items-center">
               <span>Results and Reports</span>
