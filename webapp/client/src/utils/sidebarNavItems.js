@@ -1,49 +1,39 @@
 const navigation = {
-  startproject: [
+  startproject: [],
+  archives: [
     {
-      name: ' ',
-      subNavItems: [
-        {
-          name: ' ',
-          url: ' ',
-        },
-        {
-          name: ' ',
-          url: ' ',
-        },
-      ],
+      title: 'Archive',
+      subTitle: '(Moody’s RI Input Files)',
+      url: 'archive',
+    },
+    {
+      title: 'Input Files',
+      url: 'input-files',
+    },
+    {
+      title: 'Output Files',
+      url: 'output-files',
+    },
+    {
+      title: 'Disclosure Reports',
+      url: 'gmm-reports',
     },
   ],
-  archive: [
+  datagovernance: [
     {
-      name: 'File Catalog',
-      subNavItems: [
-        {
-          name: 'Input Files',
-          url: 'input-files',
-        },
-        {
-          name: 'Output Files',
-          url: 'output-files',
-        },
-      ],
+      title: 'Data Profiling',
+      url: 'data-profiling',
+    },
+    {
+      title: 'DQ Dashboard',
+      url: 'quality',
+    },
+    {
+      title: 'Data Lineage',
+      url: 'lineage',
     },
   ],
-  reports: [
-    {
-      name: 'Reports',
-      subNavItems: [
-        {
-          name: 'Project Reports',
-          url: 'project-reports',
-        },
-      ],
-    },
-    {
-      name: 'BI Dashboards',
-      subNavItems: [],
-    },
-  ],
+  dashboard: [],
 };
 
 export default navigation;

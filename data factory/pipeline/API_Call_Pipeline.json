@@ -667,6 +667,14 @@
 						"ui_project_id": {
 							"value": "@pipeline().parameters.id",
 							"type": "Expression"
+						},
+						"start_date": {
+							"value": "@pipeline().parameters.start_date",
+							"type": "Expression"
+						},
+						"end_date": {
+							"value": "@pipeline().parameters.end_date",
+							"type": "Expression"
 						}
 					}
 				}

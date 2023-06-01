@@ -5,7 +5,7 @@ const features = [
   {
     id: 1,
     title: 'Start Project',
-    description: 'Initiate an IFRS 17 project calculation run',
+    description: 'Initiate a new IFRS 17 project',
     href: 'start-project/start',
     icon: (
       <svg
@@ -31,9 +31,9 @@ const features = [
   },
   {
     id: 2,
-    title: 'Archive',
-    description: 'Access past projects and data',
-    href: 'archive/files',
+    title: 'Data Governance',
+    description: 'Access the data quality dashboard and DQ profiling reports​',
+    href: 'data-governance/data-profiling',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -52,24 +52,18 @@ const features = [
     ),
   },
   {
-    id: 5,
-    title: 'Reports',
-    description: "View the output folder of Moody's RI",
-    href: 'reports',
+    id: 3,
+    title: 'Archive',
+    description: 'Access Input & Output files and Reports',
+    href: 'archives/archive',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-10 w-10 text-skin-base"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
+        viewBox="0 0 20 20"
+        fill="currentColor"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-        />
+        <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
       </svg>
     ),
   },
@@ -77,7 +71,13 @@ const features = [
 
 const FeatureCard = ({ feature: { title, description, icon, href } }) => {
   return (
-    <Link to={href}>
+    <Link
+      to={href}
+      onClick={() => {
+        localStorage.setItem('activeTab', href.split('/').pop());
+        console.log(href);
+      }}
+    >
       <div className="text-center p-4 duration-300 transform bg-white hover:bg-skin-base hover:text-skin-muted border rounded shadow-sm hover:-translate-y-2 py-12">
         <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-skin-base">
           {icon}
@@ -85,15 +85,15 @@ const FeatureCard = ({ feature: { title, description, icon, href } }) => {
         <h6 className="text-center mb-2 text-sm font-bold leading-5 tracking-wider uppercase">
           {title}
         </h6>
-        <p className="mb-2 opacity-90">{description}</p>
+        <p className="mb-2 opacity-90 h-10">{description}</p>
       </div>
     </Link>
   );
 };
 export default function Features() {
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 lg:py-32">
-      <div className="grid gap-5 row-gap-5 md:grid-cols-3">
+    <div className="px-4 py-24 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-8 mt-1">
+      <div className="grid gap-5 row-gap-5 md:grid-cols-3 md:h-96 items-center">
         {features.map((feature) => (
           <FeatureCard key={feature.id} feature={feature} />
         ))}

@@ -2,7 +2,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 
-@Entity("pipeline_log")
+@Entity({ schema: "ctl", name:"pipeline_log" })
+
 export class Pipeline {
 
     @PrimaryGeneratedColumn()

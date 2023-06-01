@@ -2,8 +2,6 @@ const Connection = require('tedious').Connection;
 import path from "path";
 require("dotenv").config({ path: path.join(__dirname, "..", "..", ".env") });
 
-import { Project} from '../entities/Project';
-
 import { DataSource } from "typeorm"
 
 export const myDataSource = new DataSource({
@@ -12,7 +10,7 @@ export const myDataSource = new DataSource({
   database: process.env.DATABASE,
   username: process.env.DATABASE_USERNAME,
   password:process.env.DATABASE_PASSWORD,
-  schema:"ctl",
+  // schema:"hck",
   entities:[path.join(__dirname, "..", "entities", "*.{ts,js}")],
   options: {
   encrypt: true,
