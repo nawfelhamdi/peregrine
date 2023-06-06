@@ -20,6 +20,7 @@
     "formik": "^2.2.9",
     "moment": "^2.29.3",
     "path": "^0.12.7",
+    "peregrine": "file:..",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-icons": "4.4.0",

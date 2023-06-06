@@ -7263,6 +7263,15 @@
     "process" "^0.11.1"
     "util" "^0.10.3"
 
+"peregrine@file:..":
+  "resolved" "file:.."
+  "version" "0.0.0"
+  dependencies:
+    "cookie-parser" "~1.4.4"
+    "debug" "~2.6.9"
+    "express" "~4.16.1"
+    "morgan" "~1.9.1"
+
 "performance-now@^2.1.0":
   "integrity" "sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns="
   "resolved" "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz"

@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const pipelines_1 = require("../controllers/pipelines");
+const pipelines_2 = require("../controllers/pipelines");
+const pipelines_3 = require("../controllers/pipelines");
+const pipelines_4 = require("../controllers/pipelines");
+const pipelines_5 = require("../controllers/pipelines");
+const router = (0, express_1.Router)();
+router.get("/preparation/:projectId", pipelines_1.getPreparationPiplineLog);
+router.get("/preparation-steps/:preparationPiplineLogId", pipelines_2.getPreparationPiplineStepsLog);
+router.get("/apicall/:projectId", pipelines_3.getApiCallPiplineLog);
+router.get("/apicall-steps/:apiCallPiplineLogId", pipelines_4.getApiCallPiplineStepsLog);
+router.post("/trigger-api", pipelines_5.triggerPipelineApi);
+exports.default = router;

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const getArchives_1 = require("../controllers/archives/getArchives");
+const getArchiveFiles_1 = require("../controllers/archives/getArchiveFiles");
+const getFiles_1 = require("../controllers/archives/getFiles");
+const listGmmReports_1 = require("../controllers/archives/listGmmReports");
+const router = (0, express_1.Router)();
+router.get("/archive", getArchives_1.getArchives);
+router.get("/archive/:directoryId", getArchiveFiles_1.getArchiveFiles);
+router.get("/files", getFiles_1.getFiles);
+router.get("/gmm-reports", listGmmReports_1.listGmmReports);
+exports.default = router;

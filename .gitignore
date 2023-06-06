@@ -2,7 +2,5 @@
 /.idea/
 webapp/node_modules
 webapp/client/node_modules
-webapp/client/build
 webapp/client/.env
-webapp/dist
 webapp/.env
