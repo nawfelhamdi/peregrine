@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "main": "dist/index.js",
+  "engines": {
+    "node": "16.13.1",
+    "npm": "7.10.0"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc && npm install --prefix client && npm run build --prefix client",
