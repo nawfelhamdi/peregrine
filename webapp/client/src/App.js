@@ -49,7 +49,7 @@ function App() {
 
           {/* private routes */}
 
-          {/* <Route element={<PrivateRoute />}> */}
+          <Route element={<PrivateRoute />}>
             <Route path="/start-project" element={<StartProject />}>
               <Route path="start" element={<Start />} />
               <Route path="preparation" element={<Preparation />} />
@@ -57,8 +57,8 @@ function App() {
               <Route path="results/reports" element={<ResultReports />} />
               <Route path="results" element={<ResultOutputs />} />
             </Route>
-          {/* </Route> */}
-          {/* <Route element={<PrivateRoute />}> */}
+          </Route>
+          <Route element={<PrivateRoute />}>
             <Route path="/archives" element={<Archives />}>
               <Route path="archive" element={<Archive />} />
               <Route path="input-files" element={<InputFiles />} />
@@ -66,14 +66,14 @@ function App() {
               <Route path="paa-reports" element={<PaaReports />} />
               <Route path="gmm-reports" element={<GmmReports />} />
             </Route>
-          {/* </Route> */}
-          {/* <Route element={<PrivateRoute allowedRoles={[roles.ROLE_ADMIN]} />}> */}
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={[roles.ROLE_ADMIN]} />}>
             <Route path="/data-governance" element={<DataGovernance />}>
               <Route path="data-profiling" element={<Profiling />} />
               <Route path="quality" element={<QualityStatus />} />
               <Route path="lineage" element={<DataLineage />} />
             </Route>
-          {/* </Route> */}
+          </Route>
         </Routes>
       </HashRouter>
     </Provider>
