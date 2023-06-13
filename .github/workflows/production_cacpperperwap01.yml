@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: npm install, build, and test # The Build Step is skipped for testing purpose
+      #- name: npm install, build, and test # The Build Step is skipped for testing purpose
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
