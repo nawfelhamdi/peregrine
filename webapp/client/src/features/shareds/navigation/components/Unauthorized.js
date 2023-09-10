@@ -11,15 +11,7 @@ export default function Unauthorized() {
             <p className="text-base text-gray-700 md:text-lg">
               You are unauthorized to view this content.
             </p>
-            {/* <p className='text-base text-gray-700 md:text-lg'>
-              Vous pouvez revenir à la page d'accueil
-            </p> */}
           </div>
-          {/* <Link to='/'>
-            <button className='inline-flex items-center justify-center h-12 px-10 font-medium tracking-wide text-white transition duration-200 rounded-md shadow-md bg-skin-button-accent hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none'>
-              Home
-            </button>
-          </Link> */}
         </div>
       </div>
     </div>

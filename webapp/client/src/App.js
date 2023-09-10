@@ -33,9 +33,12 @@ import Profiling from './features/governance/components/Profiling';
 import QualityStatus from './features/governance/components/QualityStatus';
 import DataLineage from './features/governance/components/DataLineage';
 
+import UnauthorizedModal from './features/auth/components/UnauthorizedModal';
+
 function App() {
   return (
     <Provider store={store}>
+      <UnauthorizedModal />
       <HashRouter>
         <Routes>
           {/* public routes */}

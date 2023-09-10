@@ -30,7 +30,7 @@ const app = (0, express_1.default)();
 /**
  *  App Configuration
  */
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: process.env.CORS_ALLOWED_ORIGIN_URL, optionsSuccessStatus: 200 }));
 app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));

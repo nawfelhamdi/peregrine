@@ -24,6 +24,7 @@ import {
   SORT_FILES_BY_CREATED_DATE,
   SORT_FILES_BY_UPDATED_DATE,
 } from './types';
+import { checkUnauthorizeError } from '../auth/actions';
 
 import axios from 'axios';
 // archives
@@ -40,7 +41,7 @@ export const getArchives = (container) => (dispatch) => {
       });
     })
     .catch((error) => {
-      console.log(error);
+      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -69,6 +70,7 @@ export const getArchiveFiles = (diretoryId, container) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -93,6 +95,7 @@ export const getFiles = (container, prefix) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -167,6 +170,7 @@ export const listArchiveBlobs = (container, prefix) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -184,6 +188,7 @@ export const listGmmReports = () => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -238,5 +243,6 @@ export const getResulsFiles = (prefix) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
+      dispatch(checkUnauthorizeError(error));
     });
 };

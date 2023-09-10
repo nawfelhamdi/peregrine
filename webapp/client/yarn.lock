@@ -86,17 +86,17 @@
   dependencies:
     "tslib" "^2.2.0"
 
-"@azure/msal-browser@^2.27.0":
-  "integrity" "sha512-PyATq2WvK+x32waRqqikym8wvn939iO9UhpFqhLwitNrfLa3PHUgJuuI9oLSQOS3/UzjYb8aqN+XzchU3n/ZuQ=="
-  "resolved" "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-2.27.0.tgz"
-  "version" "2.27.0"
+"@azure/msal-browser@^2.27.0", "@azure/msal-browser@^2.38.2":
+  "integrity" "sha512-71BeIn2we6LIgMplwCSaMq5zAwmalyJR3jFcVOZxNVfQ1saBRwOD+P77nLs5vrRCedVKTq8RMFhIOdpMLNno0A=="
+  "resolved" "https://registry.npmjs.org/@azure/msal-browser/-/msal-browser-2.38.2.tgz"
+  "version" "2.38.2"
   dependencies:
-    "@azure/msal-common" "^7.1.0"
+    "@azure/msal-common" "13.3.0"
 
-"@azure/msal-common@^7.1.0":
-  "integrity" "sha512-+Oz8LKTOACDHqDmv+MZy/z+DZRH8RZbMjhadmvp0scQ0R75OrzZro+HkxifWhtDG8l1ViYkvV9NHb4pEZyajAQ=="
-  "resolved" "https://registry.npmjs.org/@azure/msal-common/-/msal-common-7.2.0.tgz"
-  "version" "7.2.0"
+"@azure/msal-common@13.3.0":
+  "integrity" "sha512-/VFWTicjcJbrGp3yQP7A24xU95NiDMe23vxIU1U6qdRPFsprMDNUohMudclnd+WSHE4/McqkZs/nUU3sAKkVjg=="
+  "resolved" "https://registry.npmjs.org/@azure/msal-common/-/msal-common-13.3.0.tgz"
+  "version" "13.3.0"
 
 "@azure/msal-react@^1.4.3":
   "integrity" "sha512-xAdAXDn7ppy+dZCcpqoqJq/wJOB9MxPDhB2p50rkiIQfxCzxCt7rS7gskrOSlq2qYFUebJlOE0RkAk3DO6Uq7g=="
@@ -7267,10 +7267,23 @@
   "resolved" "file:.."
   "version" "0.0.0"
   dependencies:
+    "@azure/storage-blob" "^12.10.0"
+    "body-parser" "^1.20.0"
+    "class-transformer" "^0.5.1"
+    "class-validator" "^0.13.2"
     "cookie-parser" "~1.4.4"
+    "cors" "^2.8.5"
     "debug" "~2.6.9"
+    "dotenv" "^16.0.1"
     "express" "~4.16.1"
+    "helmet" "^5.1.0"
+    "jsonwebtoken" "^9.0.2"
+    "jwks-rsa" "^3.0.1"
     "morgan" "~1.9.1"
+    "mssql" "^6.4.1"
+    "reflect-metadata" "^0.1.13"
+    "tedious" "^14.5.0"
+    "typeorm" "^0.3.6"
 
 "performance-now@^2.1.0":
   "integrity" "sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns="

@@ -9,12 +9,13 @@ function classNames(...classes) {
 }
 export default function ProfileMenu() {
   const { instance, accounts } = useMsal();
-
+  
   const handleLogout = () => {
     instance.logoutPopup({
       postLogoutRedirectUri: '/',
       mainWindowRedirectUri: '/',
     });
+    sessionStorage.clear();
   };
   return (
     <Menu as="div" className="ml-3 relative z-90">

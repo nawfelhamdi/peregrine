@@ -33,7 +33,7 @@ const app = express();
  *  App Configuration
  */
 
-app.use(cors());
+app.use(cors({origin: process.env.CORS_ALLOWED_ORIGIN_URL,optionsSuccessStatus: 200}));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,7 +42,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
  *  loading the api routes
  */
  app.use("/", routes);
-
 
 /**
  *  loading the frontend in prod mode
