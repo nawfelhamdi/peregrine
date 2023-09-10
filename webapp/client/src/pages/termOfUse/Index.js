@@ -8,7 +8,7 @@ const termsOfUseContent = [
     details: [
       {
         id: 1,
-        subTitle: '1. Introduction',
+        subTitle: '1. Introduction V:1.0.0',
         paragraphs: [
           'This Privacy Notice is intended to describe the practices EY follows in relation to the Unily Enterprise Intranet (“Tool”) with respect to the privacy of all individuals whose personal data is processed and stored in the Tool.',
         ],
