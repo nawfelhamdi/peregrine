@@ -11,6 +11,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const ormconfig_1 = require("./config/ormconfig");
 const index_1 = __importDefault(require("./routes/index"));
+const helmet_1 = __importDefault(require("helmet"));
 require("dotenv").config({ path: path_1.default.join(__dirname, "..", "..", ".env") });
 /**
  *  Database connection
@@ -30,6 +31,7 @@ const app = (0, express_1.default)();
 /**
  *  App Configuration
  */
+app.use((0, helmet_1.default)());
 app.use((0, cors_1.default)({ origin: process.env.CORS_ALLOWED_ORIGIN_URL, optionsSuccessStatus: 200 }));
 app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
