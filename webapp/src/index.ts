@@ -7,7 +7,7 @@ import errorHandler  from "./middlewares/errorHandler";
 import { myDataSource } from "./config/ormconfig";
 import routes from "./routes/index";
 import { Request, Response } from "express";
-
+import helmet  from "helmet"
 require("dotenv").config({ path: path.join(__dirname, "..", "..", ".env") });
 
 
@@ -32,7 +32,7 @@ const app = express();
 /**
  *  App Configuration
  */
-
+app.use(helmet());
 app.use(cors({origin: process.env.CORS_ALLOWED_ORIGIN_URL,optionsSuccessStatus: 200}));
 app.use(express.json());
 app.use(bodyParser.json());
