@@ -7,14 +7,6 @@ export const msalConfig = {
   cache: {
     cacheLocation: 'sessionStorage', 
     storeAuthStateInCookie: false,
-  },
-  system: {
-    loggerOptions: {
-      loggerCallback: (level, message, containsPII) => {
-        console.log(message)
-      },
-      logLevel: "Info",
-    }
   }
 };
 
