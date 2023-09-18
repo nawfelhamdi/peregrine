@@ -1,4 +1,4 @@
-import { Fragment, useRef, useEffect } from 'react';
+import { Fragment, useRef, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { connect } from 'react-redux';
 import { closeUnauthorizedModal, openUnauthorizedModal } from '../actions';
@@ -8,32 +8,16 @@ import axios from "axios"
 
 function UnauthorizedModal(props) {
   const cancelButtonRef = useRef(null);
+  const [open, setOpen] = useState(false)
     
-  const { instance, accounts} = useMsal();
-
-  useEffect(() => {
-    if (props.auth.fireSsoSilent) {
-      console.log('ssoSilent');
-      instance
-        .ssoSilent({
-          scopes: ['user.read'],
-          loginHint: accounts[0].username,
-        })
-        .then((res) => {
-          props.setAuthorizationHeader(res.idToken);
-          console.log('res of ssoSilent', res);
-        })
-        .catch((error) => {
-          console.log('openUnauthorizedModal', error);
-          // if (error instanceof InteractionRequiredAuthError) {
-          // props.openUnauthorizedModal();
-          //   instance.loginRedirect();
-          // }
-        });
-    }
-    // eslint-disable-next-line
-  }, [props.auth.fireSsoSilent]);
-
+   useEffect(() => {
+     let accessToken = sessionStorage.getItem('accessToken');
+     if (!accessToken) {
+       setOpen(true);
+     }
+   });
+  
+  const { instance } = useMsal();
 
   const handleOnClose = () => {
     props.closeUnauthorizedModal();
@@ -46,10 +30,14 @@ function UnauthorizedModal(props) {
         mainWindowRedirectUri: '/',
       });
       sessionStorage.clear();
+      setOpen(false)
   };
   
   return (
-    <Transition.Root show={props.auth.isUnauthorized} as={Fragment}>
+    <Transition.Root
+      show={props.auth.isUnauthorized && open}
+      as={Fragment}
+    >
       <Dialog
         as="div"
         className="relative z-10"

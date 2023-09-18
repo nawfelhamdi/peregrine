@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route, HashRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 //  UI
@@ -33,12 +33,23 @@ import Profiling from './features/governance/components/Profiling';
 import QualityStatus from './features/governance/components/QualityStatus';
 import DataLineage from './features/governance/components/DataLineage';
 
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import UnauthorizedModal from './features/auth/components/UnauthorizedModal';
+import { SET_UNNAUTHOROZID } from './features/auth/types'
 
+const accessToken = sessionStorage.getItem('accessToken');
+if (accessToken && jwtDecode(accessToken.split(' ')[1]).exp < Date.now()) {
+  axios.defaults.headers.common['Authorization'] = accessToken;
+} else {
+  store.dispatch({ type: SET_UNNAUTHOROZID });
+  console.log('accessToken', accessToken);
+  // window.location.href = '/login';
+}
 function App() {
   return (
     <Provider store={store}>
-      <UnauthorizedModal />
+      {/* <UnauthorizedModal /> */}
       <HashRouter>
         <Routes>
           {/* public routes */}

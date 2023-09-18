@@ -23,7 +23,7 @@ export const setLocationPath = (location) => (dispatch) => {
 
 export const checkUnauthorizeError = (error) => (dispatch) => {
   if (error && error.response && error.response.status === 401) {
-    dispatch({ type: FIRE_SSOSILENT });
+    dispatch({ type: SET_UNNAUTHOROZID });
   }
 };
 

@@ -3,8 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../../../utils/authConfig';
 import { connect } from 'react-redux';
 import { setAuthorizationHeader } from '../actions';
-import axios from "axios"
-
+import axios from 'axios';
 function SignInButton(props) {
   const { instance } = useMsal();
 
@@ -12,10 +11,9 @@ function SignInButton(props) {
     instance
       .loginPopup(loginRequest)
       .then((res) => {
-        console.log('token', res)
-        props.setAuthorizationHeader(res.idToken);
-         sessionStorage.setItem('accessToken', res.idToken);
-         axios.defaults.headers.common['Authorization'] = res.idToken;
+        const accessToken = `bearer ${res.idToken}`;
+        sessionStorage.setItem('accessToken', accessToken);
+        axios.defaults.headers.common['Authorization'] = accessToken;
       })
       .catch((e) => {
         console.log(e);
