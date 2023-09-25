@@ -3,7 +3,7 @@ export const msalConfig = {
     auth: {
         clientId: process.env.REACT_APP_AD_CLIENT_ID,
         // authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AD_TENANT_ID}/`,
-        authority: "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+        authority: "https://login.microsoftonline.com/common",
         redirectUri: "/", 
         postLogoutRedirectUri: "/", 
         clientCapabilities: ["CP1"]
