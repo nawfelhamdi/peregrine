@@ -9,7 +9,7 @@ export const msalConfig = {
     },
     cache: {
         cacheLocation: "sessionStorage",
-        storeAuthStateInCookie: false,
+        storeAuthStateInCookie: true,
     },
     system: {
         loggerOptions: {

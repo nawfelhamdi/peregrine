@@ -12,6 +12,11 @@ function SignInButton() {
     activeAccount = instance.getActiveAccount();
   }
 
+  const handleLoginRedirect = () => {
+        instance.loginRedirect(loginRequest)
+            .catch((error) => console.log(error));
+    };
+
   const handleLoginPopup = () => {
     instance.loginPopup({
       ...loginRequest,
@@ -21,7 +26,7 @@ function SignInButton() {
 
   return (
     <button
-      onClick={handleLoginPopup}
+      onClick={handleLoginRedirect}
       className="whitespace-nowrap inline-flex items-center justify-center h-12  md:h-12 px-6 md:px-8 font-medium tracking-wide text-skin-inverted bg-skin-button-accent transition duration-200 rounded shadow-md hover:opacity-80 focus:shadow-outline focus:outline-none"
     >
       Sign In

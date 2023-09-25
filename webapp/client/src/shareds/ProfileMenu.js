@@ -18,6 +18,11 @@ export default function ProfileMenu() {
     });
   };
 
+  const handleLogoutRedirect = () => {
+    instance.logoutRedirect({
+      account: instance.getActiveAccount(),
+    });
+  };
   return (
     <Menu as="div" className="ml-3 relative z-90">
       <div>
@@ -69,7 +74,7 @@ export default function ProfileMenu() {
                   active ? 'bg-gray-100' : '',
                   'block px-4 py-2 text-sm text-gray-700 w-full text-left'
                 )}
-                onClick={handleLogoutPopup}
+                onClick={handleLogoutRedirect}
               >
                 Sign out
               </button>
