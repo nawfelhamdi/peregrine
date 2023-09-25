@@ -36,8 +36,8 @@ const app = express();
 /**
  *  App middelewares Configurations
  */
-app.use(helmet());
-const allowedOrigins = [process.env.CORS_ALLOWED_ORIGIN_URL];
+// app.use(helmet());
+const allowedOrigins = [process.env.CORS_ALLOWED_ORIGIN_URL, "https://login.microsoftonline.com"];
 
 const corsOptions = {
   origin: (origin, callback) => {
