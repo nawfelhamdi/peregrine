@@ -2,7 +2,7 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
     auth: {
         clientId: process.env.REACT_APP_AD_CLIENT_ID,
-        authority: "login.microsoftonline.com/adb53b4f-b05f-4dcb-a2e1-9111380568c3/", 
+        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AD_TENANT_ID}/`,
         redirectUri: "/", 
         postLogoutRedirectUri: "/", 
         clientCapabilities: ["CP1"]
