@@ -2,8 +2,7 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
     auth: {
         clientId: process.env.REACT_APP_AD_CLIENT_ID,
-        // authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AD_TENANT_ID}/`,
-        authority: "https://login.microsoftonline.com/common",
+        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AD_TENANT_ID}`,
         redirectUri: "/", 
         postLogoutRedirectUri: "/", 
         clientCapabilities: ["CP1"]
@@ -43,7 +42,7 @@ export const msalConfig = {
 
 export const protectedResources = {
     api: {
-        endpoint: "http://localhost:8081/api",
+        endpoint: `${process.env.REACT_APP_PROTECTED_RESOURCE_URL}`,
         scopes: {
             read: [ `api://${process.env.REACT_APP_API_AD_CLIENT_ID}/api.Read` ],
             write: [`api://${process.env.REACT_APP_API_AD_CLIENT_ID}/api.ReadWrite` ]
