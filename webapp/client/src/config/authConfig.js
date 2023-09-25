@@ -2,8 +2,8 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
     auth: {
         clientId: process.env.REACT_APP_AD_CLIENT_ID,
-        authority: `https://login.microsoftonline.com/${process.env.REACT_APP_AD_TENANT_ID}`,
-        knownAuthorities: [`https://login.microsoftonline.com`],
+        authority: `https://login.microsoftonline.com/common`,
+        knownAuthorities: ["login.microsoftonline.com"],
         redirectUri: "/", 
         postLogoutRedirectUri: "/", 
         clientCapabilities: ["CP1"]
@@ -15,13 +15,13 @@ export const msalConfig = {
     system: {
         loggerOptions: {
             loggerCallback: (level, message, containsPii) => {
-                if (process.env.REACT_APP_NODE_ENV !== "developement") {
-                    return
-                }
                 if (containsPii) {
                     return;
                 }
-
+                
+                if (process.env.REACT_APP_NODE_ENV !== "developement") {
+                    return
+                }
                 switch (level) {
                     case LogLevel.Error:
                         console.error(message);

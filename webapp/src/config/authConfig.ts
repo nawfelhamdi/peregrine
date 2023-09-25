@@ -7,7 +7,7 @@ export const authConfig = {
         clientID: process.env.API_AD_CLIENT_ID
     },
     metadata: {
-        authority: "login.microsoftonline.com",
+        authority: "https://login.microsoftonline.com/common",
         discovery: ".well-known/openid-configuration",
         version: "v2.0"
     },
