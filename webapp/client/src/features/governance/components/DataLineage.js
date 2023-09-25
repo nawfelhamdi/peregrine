@@ -1,7 +1,6 @@
 import React from 'react';
 import heroTexture from '../../../assets/heroTexture.png';
 import hero from '../../../assets/hero.png';
-import { Link } from 'react-router-dom';
 
 export default function DataLineage() {
   return (

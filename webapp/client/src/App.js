@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Routes, Route, HashRouter, Navigate } from 'react-router-dom';
+import React from 'react';
+import { MsalProvider } from "@azure/msal-react";
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 //  UI
@@ -8,7 +9,7 @@ import Privacy from './pages/privacy/Index';
 import Policy from './pages/policy/Index';
 import TermOfUse from './pages/termOfUse/Index';
 // utils
-import PrivateRoute from './utils/PrivateRoute';
+import PrivateRoute from './features/auth/components/PrivateRoute';
 import roles from './utils/roles';
 import Unauthorized from './features/shareds/navigation/components/Unauthorized';
 // Auth
@@ -33,64 +34,52 @@ import Profiling from './features/governance/components/Profiling';
 import QualityStatus from './features/governance/components/QualityStatus';
 import DataLineage from './features/governance/components/DataLineage';
 
-import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import UnauthorizedModal from './features/auth/components/UnauthorizedModal';
-import { SET_UNNAUTHOROZID } from './features/auth/types'
-
-const accessToken = sessionStorage.getItem('accessToken');
-if (accessToken && jwtDecode(accessToken.split(' ')[1]).exp < Date.now()) {
-  axios.defaults.headers.common['Authorization'] = accessToken;
-} else {
-  store.dispatch({ type: SET_UNNAUTHOROZID });
-  console.log('accessToken', accessToken);
-  // window.location.href = '/login';
-}
-function App() {
+function App({ instance }) {
   return (
-    <Provider store={store}>
-      {/* <UnauthorizedModal /> */}
-      <HashRouter>
-        <Routes>
-          {/* public routes */}
+    <MsalProvider instance={instance}>
+      <Provider store={store}>
+        <HashRouter>
+          <Routes>
+            {/* public routes */}
 
-          <Route path="/" element={<Home />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/policy" element={<Policy />} />
-          <Route path="/term-of-use" element={<TermOfUse />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/policy" element={<Policy />} />
+            <Route path="/term-of-use" element={<TermOfUse />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* private routes */}
+            {/* private routes */}
 
-          <Route element={<PrivateRoute />}>
-            <Route path="/start-project" element={<StartProject />}>
-              <Route path="start" element={<Start />} />
-              <Route path="preparation" element={<Preparation />} />
-              <Route path="run" element={<RunMoodys />} />
-              <Route path="results/reports" element={<ResultReports />} />
-              <Route path="results" element={<ResultOutputs />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/start-project" element={<StartProject />}>
+                <Route path="start" element={<Start />} />
+                <Route path="preparation" element={<Preparation />} />
+                <Route path="run" element={<RunMoodys />} />
+                <Route path="results/reports" element={<ResultReports />} />
+                <Route path="results" element={<ResultOutputs />} />
+              </Route>
             </Route>
-          </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="/archives" element={<Archives />}>
-              <Route path="archive" element={<Archive />} />
-              <Route path="input-files" element={<InputFiles />} />
-              <Route path="output-files" element={<OutputFiles />} />
-              <Route path="paa-reports" element={<PaaReports />} />
-              <Route path="gmm-reports" element={<GmmReports />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/archives" element={<Archives />}>
+                <Route path="archive" element={<Archive />} />
+                <Route path="input-files" element={<InputFiles />} />
+                <Route path="output-files" element={<OutputFiles />} />
+                <Route path="paa-reports" element={<PaaReports />} />
+                <Route path="gmm-reports" element={<GmmReports />} />
+              </Route>
             </Route>
-          </Route>
-          <Route element={<PrivateRoute allowedRoles={[roles.ROLE_ADMIN]} />}>
-            <Route path="/data-governance" element={<DataGovernance />}>
-              <Route path="data-profiling" element={<Profiling />} />
-              <Route path="quality" element={<QualityStatus />} />
-              <Route path="lineage" element={<DataLineage />} />
+            <Route element={<PrivateRoute allowedRoles={[roles.ROLE_ADMIN]} />}>
+              <Route path="/data-governance" element={<DataGovernance />}>
+                <Route path="data-profiling" element={<Profiling />} />
+                <Route path="quality" element={<QualityStatus />} />
+                <Route path="lineage" element={<DataLineage />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </HashRouter>
-    </Provider>
+          </Routes>
+        </HashRouter>
+      </Provider>
+    </MsalProvider>
   );
 }
 

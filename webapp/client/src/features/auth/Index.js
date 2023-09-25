@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import { connect } from 'react-redux';
-import SignInButton from './components/SignInButton';
-import { useIsAuthenticated } from '@azure/msal-react';
 import texture from '../../assets/texture.svg';
 
+import { connect } from 'react-redux';
+import SignInButton from './components/SignInButton';
+
 function Auth(props) {
-  const isAuthenticated = useIsAuthenticated();
 
   return (
     <div className="relative flex flex-col-reverse px-4 mx-auto lg:block lg:flex-col md:px-8 max-w-xl sm:max-w-full md:max-h-screen justify-center">
-      {!isAuthenticated ? null : <Navigate to={props.auth.locationPath} />}
+      {/* {!isAuthenticated ? null : <Navigate to={props.auth.locationPath} />} TODO:  get isAuthenticated from reducer */}
       <div className="z-0 hidden bg-[#D3DEFA] lg:flex justify-start min-h-screen -mx-4 overflow-hidden  lg:w-1/2 lg:absolute lg:justify-end lg:bottom-0 lg:left-0 lg:items-center">
         <img
           src={texture}

@@ -9,7 +9,6 @@ import {
   SET_SORT_BY_UPDATED_DATE,
   SET_SORT_BY_CREATED_DATE,
 } from './types';
-import { checkUnauthorizeError } from '../auth/actions';
 
 import axios from 'axios';
 
@@ -25,7 +24,6 @@ export const getProfilingFiles = () => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -43,7 +41,6 @@ export const getDataHealthCheck = () => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });

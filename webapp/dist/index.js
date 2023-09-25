@@ -11,7 +11,9 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const errorHandler_1 = __importDefault(require("./middlewares/errorHandler"));
 const ormconfig_1 = require("./config/ormconfig");
 const index_1 = __importDefault(require("./routes/index"));
-const helmet_1 = __importDefault(require("helmet"));
+const passport_1 = __importDefault(require("passport"));
+const passport_azure_ad_1 = __importDefault(require("passport-azure-ad"));
+const authConfig_1 = require("./config/authConfig");
 require("dotenv").config({ path: path_1.default.join(__dirname, "..", "..", ".env") });
 /**
  *  Database connection
@@ -29,13 +31,44 @@ ormconfig_1.myDataSource
  */
 const app = (0, express_1.default)();
 /**
- *  App Configuration
+ *  App middelewares Configurations
  */
-app.use((0, helmet_1.default)());
-app.use((0, cors_1.default)({ origin: process.env.CORS_ALLOWED_ORIGIN_URL, optionsSuccessStatus: 200 }));
+// app.use(helmet());
+const allowedOrigins = [process.env.CORS_ALLOWED_ORIGIN_URL];
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+/**
+ *  Auth configurations
+ */
+const bearerStrategy = new passport_azure_ad_1.default.BearerStrategy({
+    identityMetadata: `https://${authConfig_1.authConfig.metadata.authority}/${authConfig_1.authConfig.credentials.tenantID}/${authConfig_1.authConfig.metadata.version}/${authConfig_1.authConfig.metadata.discovery}`,
+    issuer: `https://${authConfig_1.authConfig.metadata.authority}/${authConfig_1.authConfig.credentials.tenantID}/${authConfig_1.authConfig.metadata.version}`,
+    clientID: authConfig_1.authConfig.credentials.clientID,
+    audience: authConfig_1.authConfig.credentials.clientID,
+    validateIssuer: authConfig_1.authConfig.settings.validateIssuer,
+    passReqToCallback: authConfig_1.authConfig.settings.passReqToCallback,
+    loggingLevel: process.env.NODE_ENV === "development" ? authConfig_1.authConfig.settings.loggingLevel : null,
+    loggingNoPII: authConfig_1.authConfig.settings.loggingNoPII,
+}, (req, token, done) => {
+    if (!token.hasOwnProperty('scp') && !token.hasOwnProperty('roles')) {
+        return done(new Error('Unauthorized'), null, "No delegated or app permission claims found");
+    }
+    return done(null, {}, token);
+});
+app.use(passport_1.default.initialize());
+passport_1.default.use(bearerStrategy);
 /**
  *  loading the api routes
  */

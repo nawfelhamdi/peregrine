@@ -1,14 +1,29 @@
 import {
   LOADING_USER,
   SET_LOCATION_PATH,
-  SET_ERRORS,
+  GET_ERRORS,
   SET_AUTHENTICATED,
-  SET_UNNAUTHOROZID,
-  CLOSE_UNNAUTHOROZID_MODAL,
-  FIRE_SSOSILENT,
 } from './types';
 
 import axios from 'axios';
+
+export const signin = () => (dispatch) => {
+  dispatch({ type: LOADING_USER });
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/auth/signin`)
+    .then((res) => {
+      console.log('signin', res);
+      // dispatch({
+      //   type: SET_AUTHENTICATED,
+      //   payload: res.data.archives,
+      // });
+    })
+    .catch((error) => {
+      dispatch({
+        type: GET_ERRORS,
+      });
+    });
+};
 
 export const setAuthorizationHeader = (token) => {
   const accessToken = `bearer ${token}`;
@@ -19,19 +34,4 @@ export const setAuthorizationHeader = (token) => {
 
 export const setLocationPath = (location) => (dispatch) => {
   dispatch({ type: SET_LOCATION_PATH, payload: location });
-};
-
-export const checkUnauthorizeError = (error) => (dispatch) => {
-  if (error && error.response && error.response.status === 401) {
-    dispatch({ type: SET_UNNAUTHOROZID });
-  }
-};
-
-
-export const closeUnauthorizedModal = () => (dispatch) => {
-  dispatch({ type: CLOSE_UNNAUTHOROZID_MODAL });
-};
-
-export const openUnauthorizedModal = () => (dispatch) => {
-  dispatch({ type: SET_UNNAUTHOROZID });
 };

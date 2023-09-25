@@ -19,7 +19,6 @@ import {
   GET_APICALL_PIPELINE_LOG,
 } from './types';
 import axios from 'axios';
-import { checkUnauthorizeError } from '../auth/actions';
 
 
 export const startProject = (startProjectData, stepRouteUrl) => (dispatch) => {
@@ -33,7 +32,6 @@ export const startProject = (startProjectData, stepRouteUrl) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: GET_ERRORS,
       });
@@ -78,7 +76,6 @@ export const getPreparationPiplineLog =
       })
       .catch((error) => {
         console.log(error);
-        dispatch(checkUnauthorizeError(error));
         dispatch({
           type: PIPELINE_LOG_ERROR,
         });
@@ -101,7 +98,6 @@ export const getPrepationPiplineStepsLog = (piplineLogId) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: PIPELINE_STEPS_LOG_ERROR,
       });
@@ -138,7 +134,6 @@ export const getApiCallPiplineLog =
       })
       .catch((error) => {
         console.log(error);
-        dispatch(checkUnauthorizeError(error));
         dispatch({
           type: PIPELINE_LOG_ERROR,
         });
@@ -163,7 +158,6 @@ export const getApiCallPiplineStepsLog = (piplineLogId) => (dispatch) => {
     })
     .catch((error) => {
       console.log(error);
-      dispatch(checkUnauthorizeError(error));
       dispatch({
         type: PIPELINE_STEPS_LOG_ERROR,
       });
@@ -185,7 +179,6 @@ export const triggerPipelineApi = (stepRouteUrl) => (dispatch) => {
       });
     })
     .catch((error) => {
-      dispatch(checkUnauthorizeError(error));
       console.log(error);
     });
 };

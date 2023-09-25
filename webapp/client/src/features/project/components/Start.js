@@ -1,15 +1,15 @@
 import React, { Fragment, useState } from 'react';
-
+import { useMsal } from '@azure/msal-react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Navigate } from 'react-router-dom';
-import { useMsal } from '@azure/msal-react';
 
 import { connect } from 'react-redux';
 import { startProject } from '../actions';
-// import moment from 'moment';
+
+
 const measurementModels = [
   {
     id: 1,
@@ -86,7 +86,7 @@ function Start(props) {
         end_date: formData.endDate,
         created_by: accounts[0].name,
         last_updated_by: accounts[0].name,
-        moody_project_id: '', // TODO: SET moody_project_id FIELD CONTENT
+        moody_project_id: '',
       };
       const stepRouteUrl = 'preparation';
       props.startProject(projectData, stepRouteUrl);

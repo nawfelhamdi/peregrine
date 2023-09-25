@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
 import SignInButton from '../../../features/auth/components/SignInButton';
 import ProfileMenu from '../../../shareds/ProfileMenu';
-import { useIsAuthenticated } from '@azure/msal-react';
+import { AuthenticatedTemplate } from "@azure/msal-react";
+import { useMsal, useMsalAuthentication } from "@azure/msal-react";
 
 export default function Header() {
-  const isAuthenticated = useIsAuthenticated();
+
+  const { instance } = useMsal();
+  const activeAccount = instance.getActiveAccount();
 
   return (
     <div className="shadow-md bg-skin-base relative z-90">
@@ -46,7 +49,7 @@ export default function Header() {
                 </svg>
               </Link>
             </li>
-            <li>{isAuthenticated ? <ProfileMenu /> : <SignInButton />}</li>
+            <li>{activeAccount ? <ProfileMenu /> : <SignInButton />}</li>
           </ul>
         </div>
       </div>
