@@ -9,7 +9,7 @@ const initialState = {
   loading: false,
   isAuthenticated: false,
   user: {},
-  locationPath: '',
+  locationPath: '/',
 };
 export default function reducer(state = initialState, action) {
   switch (action.type) {
