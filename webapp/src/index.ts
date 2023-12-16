@@ -37,7 +37,7 @@ const app = express();
  *  App middelewares Configurations
  */
 // app.use(helmet());
-const allowedOrigins = [process.env.CORS_ALLOWED_ORIGIN_URL];
+const allowedOrigins = [process.env.CORS_ALLOWED_CLIENT_ORIGIN_URL];
 
 const corsOptions = {
   origin: (origin, callback) => {
