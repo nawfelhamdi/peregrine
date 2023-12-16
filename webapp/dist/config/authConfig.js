@@ -8,8 +8,8 @@ const path_1 = __importDefault(require("path"));
 require("dotenv").config({ path: path_1.default.join(__dirname, "..", "..", ".env") });
 exports.authConfig = {
     credentials: {
-        tenantID: "adb53b4f-b05f-4dcb-a2e1-9111380568c3",
-        clientID: "df6b8399-4ec0-4e8b-81f2-3d55534dadc1"
+        tenantID: process.env.API_AD_TENANT_ID,
+        clientID: process.env.API_AD_CLIENT_ID
     },
     metadata: {
         authority: "login.microsoftonline.com",
@@ -23,15 +23,15 @@ exports.authConfig = {
         loggingNoPII: process.env.NODE_ENV === "development",
     },
     protectedRoutes: {
-        todolist: {
-            endpoint: "/api/todolist",
+        api: {
+            endpoint: "/api",
             delegatedPermissions: {
-                read: ["Todolist.Read", "Todolist.ReadWrite"],
-                write: ["Todolist.ReadWrite"]
+                read: ["api.Read", "api.ReadWrite"],
+                write: ["api.ReadWrite"]
             },
             applicationPermissions: {
-                read: ["Todolist.Read.All", "Todolist.ReadWrite.All"],
-                write: ["Todolist.ReadWrite.All"]
+                read: ["api.Read.All", "api.ReadWrite.All"],
+                write: ["api.ReadWrite.All"]
             }
         }
     }
